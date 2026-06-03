@@ -5,6 +5,12 @@ import * as CRUD from './crud';
 const row: rowElement = {
     firstName: 'Guillaume',
     lastName: 'Salva'
-}
+};
 
 const newRowID: rowID = CRUD.insertRow(row);
+const updatedRow: rowElement = {
+    ...row,
+    age: 23
+};
+CRUD.updateRow(newRowID, updatedRow);
+CRUD.deleteRow(newRowID);
