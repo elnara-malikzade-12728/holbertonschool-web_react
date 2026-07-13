@@ -36,7 +36,7 @@ function App() {
 
       <div className="App-footer">
         <p>
-          Copyright {getCurrentYear()} {getFooterCopy(false)}
+          Copyright {getCurrentYear()} - {getFooterCopy(false)}
         </p>
       </div>
     </div>
