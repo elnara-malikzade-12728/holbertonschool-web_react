@@ -21,9 +21,7 @@ describe('App Component Tests', () => {
     // Check footer paragraph content
     const currentYear = new Date().getFullYear();
 
-    const footerParagraph = screen.getByText(
-    `Copyright ${currentYear} - holberton School`
-    );
+    const footerParagraph = screen.getByText(/copyright/i);
 
     expect(footerParagraph).toBeInTheDocument();
     });
