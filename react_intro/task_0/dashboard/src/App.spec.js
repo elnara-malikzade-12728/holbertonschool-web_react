@@ -5,12 +5,10 @@ describe('App Component Tests', () => {
   test('renders the h1 element with School Dashboard text', () => {
     render(<App />);
 
-    const headingNode = screen.getByRole('heading', {
-      name: /school dashboard/i,
-      level: 1,
-    });
+    const headingNode = screen.getByText(/school dashboard/i);
 
     expect(headingNode).toBeInTheDocument();
+    expect(headingNode.tagName).toBe('H1');
   });
 
   test('renders correct text content in the body and footer paragraphs', () => {
