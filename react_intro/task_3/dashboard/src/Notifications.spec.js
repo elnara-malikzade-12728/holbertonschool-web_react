@@ -26,18 +26,22 @@ describe('Notifications component', () => {
   });
 
   test('logs a message when the close button is clicked', () => {
-    const logSpy = jest.spyOn(console, 'log').mockImplementation(() => {});
+    const logSpy = jest
+        .spyOn(console, 'log')
+        .mockImplementation(() => {});
 
     render(<Notifications />);
 
-    const button = screen.getByRole('button', { name: /close/i });
+    const button = screen.getByRole('button', {
+        name: /close/i,
+    });
 
     fireEvent.click(button);
 
     expect(logSpy).toHaveBeenCalledWith(
-      'Close button has been clicked'
+        'Close button has been clicked'
     );
 
     logSpy.mockRestore();
-  });
+    });
 });
