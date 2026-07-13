@@ -1,11 +1,32 @@
 .notification-items {
+  position: relative;
   width: 100%;
-  min-height: 15px;
-  padding: 8px;
+  padding: 10px;
   border: 1px dashed #e1003c;
   font-size: 5px;
 }
 
 .notification-items p {
+  margin: 0 0 10px;
+}
+
+.notification-items ul {
   margin: 0;
+  padding-left: 15px;
+}
+
+.notification-items li {
+  margin: 4px 0;
+}
+
+.notification-items li[data-priority='default'] {
+  color: blue;
+}
+
+.notification-items li[data-priority='urgent'] {
+  color: red;
+}
+
+.notification-items button img {
+  display: block;
 }

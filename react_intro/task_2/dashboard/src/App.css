@@ -48,13 +48,21 @@ body {
   font-style: italic;
 }
 .App-body label {
-  margin-right: 6px;
+  margin-right: 3px;
 }
 
 .App-body input {
-  margin-right: 12px;
+  width: 50px;
+  height: 10px;
+  font-size: 10px;
+  margin-right: 3px;
 }
 
 .App-body button {
-  padding: 2px 8px;
+  height: 10px;
+  width: 2px;
+  font-size: 5px;
+  display: inline-flex;
+  justify-content: center;
+  background-image: rgb(73, 73, 73);
 }
