@@ -47,3 +47,15 @@ body {
   font-size: 5px;
   font-style: italic;
 }
+
+.App-body label {
+  margin-right: 6px;
+}
+
+.App-body input {
+  margin-right: 12px;
+}
+
+.App-body button {
+  padding: 2px 8px;
+}
