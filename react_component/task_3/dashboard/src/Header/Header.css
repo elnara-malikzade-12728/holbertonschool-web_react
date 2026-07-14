@@ -1,0 +1,19 @@
+.App-header {
+  display: flex;
+  justify-content: left;
+  align-items: center;
+  border-bottom: 2px solid #e1003c;
+  padding: 0px;
+}
+
+.App-header img {
+  width: auto;
+  height: 90px;
+  margin-left: -40px;
+ }
+
+.App-header h1 {
+  color: #e13100;
+  font-size: 10px;
+  margin-left: -40px;
+}
