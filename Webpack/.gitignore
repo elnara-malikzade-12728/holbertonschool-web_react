@@ -1,0 +1,6 @@
+**/node_modules/
+**/dist/main.js
+**/dist/main.js.LICENSE.txt
+**/public/bundle.js
+**/public/bundle.js.LICENSE.txt
+**/public/
