@@ -1,3 +1,4 @@
+
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import Login from './Login';
@@ -16,20 +17,17 @@ describe('Login component tests', () => {
   });
 
   test('focuses the corresponding input when each label is clicked', async () => {
-    const user = userEvent.setup();
-
     render(<Login />);
 
-    const emailLabel = screen.getByText(/^email:$/i);
-    const passwordLabel = screen.getByText(/^password:$/i);
+    // Select elements by exact text matching
+    const emailInput = screen.getByLabelText('Email:');
+    const passwordInput = screen.getByLabelText('Password:');
 
-    const emailInput = screen.getByLabelText(/^email:$/i);
-    const passwordInput = screen.getByLabelText(/^password:$/i);
-
-    await user.click(emailLabel);
+    // Simulate clicking the labels (implicitly done by clicking the linked input/label relation)
+    await userEvent.click(screen.getByText('Email:'));
     expect(emailInput).toHaveFocus();
 
-    await user.click(passwordLabel);
+    await userEvent.click(screen.getByText('Password:'));
     expect(passwordInput).toHaveFocus();
   });
 });
