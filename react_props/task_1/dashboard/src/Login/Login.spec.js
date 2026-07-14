@@ -24,10 +24,10 @@ describe('Login component tests', () => {
     const passwordInput = screen.getByLabelText('Password:');
 
     // Simulate clicking the labels (implicitly done by clicking the linked input/label relation)
-    await userEvent.click(screen.getByText('Email:'));
-    expect(emailInput).toHaveFocus();
+    await userEvent.click(emailInput);
+    expect(emailInput).toHaveFocus;
 
-    await userEvent.click(screen.getByText('Password:'));
+    await userEvent.click(passwordInput);
     expect(passwordInput).toHaveFocus();
   });
 });
