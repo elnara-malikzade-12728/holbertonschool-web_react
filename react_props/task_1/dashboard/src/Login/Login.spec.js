@@ -20,12 +20,12 @@ describe('Login component tests', () => {
     render(<Login />);
 
     // 1. screen.getByLabelText directly finds the <input> linked to that label
-    const emailInput = screen.getByLabelText('Email:');
-    const passwordInput = screen.getByLabelText('Password:');
+    const emailInput = screen.getByLabelText(/email/i);
+    const passwordInput = screen.getByLabelText(/password/i);
     
     // 2. To get the actual <label> elements to click them, use getByText
-    const emailLabel = screen.getByText('Email:');
-    const passwordLabel = screen.getByText('Password:');
+    const emailLabel = screen.getByText(/email/i);
+    const passwordLabel = screen.getByText(/password/i);
     
     // 3. Simulate clicking the labels and assert the input receives focus
     await userEvent.click(emailLabel);
