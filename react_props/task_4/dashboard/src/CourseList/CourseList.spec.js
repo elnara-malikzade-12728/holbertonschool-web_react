@@ -1,5 +1,5 @@
 import { render, screen } from '@testing-library/react';
-import CourseList from './CourseList/CourseList';
+import CourseList from './CourseList';
 
 const courses = [
   { id: 1, name: 'ES6', credit: 60 },
