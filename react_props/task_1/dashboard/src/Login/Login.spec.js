@@ -19,15 +19,19 @@ describe('Login component tests', () => {
   test('focuses the corresponding input when each label is clicked', async () => {
     render(<Login />);
 
-    // Select elements by exact text matching
+    // 1. screen.getByLabelText directly finds the <input> linked to that label
     const emailInput = screen.getByLabelText('Email:');
     const passwordInput = screen.getByLabelText('Password:');
+    
+    // 2. To get the actual <label> elements to click them, use getByText
+    const emailLabel = screen.getByText('Email:');
+    const passwordLabel = screen.getByText('Password:');
+    
+    // 3. Simulate clicking the labels and assert the input receives focus
+    await userEvent.click(emailLabel);
+    expect(emailInput).toHaveFocus(); // Note: Don't forget the execution parentheses ()
 
-    // Simulate clicking the labels (implicitly done by clicking the linked input/label relation)
-    await userEvent.click(emailInput);
-    expect(emailInput).toHaveFocus;
-
-    await userEvent.click(passwordInput);
+    await userEvent.click(passwordLabel); // Fixed typo from 'passworLabel'
     expect(passwordInput).toHaveFocus();
   });
 });
