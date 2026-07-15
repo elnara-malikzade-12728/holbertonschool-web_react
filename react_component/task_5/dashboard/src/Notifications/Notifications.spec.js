@@ -45,4 +45,57 @@ describe('Notifications component', () => {
 
     logSpy.mockRestore();
   });
+
+  test('does not re-render when notifications length stays the same', () => {
+    const notifications = [
+      { id: 1, type: 'default', value: 'test 1' },
+      { id: 2, type: 'urgent', value: 'test 2' },
+    ];
+
+    const { rerender } = render(
+      <Notifications
+        displayDrawer
+        notifications={notifications}
+      />
+    );
+
+    const instance = document.querySelector('.notification-items');
+
+    rerender(
+      <Notifications
+        displayDrawer
+        notifications={[
+          { id: 3, type: 'default', value: 'another' },
+          { id: 4, type: 'urgent', value: 'again' },
+        ]}
+      />
+    );
+
+    expect(document.querySelector('.notification-items')).toBe(instance);
+  });
+  test('re-renders when notifications length changes', () => {
+    const notifications = [
+      { id: 1, type: 'default', value: 'test' },
+    ];
+
+    const { rerender } = render(
+      <Notifications
+        displayDrawer
+        notifications={notifications}
+      />
+    );
+
+    rerender(
+      <Notifications
+        displayDrawer
+        notifications={[
+          { id: 1, type: 'default', value: 'test' },
+          { id: 2, type: 'urgent', value: 'new' },
+        ]}
+      />
+    );
+
+    expect(document.querySelectorAll('li')).toHaveLength(2);
+  });
+
 });
