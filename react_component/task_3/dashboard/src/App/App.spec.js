@@ -1,4 +1,4 @@
-import { fireEvent, render } from '@testing-library/react';
+import { fireEvent, render, screen } from '@testing-library/react';
 import App from './App';
 
 describe('App component lifecycle tests', () => {
@@ -36,5 +36,21 @@ describe('App component lifecycle tests', () => {
     });
 
     expect(alertSpy).toHaveBeenCalledWith('Logging you out');
+  });
+
+  test('renders the school news section by default', () => {
+    render(<App />);
+
+    const newsHeading = screen.getByRole('heading', {
+      level: 2,
+      name: /news from the school/i,
+    });
+
+    const newsParagraph = screen.getByText(
+      /holberton school news goes here/i
+    );
+
+    expect(newsHeading).toBeInTheDocument();
+    expect(newsParagraph).toBeInTheDocument();
   });
 });
