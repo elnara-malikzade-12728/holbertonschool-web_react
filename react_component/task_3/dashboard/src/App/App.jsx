@@ -6,6 +6,8 @@ import Login from '../Login/Login';
 import Notifications from '../Notifications/Notifications';
 import CourseList from '../CourseList/CourseList';
 import { getLatestNotification } from '../utils/utils';
+import BodySection from '../BodySection/BodySection';
+import BodySectionWithMarginBottom from '../BodySection/BodySectionWithMarginBottom';
 
 class App extends Component {
   static defaultProps = {
@@ -74,11 +76,18 @@ class App extends Component {
           <Header />
 
           {isLoggedIn ? (
-            <CourseList courses={coursesList} />
+            <BodySectionWithMarginBottom title="Course list">
+              <CourseList courses={coursesList} />
+            </BodySectionWithMarginBottom>
           ) : (
-            <Login />
+            <BodySectionWithMarginBottom title="Log in to continue">
+              <Login />
+            </BodySectionWithMarginBottom>
           )}
 
+          <BodySection title="News from the School">
+            <p>Holberton School news goes here</p>
+          </BodySection>
           <Footer />
         </div>
       </Fragment>
