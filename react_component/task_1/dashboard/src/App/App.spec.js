@@ -19,7 +19,7 @@ describe('App component lifecycle tests', () => {
 
     render(<App logOut={logOut} />);
 
-    fireEvent.keyDown(window, {
+    fireEvent.keyDown(document, {
       key: 'h',
       ctrlKey: true,
     });
@@ -30,7 +30,7 @@ describe('App component lifecycle tests', () => {
   test('shows the logout alert when Control and h are pressed', () => {
     render(<App />);
 
-    fireEvent.keyDown(window, {
+    fireEvent.keyDown(document, {
       key: 'h',
       ctrlKey: true,
     });

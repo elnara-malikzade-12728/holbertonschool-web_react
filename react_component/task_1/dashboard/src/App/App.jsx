@@ -14,26 +14,23 @@ class App extends Component {
   };
 
   handleKeyDown = (event) => {
-    const isHKey = event.key === 'h'
-      || event.key === 'H'
-      || event.keyCode === 72
-      || event.which === 72;
-
-    if (event.ctrlKey && isHKey) {
+    if (
+      'key' in event
+      && event.ctrlKey
+      && event.key === 'h'
+    ) {
       window.alert('Logging you out');
       this.props.logOut();
     }
   };
 
   componentDidMount() {
-    window.addEventListener('keydown', this.handleKeyDown);
+    document.addEventListener('keydown', this.handleKeyDown);
   }
 
   componentWillUnmount() {
-    window.removeEventListener('keydown', this.handleKeyDown);
+    document.removeEventListener('keydown', this.handleKeyDown);
   }
-
-  
 
   render() {
     const notificationsList = [
