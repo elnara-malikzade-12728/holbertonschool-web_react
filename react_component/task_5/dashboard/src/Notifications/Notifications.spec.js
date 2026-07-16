@@ -98,4 +98,95 @@ describe('Notifications component', () => {
     expect(document.querySelectorAll('li')).toHaveLength(2);
   });
 
+
+
+  test('does not rerender when the notifications length stays the same', () => {
+    const firstNotifications = [
+      {
+        id: 1,
+        type: 'default',
+        value: 'First notification',
+      },
+    ];
+
+    const secondNotifications = [
+      {
+        id: 2,
+        type: 'urgent',
+        value: 'Replacement notification',
+      },
+    ];
+
+    const { rerender } = render(
+      <Notifications
+        displayDrawer
+        notifications={firstNotifications}
+      />,
+    );
+
+    expect(
+      screen.getByText('First notification'),
+    ).toBeInTheDocument();
+
+    rerender(
+      <Notifications
+        displayDrawer
+        notifications={secondNotifications}
+      />,
+    );
+
+    expect(
+      screen.getByText('First notification'),
+    ).toBeInTheDocument();
+
+    expect(
+      screen.queryByText('Replacement notification'),
+    ).not.toBeInTheDocument();
+  });
+
+  test('rerenders when the notifications length changes', () => {
+    const firstNotifications = [
+      {
+        id: 1,
+        type: 'default',
+        value: 'First notification',
+      },
+    ];
+
+    const updatedNotifications = [
+      {
+        id: 1,
+        type: 'default',
+        value: 'First notification',
+      },
+      {
+        id: 2,
+        type: 'urgent',
+        value: 'New notification',
+      },
+    ];
+
+    const { rerender } = render(
+      <Notifications
+        displayDrawer
+        notifications={firstNotifications}
+      />,
+    );
+
+    expect(
+      screen.queryByText('New notification'),
+    ).not.toBeInTheDocument();
+
+    rerender(
+      <Notifications
+        displayDrawer
+        notifications={updatedNotifications}
+      />,
+    );
+
+    expect(
+      screen.getByText('New notification'),
+    ).toBeInTheDocument();
+  });
+
 });
