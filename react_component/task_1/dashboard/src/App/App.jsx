@@ -13,6 +13,13 @@ class App extends Component {
     logOut: () => {},
   };
 
+  handleKeyDown = (event) => {
+    if (event.ctrlKey && event.key === 'h') {
+      alert('Logging you out');
+      this.props.logOut();
+    }
+  };
+
   componentDidMount() {
     window.addEventListener('keydown', this.handleKeyDown);
   }
@@ -21,16 +28,7 @@ class App extends Component {
     window.removeEventListener('keydown', this.handleKeyDown);
   }
 
-  handleKeyDown = (event) => {
-    if (
-      event.ctrlKey
-      && typeof event.key === 'string'
-      && event.key.toLowerCase() === 'h'
-    ) {
-      window.alert('Logging you out');
-      this.props.logOut();
-    }
-  };
+  
 
   render() {
     const notificationsList = [
