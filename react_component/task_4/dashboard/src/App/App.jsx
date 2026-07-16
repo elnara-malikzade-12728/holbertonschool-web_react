@@ -6,8 +6,6 @@ import Login from '../Login/Login';
 import Notifications from '../Notifications/Notifications';
 import CourseList from '../CourseList/CourseList';
 import { getLatestNotification } from '../utils/utils';
-import BodySection from '../BodySection/BodySection';
-import BodySectionWithMarginBottom from '../BodySection/BodySectionWithMarginBottom';
 
 class App extends Component {
   static defaultProps = {
@@ -15,24 +13,24 @@ class App extends Component {
     logOut: () => {},
   };
 
-  componentDidMount() {
-    window.addEventListener('keydown', this.handleKeyDown);
-  }
-
-  componentWillUnmount() {
-    window.removeEventListener('keydown', this.handleKeyDown);
-  }
-
   handleKeyDown = (event) => {
     if (
-      event.ctrlKey
-      && typeof event.key === 'string'
-      && event.key.toLowerCase() === 'h'
+      'key' in event
+      && event.ctrlKey
+      && event.key === 'h'
     ) {
       window.alert('Logging you out');
       this.props.logOut();
     }
   };
+
+  componentDidMount() {
+    document.addEventListener('keydown', this.handleKeyDown);
+  }
+
+  componentWillUnmount() {
+    document.removeEventListener('keydown', this.handleKeyDown);
+  }
 
   render() {
     const notificationsList = [
@@ -76,18 +74,10 @@ class App extends Component {
           <Header />
 
           {isLoggedIn ? (
-            <BodySectionWithMarginBottom>
-              <CourseList courses={coursesList} />
-            </BodySectionWithMarginBottom>
+            <CourseList courses={coursesList} />
           ) : (
-            <BodySectionWithMarginBottom>
-              <Login />
-            </BodySectionWithMarginBottom>
+            <Login />
           )}
-          
-          <BodySection title="News from the School">
-            <p>Holberton School News goes here</p>
-          </BodySection>
 
           <Footer />
         </div>
