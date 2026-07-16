@@ -14,7 +14,12 @@ class App extends Component {
   };
 
   handleKeyDown = (event) => {
-    if (event.ctrlKey && event.key === 'h') {
+    const isHKey = event.key === 'h'
+      || event.key === 'H'
+      || event.keyCode === 72
+      || event.which === 72;
+
+    if (event.ctrlKey && isHKey) {
       window.alert('Logging you out');
       this.props.logOut();
     }
