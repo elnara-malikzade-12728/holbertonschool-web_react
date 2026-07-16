@@ -37,4 +37,5 @@ describe('App component lifecycle tests', () => {
 
     expect(alertSpy).toHaveBeenCalledWith('Logging you out');
   });
+
 });
