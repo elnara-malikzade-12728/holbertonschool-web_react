@@ -5,7 +5,7 @@ function BodySection({ title = '', children = null }) {
         {title}
       </h2>
 
-      <div className="text-[10px] mb-[100px]">
+      <div className="text-[10px] mb-[50px]">
         {children}
       </div>
     </div>

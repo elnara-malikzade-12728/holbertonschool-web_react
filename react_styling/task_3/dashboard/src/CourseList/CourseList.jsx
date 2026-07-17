@@ -3,8 +3,8 @@ import WithLogging from '../HOC/WithLogging';
 
 function CourseList({ courses = [] }) {
   return (
-    <div className="mx-auto my-10 w-4/5 overflow-x-auto">
-      <table id="CourseList" className="w-full">
+    <div className="mx-auto my-10 w-4/5 overflow-x-auto flex items-center justify-center">
+      <table id="CourseList" className="w-full text-black">
         <thead>
           {courses.length === 0 ? (
             <CourseListRow
