@@ -25,7 +25,7 @@ class Notifications extends Component {
 
     return (
       <>
-        <div className="notification-title absolute right-4 top-2 text-[8px]">
+        <div className="notification-title absolute right-4 top-2 text-[5px]">
           Your Notifications
         </div>
 
@@ -36,12 +36,12 @@ class Notifications extends Component {
               absolute
               right-4
               top-5
-              w-1/4
+              w-1/5
               border
               border-dashed
               border-main
-              p-1.5
-              text-[3px]
+              p-0.5
+              text-[4px]
             "
           >
             {notifications.length > 0 && (
@@ -51,8 +51,8 @@ class Notifications extends Component {
                 onClick={this.handleClick}
                 className="
                   absolute
-                  right-2.5
-                  top-2.5
+                  right-0.5
+                  top-0.5
                   cursor-pointer
                   border-none
                   bg-transparent
@@ -62,7 +62,7 @@ class Notifications extends Component {
                 <img
                   src={closeButton}
                   alt="Close"
-                  className="h-2.5 w-2.5"
+                  className="h-1 w-1"
                 />
               </button>
             )}
@@ -73,7 +73,7 @@ class Notifications extends Component {
               <>
                 <p>Here is the list of notifications</p>
 
-                <ul>
+                <ul className="list-disc pl-2">
                   {notifications.map((notification) => (
                     <NotificationItem
                       key={notification.id}

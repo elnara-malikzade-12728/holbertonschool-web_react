@@ -7,8 +7,6 @@ function Header() {
         App-header
         flex
         items-center
-        border-b-2
-        border-main
         p-0
         
       "
@@ -16,9 +14,9 @@ function Header() {
       <img
         src={holbertonLogo}
         alt="holberton logo"
-        className="h-[90px] w-auto -ml-10"
+        className="h-[90px] w-auto -ml-8"
       />
-
+      
       <h1
         className="
           -ml-10
@@ -28,7 +26,7 @@ function Header() {
         "
       >
         School Dashboard
-      </h1>
+      </h1>      
     </header>
   );
 }
