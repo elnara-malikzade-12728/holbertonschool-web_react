@@ -1,46 +1,41 @@
-import CourseListRow from './CourseListRow';
-import WithLogging from '../HOC/WithLogging';
+function CourseListRow({
+  isHeader = false,
+  textFirstCell = '',
+  textSecondCell = null,
+}) {
+  if (isHeader && textSecondCell === null) {
+    return (
+      <tr className="bg-table-header opacity-[66%]">
+        <th className="border border-gray-400" colSpan="2">
+          {textFirstCell}
+        </th>
+      </tr>
+    );
+  }
 
-function CourseList({ courses = [] }) {
+  if (isHeader) {
+    return (
+      <tr className="bg-table-header opacity-[66%]">
+        <th className="border border-gray-400">
+          {textFirstCell}
+        </th>
+        <th className="border border-gray-400">
+          {textSecondCell}
+        </th>
+      </tr>
+    );
+  }
+
   return (
-    <div className="mx-auto my-10 w-4/5 overflow-x-auto">
-      <table id="CourseList" className="w-full">
-        <thead>
-          {courses.length === 0 ? (
-            <CourseListRow
-              isHeader
-              textFirstCell="No course available yet"
-            />
-          ) : (
-            <>
-              <CourseListRow
-                isHeader
-                textFirstCell="Available courses"
-              />
-
-              <CourseListRow
-                isHeader
-                textFirstCell="Course name"
-                textSecondCell="Credit"
-              />
-            </>
-          )}
-        </thead>
-
-        {courses.length > 0 && (
-          <tbody>
-            {courses.map((course) => (
-              <CourseListRow
-                key={course.id}
-                textFirstCell={course.name}
-                textSecondCell={course.credit}
-              />
-            ))}
-          </tbody>
-        )}
-      </table>
-    </div>
+    <tr className="bg-table-rows opacity-[45%]">
+      <td className="border border-gray-400 pl-2">
+        {textFirstCell}
+      </td>
+      <td className="border border-gray-400 pl-2">
+        {textSecondCell}
+      </td>
+    </tr>
   );
 }
 
-export default WithLogging(CourseList);
+export default CourseListRow;
