@@ -9,6 +9,7 @@ function Login() {
         border-t-2
         border-main
         p-4
+        text-[10px]
       "
     >
       <p className="mb-4 text-sm">

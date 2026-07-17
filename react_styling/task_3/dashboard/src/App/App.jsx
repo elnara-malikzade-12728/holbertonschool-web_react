@@ -62,7 +62,7 @@ class App extends Component {
 
     return (
       <Fragment>
-        <div className="App">
+        <div className="App flex min-h-screen flex-col">
           <div className="root-notifications">
             <Notifications
               notifications={notificationsList}

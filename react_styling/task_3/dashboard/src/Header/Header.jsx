@@ -10,6 +10,7 @@ function Header() {
         border-b-2
         border-main
         p-0
+        
       "
     >
       <img
@@ -22,7 +23,8 @@ function Header() {
         className="
           -ml-10
           text-main
-          text-[10px]
+          text-[20px]
+          font-bold
         "
       >
         School Dashboard

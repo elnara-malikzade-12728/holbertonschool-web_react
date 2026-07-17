@@ -25,7 +25,7 @@ class Notifications extends Component {
 
     return (
       <>
-        <div className="notification-title absolute right-4 top-2">
+        <div className="notification-title absolute right-4 top-2 text-[8px]">
           Your Notifications
         </div>
 
@@ -35,12 +35,13 @@ class Notifications extends Component {
               notification-items
               absolute
               right-4
-              top-10
+              top-5
               w-1/4
               border
               border-dashed
               border-main
               p-1.5
+              text-[3px]
             "
           >
             {notifications.length > 0 && (
@@ -55,6 +56,7 @@ class Notifications extends Component {
                   cursor-pointer
                   border-none
                   bg-transparent
+                  
                 "
               >
                 <img
