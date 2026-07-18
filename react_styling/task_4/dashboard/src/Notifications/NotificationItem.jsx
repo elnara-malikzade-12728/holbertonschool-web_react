@@ -23,13 +23,14 @@ class NotificationItem extends PureComponent {
 
     const itemClass = `
       ${colorClass}
+      block
       border-b
-      border-gray-400
+      border-gray-600
       p-3
-      text-sm
+      text-[15px]
       leading-6
-      last:border-b-0
       min-[520px]:text-base
+      min-[912px]:list-item
       min-[912px]:border-0
       min-[912px]:p-0
       min-[912px]:text-[8px]

@@ -17,8 +17,11 @@ class Notifications extends Component {
   };
 
   shouldComponentUpdate(nextProps) {
-    return nextProps.notifications.length
-      !== this.props.notifications.length;
+    return (
+      nextProps.notifications.length
+        !== this.props.notifications.length
+      || nextProps.displayDrawer !== this.props.displayDrawer
+    );
   }
 
   render() {
@@ -38,11 +41,19 @@ class Notifications extends Component {
         {!displayDrawer && (
           <p
             className="
+              notification-title
               absolute
-              right-0
-              top-0
+              right-4
+              top-2
+              whitespace-nowrap
               text-right
-              text-sm
+              text-[8px]
+
+              min-[520px]:text-[10px]
+
+              min-[912px]:right-0
+              min-[912px]:top-0
+              min-[912px]:text-[px]
             "
           >
             Your Notifications
@@ -52,6 +63,7 @@ class Notifications extends Component {
         {displayDrawer && (
           <div
             className="
+              notification-items
               fixed
               inset-0
               z-50
@@ -63,6 +75,9 @@ class Notifications extends Component {
               border-main
               bg-white
               p-3
+              text-sm
+
+              min-[520px]:text-base
 
               min-[912px]:absolute
               min-[912px]:inset-auto
@@ -70,47 +85,99 @@ class Notifications extends Component {
               min-[912px]:top-6
               min-[912px]:h-auto
               min-[912px]:w-full
+              min-[912px]:overflow-visible
               min-[912px]:p-[6px]
+              min-[912px]:text-[8px]
             "
           >
-            <button
-              type="button"
-              aria-label="Close"
-              className="
-                absolute
-                right-3
-                top-3
-                text-2xl
-                leading-none
-              "
-            >
-              ×
-            </button>
+            {notifications.length > 0 && (
+              <button
+                type="button"
+                aria-label="Close"
+                onClick={this.handleClick}
+                className="
+                  absolute
+                  right-3
+                  top-3
+                  flex
+                  h-7
+                  w-7
+                  cursor-pointer
+                  items-center
+                  justify-center
+                  border-none
+                  bg-transparent
+
+                  min-[912px]:right-1
+                  min-[912px]:top-1
+                  min-[912px]:h-4
+                  min-[912px]:w-4
+                "
+              >
+                <img
+                  src={closeButton}
+                  alt="Close"
+                  className="
+                    h-4
+                    w-4
+
+                    min-[912px]:h-2
+                    min-[912px]:w-2
+                  "
+                />
+              </button>
+            )}
 
             {notifications.length === 0 ? (
-              <p className="pr-8 text-sm">
+              <p
+                className="
+                  pr-8
+                  text-sm
+                  min-[912px]:text-[8px]
+                "
+              >
                 No new notification for now
               </p>
             ) : (
-              <ul
-                className="
-                  list-none
-                  p-0
-                  min-[912px]:list-disc
-                  min-[912px]:pl-4
-                "
-              >
-                {notifications.map((notification) => (
-                  <NotificationItem
-                    key={notification.id}
-                    id={notification.id}
-                    type={notification.type}
-                    value={notification.value}
-                    html={notification.html}
-                    markAsRead={this.markAsRead}
-                  />
-                ))}
-              </ul>
+              <>
+                <p
+                  className="
+                    mb-4
+                    pr-8
+                    text-[15px]
+
+                    min-[520px]:text-base
+
+                    min-[912px]:mb-1
+                    min-[912px]:text-[8px]
+                  "
+                >
+                  Here is the list of notifications
+                </p>
+
+                <ul
+                  className="
+                    list-none
+                    space-y-1
+                    p-0
+
+                    min-[912px]:list-disc
+                    min-[912px]:space-y-0
+                    min-[912px]:pl-4
+                  "
+                >
+                  {notifications.map((notification) => (
+                    <NotificationItem
+                      key={notification.id}
+                      id={notification.id}
+                      type={notification.type}
+                      value={notification.value}
+                      html={notification.html}
+                      markAsRead={this.markAsRead}
+                    />
+                  ))}
+                </ul>
+              </>
             )}
           </div>
         )}
@@ -118,4 +185,5 @@ class Notifications extends Component {
     );
   }
 }
+
 export default Notifications;
