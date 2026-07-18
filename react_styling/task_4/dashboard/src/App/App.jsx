@@ -63,6 +63,7 @@ class App extends Component {
     ];
 
     const { isLoggedIn } = this.props;
+    const displayDrawer = true;
 
     return (
       <Fragment>
@@ -81,7 +82,7 @@ class App extends Component {
           <div className="root-notifications">
             <Notifications
               notifications={notificationsList}
-              displayDrawer= {true}
+              displayDrawer= {displayDrawer}
             />
           </div>
 
