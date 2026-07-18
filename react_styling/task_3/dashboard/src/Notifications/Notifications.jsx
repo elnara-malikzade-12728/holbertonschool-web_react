@@ -36,7 +36,7 @@ class Notifications extends Component {
               absolute
               right-4
               top-5
-              w-1/5
+              w-1/7
               border
               border-dashed
               border-main

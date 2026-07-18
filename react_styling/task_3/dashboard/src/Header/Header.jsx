@@ -14,7 +14,7 @@ function Header() {
       <img
         src={holbertonLogo}
         alt="holberton logo"
-        className="h-[90px] w-auto -ml-8"
+        className="h-[90px] w-auto -ml-3"
       />
       
       <h1
