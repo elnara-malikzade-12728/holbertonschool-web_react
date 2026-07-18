@@ -64,7 +64,7 @@ class App extends Component {
 
     return (
       <Fragment>
-        <div className="App flex min-h-screen flex-col px-5">
+        <div className="App flex min-h-screen w-full flex-col px-5">
           <div className="root-notifications">
             <Notifications
               notifications={notificationsList}
@@ -74,19 +74,20 @@ class App extends Component {
 
           <Header />
 
-          {isLoggedIn ? (
-            <BodySectionWithMarginBottom title="Course list">
-              <CourseList courses={coursesList} />
-            </BodySectionWithMarginBottom>
-          ) : (
-            <BodySectionWithMarginBottom title="Log in to continue">
-              <Login />
-            </BodySectionWithMarginBottom>
-          )}
-
-          <BodySection title="News from the School">
-            <p>Holberton School news goes here</p>
-          </BodySection>
+          <main className="flex flex-1 flex-col">
+            {isLoggedIn ? (
+              <BodySectionWithMarginBottom title="Course list">
+                <CourseList courses={coursesList} />
+              </BodySectionWithMarginBottom>
+            ) : (
+              <BodySectionWithMarginBottom title="Log in to continue">
+                <Login />
+              </BodySectionWithMarginBottom>
+            )}
+            <BodySection title="News from the School">
+              <p>Holberton School news goes here</p>
+            </BodySection>
+          </main>
 
           <Footer />
         </div>
