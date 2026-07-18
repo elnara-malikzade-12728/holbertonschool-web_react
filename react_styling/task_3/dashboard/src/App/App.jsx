@@ -74,7 +74,7 @@ class App extends Component {
 
           <Header />
 
-          <main className="flex flex-1 flex-col">
+          <div className="flex flex-1 flex-col">
             {isLoggedIn ? (
               <BodySectionWithMarginBottom title="Course list">
                 <CourseList courses={coursesList} />
@@ -87,7 +87,7 @@ class App extends Component {
             <BodySection title="News from the School">
               <p>Holberton School news goes here</p>
             </BodySection>
-          </main>
+          </div>
 
           <Footer />
         </div>
