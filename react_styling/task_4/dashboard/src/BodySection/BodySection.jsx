@@ -3,7 +3,7 @@ function BodySection({ title = '', children = null }) {
     <section
       className="
         bodySection
-        px-0
+        px-8
         py-2
         min-[520px]:px-2
         min-[912px]:px-9
@@ -11,8 +11,9 @@ function BodySection({ title = '', children = null }) {
     >
       <h2
         className="
-          mb-2
-          text-sm
+          mb-0
+          mt-[20px]
+          text-[17px]
           font-bold
           min-[520px]:text-base
           min-[912px]:text-[8px]

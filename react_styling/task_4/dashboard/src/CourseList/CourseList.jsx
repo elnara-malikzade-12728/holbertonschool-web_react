@@ -16,7 +16,7 @@ function CourseList({ courses = [] }) {
         className="
           w-[75%]
           border-collapse
-          text-[12px]
+          text-[10px]
           text-black
           min-[520px]:w-[70%]
           min-[520px]:text-xs

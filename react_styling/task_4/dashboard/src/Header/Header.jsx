@@ -17,7 +17,7 @@ function Header() {
         src={holbertonLogo}
         alt="holberton logo"
         className="
-          -mt-20
+          -mt-10
           h-100
           w-100
           object-contain
@@ -38,7 +38,7 @@ function Header() {
           min-[520px]:text-3xl
           min-[912px]:ml-5
           min-[912px]:mt-0
-          min-[912px]:text-4xl
+          min-[912px]:text-3xl
         "
       >
         School Dashboard

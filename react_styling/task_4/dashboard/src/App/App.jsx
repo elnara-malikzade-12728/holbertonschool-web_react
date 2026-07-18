@@ -81,7 +81,7 @@ class App extends Component {
           <div className="root-notifications">
             <Notifications
               notifications={notificationsList}
-              displayDrawer={true}
+              displayDrawer={false}
             />
           </div>
 
@@ -102,7 +102,7 @@ class App extends Component {
               <p
                 className="
                   break-words
-                  text-[11px]
+                  text-[15px]
                   leading-relaxed
                   min-[520px]:text-xs
                   min-[912px]:text-[8px]

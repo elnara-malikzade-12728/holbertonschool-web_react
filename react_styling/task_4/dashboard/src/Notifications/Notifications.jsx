@@ -42,11 +42,11 @@ class Notifications extends Component {
             className="
               notification-title
               absolute
-              right-4
-              top-2
+              right-8
+              top-8
               whitespace-nowrap
               text-right
-              text-[8px]
+              text-[13px]
               min-[520px]:text-[10px]
               min-[912px]:right-0
               min-[912px]:top-0

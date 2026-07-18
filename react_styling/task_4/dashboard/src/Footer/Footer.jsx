@@ -7,12 +7,12 @@ function Footer() {
         App-footer
         mx-3
         mt-auto
-        border-t-2
+        border-t-4
         border-main
         px-2
         py-2
         text-center
-        text-[9px]
+        text-[15px]
         italic
         min-[520px]:mx-5
         min-[520px]:text-[10px]
