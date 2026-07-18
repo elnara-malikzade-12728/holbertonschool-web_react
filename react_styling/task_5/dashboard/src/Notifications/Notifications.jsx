@@ -19,13 +19,15 @@ class Notifications extends Component {
   shouldComponentUpdate(nextProps) {
     return (
       nextProps.notifications.length
-        !== this.props.notifications.length
-      || nextProps.displayDrawer !== this.props.displayDrawer
+      !== this.props.notifications.length
     );
   }
 
   render() {
     const { notifications, displayDrawer } = this.props;
+
+    const shouldBounce =
+      notifications.length > 0 && !displayDrawer;
 
     return (
       <div
@@ -40,7 +42,7 @@ class Notifications extends Component {
       >
         {!displayDrawer && (
           <p
-            className="
+            className={`
               notification-title
               absolute
               right-4
@@ -48,13 +50,12 @@ class Notifications extends Component {
               whitespace-nowrap
               text-right
               text-[8px]
-
               min-[520px]:text-[10px]
-
               min-[912px]:right-0
               min-[912px]:top-0
-              min-[912px]:text-[px]
-            "
+              min-[912px]:text-[8px]
+              ${shouldBounce ? 'animate-bounce' : ''}
+            `}
           >
             Your Notifications
           </p>
@@ -120,7 +121,6 @@ class Notifications extends Component {
                   className="
                     h-4
                     w-4
-
                     min-[912px]:h-2
                     min-[912px]:w-2
                   "
@@ -145,9 +145,7 @@ class Notifications extends Component {
                     mb-4
                     pr-8
                     text-[15px]
-
                     min-[520px]:text-base
-
                     min-[912px]:mb-1
                     min-[912px]:text-[8px]
                   "
@@ -160,7 +158,6 @@ class Notifications extends Component {
                     list-none
                     space-y-1
                     p-0
-
                     min-[912px]:list-disc
                     min-[912px]:space-y-0
                     min-[912px]:pl-4
