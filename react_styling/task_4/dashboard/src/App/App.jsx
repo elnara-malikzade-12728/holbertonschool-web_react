@@ -81,7 +81,7 @@ class App extends Component {
           <div className="root-notifications">
             <Notifications
               notifications={notificationsList}
-              displayDrawer={false}
+              displayDrawer={true}
             />
           </div>
 
