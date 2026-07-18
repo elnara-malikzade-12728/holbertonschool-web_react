@@ -53,7 +53,7 @@ class Notifications extends Component {
               min-[912px]:text-[8px]
             "
           >
-            Your Notifications
+            Your notifications
           </p>
         )}
 
@@ -64,9 +64,7 @@ class Notifications extends Component {
               fixed
               inset-0
               z-50
-              h-screen
-              w-screen
-              overflow-y-auto
+              overflow-hidden
               border
               border-dashed
               border-main
