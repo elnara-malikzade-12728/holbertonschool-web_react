@@ -19,7 +19,8 @@ class Notifications extends Component {
   shouldComponentUpdate(nextProps) {
     return (
       nextProps.notifications.length
-      !== this.props.notifications.length
+        !== this.props.notifications.length
+      || nextProps.displayDrawer !== this.props.displayDrawer
     );
   }
 
@@ -47,10 +48,12 @@ class Notifications extends Component {
               whitespace-nowrap
               text-right
               text-[8px]
+
               min-[520px]:text-[10px]
+
               min-[912px]:right-0
               min-[912px]:top-0
-              min-[912px]:text-[8px]
+              min-[912px]:text-[px]
             "
           >
             Your Notifications
@@ -73,7 +76,9 @@ class Notifications extends Component {
               bg-white
               p-3
               text-sm
+
               min-[520px]:text-base
+
               min-[912px]:absolute
               min-[912px]:inset-auto
               min-[912px]:right-0
@@ -102,6 +107,7 @@ class Notifications extends Component {
                   justify-center
                   border-none
                   bg-transparent
+
                   min-[912px]:right-1
                   min-[912px]:top-1
                   min-[912px]:h-4
@@ -114,6 +120,7 @@ class Notifications extends Component {
                   className="
                     h-4
                     w-4
+
                     min-[912px]:h-2
                     min-[912px]:w-2
                   "
@@ -138,7 +145,9 @@ class Notifications extends Component {
                     mb-4
                     pr-8
                     text-[15px]
+
                     min-[520px]:text-base
+
                     min-[912px]:mb-1
                     min-[912px]:text-[8px]
                   "
@@ -151,6 +160,7 @@ class Notifications extends Component {
                     list-none
                     space-y-1
                     p-0
+
                     min-[912px]:list-disc
                     min-[912px]:space-y-0
                     min-[912px]:pl-4
