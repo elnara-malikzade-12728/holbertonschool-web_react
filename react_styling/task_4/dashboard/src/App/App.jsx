@@ -54,6 +54,8 @@ class App extends Component {
       },
     ];
 
+    // const notificationsList = [];
+
     const coursesList = [
       { id: 1, name: 'ES6', credit: 60 },
       { id: 2, name: 'Webpack', credit: 20 },
@@ -64,29 +66,56 @@ class App extends Component {
 
     return (
       <Fragment>
-        <div className="App flex min-h-screen flex-col">
+        <div
+          className="
+            App
+            flex
+            min-h-screen
+            w-full
+            flex-col
+            px-3
+            min-[520px]:px-5
+            min-[912px]:px-0
+          "
+        >
           <div className="root-notifications">
             <Notifications
               notifications={notificationsList}
-              displayDrawer
+              displayDrawer={false}
             />
           </div>
 
           <Header />
 
-          {isLoggedIn ? (
-            <BodySectionWithMarginBottom title="Course list">
-              <CourseList courses={coursesList} />
-            </BodySectionWithMarginBottom>
-          ) : (
-            <BodySectionWithMarginBottom title="Log in to continue">
-              <Login />
-            </BodySectionWithMarginBottom>
-          )}
+          <main className="flex flex-1 flex-col">
+            {isLoggedIn ? (
+              <BodySectionWithMarginBottom title="Course list">
+                <CourseList courses={coursesList} />
+              </BodySectionWithMarginBottom>
+            ) : (
+              <BodySectionWithMarginBottom title="Log in to continue">
+                <Login />
+              </BodySectionWithMarginBottom>
+            )}
 
-          <BodySection title="News from the School">
-            <p>ipsum Lorem ipsum dolor sit amet consectetur, adipisicing elit. Similique, asperiores architecto blanditiis fuga doloribus sit illum aliquid ea distinctio minus accusantium, impedit quo voluptatibus ut magni dicta. Recusandae, quia dicta?</p>
-          </BodySection>
+            <BodySection title="News from the School">
+              <p
+                className="
+                  break-words
+                  text-[11px]
+                  leading-relaxed
+                  min-[520px]:text-xs
+                  min-[912px]:text-[8px]
+                "
+              >
+                ipsum Lorem ipsum dolor sit amet consectetur, adipisicing
+                elit. Similique, asperiores architecto blanditiis fuga
+                doloribus sit illum aliquid ea distinctio minus accusantium,
+                impedit quo voluptatibus ut magni dicta. Recusandae, quia
+                dicta?
+              </p>
+            </BodySection>
+          </main>
 
           <Footer />
         </div>

@@ -15,35 +15,32 @@ class NotificationItem extends PureComponent {
   };
 
   render() {
-    const {
-      type,
-      html,
-      value,
-    } = this.props;
+    const { type, html, value } = this.props;
 
     const colorClass = type === 'urgent'
       ? 'text-urgent-notification-item'
       : 'text-default-notification-item';
 
-    const itemClasses = `
+    const itemClass = `
       ${colorClass}
       border-b
-      border-gray-300
-      px-3
-      py-3
+      border-gray-400
+      p-3
       text-sm
+      leading-6
+      last:border-b-0
       min-[520px]:text-base
       min-[912px]:border-0
-      min-[912px]:px-0
-      min-[912px]:py-0
-      min-[912px]:text-[4px]
+      min-[912px]:p-0
+      min-[912px]:text-[8px]
+      min-[912px]:leading-normal
     `;
 
     if (html) {
       return (
         <li
           data-notification-type={type}
-          className={itemClasses}
+          className={itemClass}
           onClick={this.handleClick}
           dangerouslySetInnerHTML={html}
         />
@@ -53,7 +50,7 @@ class NotificationItem extends PureComponent {
     return (
       <li
         data-notification-type={type}
-        className={itemClasses}
+        className={itemClass}
         onClick={this.handleClick}
       >
         {value}

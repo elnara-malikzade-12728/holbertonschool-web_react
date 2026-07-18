@@ -4,29 +4,45 @@ function Header() {
   return (
     <header
       className="
-        App-header
         flex
+        flex-col
         items-center
-        p-0
-        
+        justify-center
+        min-[912px]:flex-row
+        min-[912px]:justify-start
+        min-[912px]:px-5
       "
     >
       <img
         src={holbertonLogo}
         alt="holberton logo"
-        className="h-[90px] w-auto -ml-8"
+        className="
+          -mt-20
+          h-100
+          w-100
+          object-contain
+          min-[520px]:h-80
+          min-[520px]:w-80
+          min-[912px]:h-40
+          min-[912px]:w-40
+        "
       />
-      
+
       <h1
         className="
-          -ml-10
-          text-main
-          text-[20px]
+          -mt-20
+          text-center
+          text-3xl
           font-bold
+          text-main
+          min-[520px]:text-3xl
+          min-[912px]:ml-5
+          min-[912px]:mt-0
+          min-[912px]:text-4xl
         "
       >
         School Dashboard
-      </h1>      
+      </h1>
     </header>
   );
 }

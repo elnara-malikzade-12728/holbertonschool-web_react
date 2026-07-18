@@ -4,39 +4,136 @@ function Login() {
   return (
     <div
       className="
-        App-body flex-1 px-[10px] py-[10px] text-[5px] border-t-2 border-main pt-[10px]
+        App-body
+        flex-1
+        border-t-2
+        border-main
+        px-[10px]
+        py-[10px]
+        text-[10px]
+        min-[912px]:text-[8px]
       "
     >
-      <p className="mb-4 text-[10px]">
+      <p
+        className="
+          mb-4
+          text-[10px]
+          min-[520px]:mb-3
+          min-[912px]:mb-2
+          min-[912px]:text-[8px]
+        "
+      >
         Login to access the full dashboard
       </p>
 
-      <div className="flex items-center gap-1 flex-wrap">
-        <label htmlFor="email">Email:</label>
+      <form
+        className="
+          flex
+          w-full
+          flex-col
+          items-start
+          gap-3
 
-        <input
-          type="email"
-          id="email"
-          name="email"
-          className="h-4 w-26 border border-gray-400 px-2 text-sm rounded"
-        />
+          min-[520px]:flex-row
+          min-[520px]:flex-wrap
+          min-[520px]:items-center
+          min-[520px]:gap-2
+        "
+      >
+        <label
+          htmlFor="email"
+          className="
+            flex
+            w-full
+            flex-col
+            gap-1
 
-        <label htmlFor="password">Password:</label>
+            min-[520px]:w-auto
+            min-[520px]:flex-row
+            min-[520px]:items-center
+          "
+        >
+          Email:
 
-        <input
-          type="password"
-          id="password"
-          name="password"
-          className="h-4 w-26 border border-gray-400 px-2 text-sm rounded"
-        />
+          <input
+            type="email"
+            id="email"
+            name="email"
+            className="
+              h-7
+              w-40
+              rounded
+              border
+              border-gray-400
+              px-2
+              text-[10px]
+
+              min-[520px]:ml-1
+              min-[912px]:h-4
+              min-[912px]:w-28
+              min-[912px]:text-[8px]
+            "
+          />
+        </label>
+
+        <label
+          htmlFor="password"
+          className="
+            flex
+            w-full
+            flex-col
+            gap-1
+
+            min-[520px]:w-auto
+            min-[520px]:flex-row
+            min-[520px]:items-center
+          "
+        >
+          Password:
+
+          <input
+            type="password"
+            id="password"
+            name="password"
+            className="
+              h-7
+              w-40
+              rounded
+              border
+              border-gray-400
+              px-2
+              text-[10px]
+
+              min-[520px]:ml-1
+              min-[912px]:h-4
+              min-[912px]:w-28
+              min-[912px]:text-[8px]
+            "
+          />
+        </label>
 
         <button
-          type="button"
-          className="rounded border border-gray-400 px-3 py-1 text-[10px] h-4 w-4 flex items-center justify-center"
+          type="submit"
+          className="
+            flex
+            h-7
+            w-auto
+            items-center
+            justify-center
+            rounded
+            border
+            border-gray-400
+            px-3
+            text-[10px]
+
+            min-[912px]:h-4
+            min-[912px]:px-2
+            min-[912px]:text-[8px]
+          "
         >
           OK
         </button>
-      </div>
+      </form>
     </div>
   );
 }
