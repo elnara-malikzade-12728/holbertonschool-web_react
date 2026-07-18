@@ -40,26 +40,24 @@ class Notifications extends Component {
           min-[912px]:w-1/4
         "
       >
-        {!displayDrawer && (
-          <p
-            className={`
-              notification-title
-              absolute
-              right-4
-              top-2
-              whitespace-nowrap
-              text-right
-              text-[8px]
-              min-[520px]:text-[10px]
-              min-[912px]:right-0
-              min-[912px]:top-0
-              min-[912px]:text-[8px]
-              ${shouldBounce ? 'animate-bounce' : ''}
-            `}
-          >
-            Your Notifications
-          </p>
-        )}
+        <p
+          className={`
+            notification-title
+            absolute
+            right-4
+            top-2
+            whitespace-nowrap
+            text-right
+            text-[8px]
+            min-[520px]:text-[10px]
+            min-[912px]:right-0
+            min-[912px]:top-0
+            min-[912px]:text-[8px]
+            ${shouldBounce ? 'animate-bounce' : ''}
+          `}
+        >
+          Your Notifications
+        </p>
 
         {displayDrawer && (
           <div
@@ -77,9 +75,7 @@ class Notifications extends Component {
               bg-white
               p-3
               text-sm
-
               min-[520px]:text-base
-
               min-[912px]:absolute
               min-[912px]:inset-auto
               min-[912px]:right-0
@@ -108,7 +104,6 @@ class Notifications extends Component {
                   justify-center
                   border-none
                   bg-transparent
-
                   min-[912px]:right-1
                   min-[912px]:top-1
                   min-[912px]:h-4
