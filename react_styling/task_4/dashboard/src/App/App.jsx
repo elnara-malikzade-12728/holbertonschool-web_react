@@ -63,6 +63,7 @@ class App extends Component {
     ];
 
     const { isLoggedIn } = this.props;
+    const displayDrawer = false;
 
     return (
       <Fragment>
@@ -73,15 +74,15 @@ class App extends Component {
             min-h-screen
             w-full
             flex-col
-            px-5
-            min-[520px]:px-6
-            min-[912px]:px-8
+            px-3
+            min-[520px]:px-5
+            min-[912px]:px-0
           "
         >
           <div className="root-notifications">
             <Notifications
               notifications={notificationsList}
-              displayDrawer={false}
+              displayDrawer= {displayDrawer}
             />
           </div>
 
@@ -102,10 +103,10 @@ class App extends Component {
               <p
                 className="
                   break-words
-                  text-[13px]
+                  text-[15px]
                   leading-relaxed
-                  min-[520px]:text-[12px]
-                  min-[912px]:text-[10px]
+                  min-[520px]:text-xs
+                  min-[912px]:text-[8px]
                 "
               >
                 ipsum Lorem ipsum dolor sit amet consectetur, adipisicing

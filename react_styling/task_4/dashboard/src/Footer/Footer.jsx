@@ -5,15 +5,19 @@ function Footer() {
     <footer
       className="
         App-footer
+        mx-3
         mt-auto
-        border-t-2
+        border-t-4
         border-main
+        px-2
         py-2
         text-center
-        text-[13px]
+        text-[15px]
         italic
-        min-[520px]:text-[12px]
-        min-[912px]:text-[10px]
+        min-[520px]:mx-5
+        min-[520px]:text-[10px]
+        min-[912px]:mx-9
+        min-[912px]:text-[7px]
       "
     >
       <p>

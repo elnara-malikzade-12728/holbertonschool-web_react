@@ -5,11 +5,11 @@ function Header() {
     <header
       className="
         flex
+        flex-col
         items-center
-        justify-start
-        px-2
-        py-3
-        min-[520px]:px-4
+        justify-center
+        min-[912px]:flex-row
+        min-[912px]:justify-start
         min-[912px]:px-5
       "
     >
@@ -17,30 +17,31 @@ function Header() {
         src={holbertonLogo}
         alt="holberton logo"
         className="
-          h-24
-          w-24
-          shrink-0
+          -mt-10
+          h-100
+          w-100
           object-contain
-          min-[520px]:h-28
-          min-[520px]:w-28
-          min-[912px]:h-32
-          min-[912px]:w-32
+          min-[520px]:h-80
+          min-[520px]:w-80
+          min-[912px]:h-40
+          min-[912px]:w-40
         "
       />
 
       <h1
         className="
-          ml-3
-          text-[24px]
+          -mt-20
+          text-center
+          text-3xl
           font-bold
           text-main
-          min-[520px]:ml-4
-          min-[520px]:text-[26px]
+          min-[520px]:text-3xl
           min-[912px]:ml-5
-          min-[912px]:text-[28px]
+          min-[912px]:mt-0
+          min-[912px]:text-3xl
         "
       >
-        School dashboard
+        School Dashboard
       </h1>
     </header>
   );

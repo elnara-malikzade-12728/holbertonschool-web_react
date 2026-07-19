@@ -7,15 +7,14 @@ function CourseListRow({
     border
     border-gray-400
     px-2
-    py-0.5
-    text-black
+    py-0
     min-[912px]:py-0
   `;
 
   if (isHeader && textSecondCell === null) {
     return (
-      <tr className="bg-table-header/66">
-        <th className={cellClass} colSpan="2">
+      <tr className="bg-table-header/66 text-[12px]">
+        <th className={cellClass} text-black colSpan="2">
           {textFirstCell}
         </th>
       </tr>
@@ -24,17 +23,27 @@ function CourseListRow({
 
   if (isHeader) {
     return (
-      <tr className="bg-table-header/66">
-        <th className={cellClass}>{textFirstCell}</th>
-        <th className={cellClass}>{textSecondCell}</th>
+      <tr className="bg-table-header/66 text-[12px]">
+        <th className={`${cellClass} text-black`}>
+          {textFirstCell}
+        </th>
+
+        <th className={`${cellClass} text-black`}>
+          {textSecondCell}
+        </th>
       </tr>
     );
   }
 
   return (
     <tr className="bg-table-rows/45">
-      <td className={cellClass}>{textFirstCell}</td>
-      <td className={cellClass}>{textSecondCell}</td>
+      <td className={`${cellClass} text-black pl-2`}>
+        {textFirstCell}
+      </td>
+
+      <td className={`${cellClass}  text-black pl-2`}>
+        {textSecondCell}
+      </td>
     </tr>
   );
 }
