@@ -3,25 +3,18 @@ import WithLogging from '../HOC/WithLogging';
 
 function CourseList({ courses = [] }) {
   return (
-    <div
-      className="
-        my-20
-        flex
-        justify-center
-        min-[912px]:my-10
-      "
-    >
+    <div className="my-12 flex justify-center min-[520px]:my-14 min-[912px]:my-10">
       <table
         id="CourseList"
         className="
-          w-[75%]
+          w-[72%]
           border-collapse
-          text-[10px]
+          text-[12px]
           text-black
-          min-[520px]:w-[70%]
-          min-[520px]:text-xs
+          min-[520px]:w-[68%]
+          min-[520px]:text-[11px]
           min-[912px]:w-[60%]
-          min-[912px]:text-[8px]
+          min-[912px]:text-[9px]
         "
       >
         <thead>
@@ -36,7 +29,6 @@ function CourseList({ courses = [] }) {
                 isHeader
                 textFirstCell="Available courses"
               />
-
               <CourseListRow
                 isHeader
                 textFirstCell="Course name"

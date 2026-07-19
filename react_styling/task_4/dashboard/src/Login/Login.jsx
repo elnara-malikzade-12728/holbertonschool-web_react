@@ -5,26 +5,18 @@ function Login() {
     <div
       className="
         App-body
-        flex-1
+        mt-4
         border-t-2
         border-main
-        px-[10px]
-        py-[10px]
-        text-[10px]
-        min-[912px]:text-[8px]
+        px-2
+        py-6
+        text-[13px]
+        min-[520px]:px-3
+        min-[520px]:text-[12px]
+        min-[912px]:text-[10px]
       "
     >
-      <p
-        className="
-          mb-4
-          text-[10px]
-          min-[520px]:mb-3
-          min-[912px]:mb-2
-          min-[912px]:text-[8px]
-        "
-      >
-        Login to access the full dashboard
-      </p>
+      <p className="mb-6">Login to access the full dashboard</p>
 
       <form
         className="
@@ -33,81 +25,51 @@ function Login() {
           flex-col
           items-start
           gap-3
-
-          min-[520px]:flex-row
-          min-[520px]:flex-wrap
-          min-[520px]:items-center
           min-[520px]:gap-2
+          min-[912px]:flex-row
+          min-[912px]:items-center
         "
       >
-        <label
-          htmlFor="email"
-          className="
-            flex
-            w-full
-            flex-col
-            gap-1
-
-            min-[520px]:w-auto
-            min-[520px]:flex-row
-            min-[520px]:items-center
-          "
-        >
+        <label htmlFor="email" className="flex flex-col gap-1 min-[912px]:flex-row min-[912px]:items-center">
           Email:
-
           <input
             type="email"
             id="email"
             name="email"
             className="
-              h-7
-              w-40
-              rounded
+              h-6
+              w-32
+              rounded-sm
               border
               border-gray-400
-              px-2
-              text-[10px]
-
-              min-[520px]:ml-1
-              min-[912px]:h-4
+              px-1
+              text-[12px]
+              min-[912px]:ml-1
+              min-[912px]:h-5
               min-[912px]:w-28
-              min-[912px]:text-[8px]
+              min-[912px]:text-[10px]
             "
           />
         </label>
 
-        <label
-          htmlFor="password"
-          className="
-            flex
-            w-full
-            flex-col
-            gap-1
-
-            min-[520px]:w-auto
-            min-[520px]:flex-row
-            min-[520px]:items-center
-          "
-        >
+        <label htmlFor="password" className="flex flex-col gap-1 min-[912px]:flex-row min-[912px]:items-center">
           Password:
-
           <input
             type="password"
             id="password"
             name="password"
             className="
-              h-7
-              w-40
-              rounded
+              h-6
+              w-32
+              rounded-sm
               border
               border-gray-400
-              px-2
-              text-[10px]
-
-              min-[520px]:ml-1
-              min-[912px]:h-4
+              px-1
+              text-[12px]
+              min-[912px]:ml-1
+              min-[912px]:h-5
               min-[912px]:w-28
-              min-[912px]:text-[8px]
+              min-[912px]:text-[10px]
             "
           />
         </label>
@@ -115,20 +77,15 @@ function Login() {
         <button
           type="submit"
           className="
-            flex
-            h-7
-            w-auto
-            items-center
-            justify-center
-            rounded
+            h-6
+            rounded-sm
             border
             border-gray-400
             px-3
-            text-[10px]
-
-            min-[912px]:h-4
+            text-[12px]
+            min-[912px]:h-5
             min-[912px]:px-2
-            min-[912px]:text-[8px]
+            min-[912px]:text-[10px]
           "
         >
           OK
