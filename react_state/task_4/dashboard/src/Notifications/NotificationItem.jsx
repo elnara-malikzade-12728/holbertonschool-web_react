@@ -15,7 +15,11 @@ class NotificationItem extends PureComponent {
   };
 
   render() {
-    const { type, html, value } = this.props;
+    const {
+      type,
+      html,
+      value,
+    } = this.props;
 
     const colorClass = type === 'urgent'
       ? 'text-urgent-notification-item'

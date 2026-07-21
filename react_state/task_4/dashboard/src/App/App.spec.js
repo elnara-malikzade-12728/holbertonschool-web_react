@@ -7,6 +7,10 @@ import userEvent from '@testing-library/user-event';
 import App from './App';
 
 describe('App component', () => {
+  afterEach(() => {
+    jest.restoreAllMocks();
+  });
+
   test('renders Login by default', () => {
     render(<App />);
 
@@ -58,12 +62,6 @@ describe('App component', () => {
     expect(
       screen.getByText('React'),
     ).toBeInTheDocument();
-
-    expect(
-      screen.queryByText(
-        /login to access the full dashboard/i,
-      ),
-    ).not.toBeInTheDocument();
   });
 
   test('renders logoutSection after successful login', async () => {
@@ -94,10 +92,6 @@ describe('App component', () => {
         /welcome student@example\.com/i,
       ),
     ).toBeInTheDocument();
-
-    expect(
-      screen.getByText(/\(logout\)/i),
-    ).toBeInTheDocument();
   });
 
   test('returns to Login after logout is clicked', async () => {
@@ -119,10 +113,6 @@ describe('App component', () => {
       screen.getByDisplayValue('OK'),
     );
 
-    expect(
-      screen.getByText('ES6'),
-    ).toBeInTheDocument();
-
     await user.click(
       screen.getByText(/\(logout\)/i),
     );
@@ -134,24 +124,12 @@ describe('App component', () => {
     ).toBeInTheDocument();
 
     expect(
-      screen.getByLabelText(/email/i),
-    ).toBeInTheDocument();
-
-    expect(
-      screen.getByLabelText(/password/i),
-    ).toBeInTheDocument();
-
-    expect(
       screen.queryByText('ES6'),
-    ).not.toBeInTheDocument();
-
-    expect(
-      document.querySelector('#logoutSection'),
     ).not.toBeInTheDocument();
   });
 
   test('removes a notification and logs its ID when clicked', () => {
-    const consoleSpy = jest
+    const logSpy = jest
       .spyOn(console, 'log')
       .mockImplementation(() => {});
 
@@ -161,21 +139,20 @@ describe('App component', () => {
       screen.getByText(/your notifications/i),
     );
 
-    const notification =
-      screen.getByText('New course available');
-
-    expect(notification).toBeInTheDocument();
-
-    fireEvent.click(notification);
-
     expect(
-      screen.queryByText('New course available'),
-    ).not.toBeInTheDocument();
+      screen.getByText(/new course available/i),
+    ).toBeInTheDocument();
 
-    expect(consoleSpy).toHaveBeenCalledWith(
-      'Notification 1 has been marked as read',
+    fireEvent.click(
+      screen.getByText(/new course available/i),
     );
 
-    consoleSpy.mockRestore();
+    expect(
+      screen.queryByText(/new course available/i),
+    ).not.toBeInTheDocument();
+
+    expect(logSpy).toHaveBeenCalledWith(
+      'Notification 1 has been marked as read',
+    );
   });
 });

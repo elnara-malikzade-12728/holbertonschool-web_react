@@ -53,8 +53,6 @@ class App extends Component {
 
     this.logIn = this.logIn.bind(this);
     this.logOut = this.logOut.bind(this);
-    this.markNotificationAsRead =
-      this.markNotificationAsRead.bind(this);
 
     this.state = {
       displayDrawer: false,
@@ -125,7 +123,7 @@ class App extends Component {
     });
   }
 
-  markNotificationAsRead(id) {
+  markNotificationAsRead = (id) => {
     console.log(
       `Notification ${id} has been marked as read`,
     );
@@ -136,7 +134,7 @@ class App extends Component {
           (notification) => notification.id !== id,
         ),
     }));
-  }
+  };
 
   render() {
     const {

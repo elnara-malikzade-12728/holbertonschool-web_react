@@ -1,4 +1,7 @@
-import { getCurrentYear, getFooterCopy } from '../utils/utils';
+import {
+  getCurrentYear,
+  getFooterCopy,
+} from '../utils/utils';
 import AppContext from '../Context/context';
 
 function Footer() {
@@ -24,12 +27,13 @@ function Footer() {
           "
         >
           <p>
-            Copyright {getCurrentYear()} - {getFooterCopy(false)}
+            Copyright {getCurrentYear()} -{' '}
+            {getFooterCopy(false)}
           </p>
 
           {user.isLoggedIn && (
             <p>
-              <a href="#" className="underline">
+              <a href="mailto:contact@holbertonschool.com">
                 Contact us
               </a>
             </p>

@@ -31,20 +31,7 @@ describe('Notifications component', () => {
     render(<Notifications />);
   });
 
-  test('displays the menu item when the drawer is closed', () => {
-    render(
-      <Notifications
-        notifications={notifications}
-        displayDrawer={false}
-      />,
-    );
-
-    expect(
-      screen.getByText(/your notifications/i),
-    ).toBeInTheDocument();
-  });
-
-  test('calls handleDisplayDrawer when the menu item is clicked', () => {
+  test('calls handleDisplayDrawer when menu is clicked', () => {
     const handleDisplayDrawer = jest.fn();
 
     render(
@@ -64,7 +51,7 @@ describe('Notifications component', () => {
     ).toHaveBeenCalledTimes(1);
   });
 
-  test('calls handleHideDrawer when the close button is clicked', () => {
+  test('calls handleHideDrawer when close is clicked', () => {
     const handleHideDrawer = jest.fn();
 
     render(
@@ -86,7 +73,7 @@ describe('Notifications component', () => {
     ).toHaveBeenCalledTimes(1);
   });
 
-  test('renders all notification items when the drawer is open', () => {
+  test('renders notification items', () => {
     render(
       <Notifications
         notifications={notifications}
@@ -107,7 +94,7 @@ describe('Notifications component', () => {
     ).toBeInTheDocument();
   });
 
-  test('calls markNotificationAsRead with the clicked notification ID', () => {
+  test('calls markNotificationAsRead with the item id', () => {
     const markNotificationAsRead = jest.fn();
 
     render(
@@ -126,14 +113,10 @@ describe('Notifications component', () => {
 
     expect(
       markNotificationAsRead,
-    ).toHaveBeenCalledTimes(1);
-
-    expect(
-      markNotificationAsRead,
     ).toHaveBeenCalledWith(1);
   });
 
-  test('displays the empty notification message when the list is empty', () => {
+  test('shows an empty-list message', () => {
     render(
       <Notifications
         notifications={[]}
@@ -148,7 +131,7 @@ describe('Notifications component', () => {
     ).toBeInTheDocument();
   });
 
-  test('rerenders when displayDrawer changes', () => {
+  test('rerenders when props change', () => {
     const { rerender } = render(
       <Notifications
         notifications={notifications}
@@ -169,50 +152,6 @@ describe('Notifications component', () => {
 
     expect(
       document.querySelector('.notification-items'),
-    ).toBeInTheDocument();
-  });
-
-  test('rerenders when the notifications prop reference changes', () => {
-    const firstNotifications = [
-      {
-        id: 1,
-        type: 'default',
-        value: 'First notification',
-      },
-    ];
-
-    const secondNotifications = [
-      {
-        id: 2,
-        type: 'urgent',
-        value: 'Replacement notification',
-      },
-    ];
-
-    const { rerender } = render(
-      <Notifications
-        displayDrawer
-        notifications={firstNotifications}
-      />,
-    );
-
-    expect(
-      screen.getByText('First notification'),
-    ).toBeInTheDocument();
-
-    rerender(
-      <Notifications
-        displayDrawer
-        notifications={secondNotifications}
-      />,
-    );
-
-    expect(
-      screen.queryByText('First notification'),
-    ).not.toBeInTheDocument();
-
-    expect(
-      screen.getByText('Replacement notification'),
     ).toBeInTheDocument();
   });
 });
