@@ -30,7 +30,7 @@ class Header extends Component {
             src={holbertonLogo}
             alt="holberton logo"
             className="
-              -mt-20
+              -mt-10
               h-100
               w-100
               object-contain
