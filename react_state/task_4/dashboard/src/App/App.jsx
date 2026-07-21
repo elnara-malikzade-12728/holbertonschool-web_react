@@ -53,6 +53,8 @@ class App extends Component {
 
     this.logIn = this.logIn.bind(this);
     this.logOut = this.logOut.bind(this);
+    this.markNotificationAsRead =
+      this.markNotificationAsRead.bind(this);
 
     this.state = {
       displayDrawer: false,
@@ -94,10 +96,7 @@ class App extends Component {
   };
 
   handleKeyDown = (event) => {
-    if (
-      event.ctrlKey
-      && event.key === 'h'
-    ) {
+    if (event.ctrlKey && event.key === 'h') {
       window.alert('Logging you out');
       this.logOut();
     }
@@ -123,18 +122,17 @@ class App extends Component {
     });
   }
 
-  markNotificationAsRead = (id) => {
+  markNotificationAsRead(id) {
     console.log(
       `Notification ${id} has been marked as read`,
     );
 
-    this.setState((previousState) => ({
-      notifications:
-        previousState.notifications.filter(
-          (notification) => notification.id !== id,
-        ),
+    this.setState((prevState) => ({
+      notifications: prevState.notifications.filter(
+        (notification) => notification.id !== id,
+      ),
     }));
-  };
+  }
 
   render() {
     const {
@@ -178,15 +176,11 @@ class App extends Component {
 
           <main className="flex flex-1 flex-col">
             {user.isLoggedIn ? (
-              <BodySectionWithMarginBottom
-                title="Course list"
-              >
+              <BodySectionWithMarginBottom title="Course list">
                 <CourseList courses={courses} />
               </BodySectionWithMarginBottom>
             ) : (
-              <BodySectionWithMarginBottom
-                title="Log in to continue"
-              >
+              <BodySectionWithMarginBottom title="Log in to continue">
                 <Login
                   email={user.email}
                   password={user.password}
