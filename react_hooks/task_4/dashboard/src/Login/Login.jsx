@@ -2,19 +2,22 @@ import { useState } from 'react';
 import WithLogging from '../HOC/WithLogging';
 
 function Login({
-  email: initialEmail,
-  password: initialPassword,
-  logIn,
+  email: initialEmail = '',
+  password: initialPassword = '',
+  logIn = () => {},
 }) {
-  const [enableSubmit, setEnableSubmit] = useState(false);
-
   const [formData, setFormData] = useState({
     email: initialEmail,
     password: initialPassword,
   });
 
+  const [enableSubmit, setEnableSubmit] = useState(
+    false,
+  );
+
   const isFormValid = (email, password) => {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const emailRegex =
+      /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
     return (
       emailRegex.test(email)
@@ -24,34 +27,50 @@ function Login({
 
   const handleChangeEmail = (event) => {
     const email = event.target.value;
-    const { password } = formData;
 
-    setFormData((previousFormData) => ({
-      ...previousFormData,
-      email,
-    }));
+    setFormData((previousFormData) => {
+      const updatedFormData = {
+        ...previousFormData,
+        email,
+      };
 
-    setEnableSubmit(
-      isFormValid(email, password),
-    );
+      setEnableSubmit(
+        isFormValid(
+          updatedFormData.email,
+          updatedFormData.password,
+        ),
+      );
+
+      return updatedFormData;
+    });
   };
 
   const handleChangePassword = (event) => {
     const password = event.target.value;
-    const { email } = formData;
 
-    setFormData((previousFormData) => ({
-      ...previousFormData,
-      password,
-    }));
+    setFormData((previousFormData) => {
+      const updatedFormData = {
+        ...previousFormData,
+        password,
+      };
 
-    setEnableSubmit(
-      isFormValid(email, password),
-    );
+      setEnableSubmit(
+        isFormValid(
+          updatedFormData.email,
+          updatedFormData.password,
+        ),
+      );
+
+      return updatedFormData;
+    });
   };
 
   const handleLoginSubmit = (event) => {
     event.preventDefault();
+
+    if (!enableSubmit) {
+      return;
+    }
 
     logIn(
       formData.email,
@@ -194,11 +213,5 @@ function Login({
     </div>
   );
 }
-
-Login.defaultProps = {
-  email: '',
-  password: '',
-  logIn: () => {},
-};
 
 export default WithLogging(Login);

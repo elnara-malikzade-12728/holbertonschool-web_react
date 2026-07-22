@@ -30,15 +30,19 @@ function Footer() {
       <p>
         Copyright {getCurrentYear()} -{' '}
         {getFooterCopy(false)}
-      </p>
 
-      {user.isLoggedIn && (
-        <p>
-          <a href="mailto:contact@holbertonschool.com">
-            Contact us
-          </a>
-        </p>
-      )}
+        {user.isLoggedIn && (
+          <>
+            {'|'}
+            <a
+              href="#"
+              className="underline"
+            >
+              Contact us
+            </a>
+          </>
+        )}
+      </p>
     </footer>
   );
 }
