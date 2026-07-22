@@ -15,8 +15,6 @@ import BodySection from '../BodySection/BodySection';
 import BodySectionWithMarginBottom from '../BodySection/BodySectionWithMarginBottom';
 import AppContext from '../Context/context';
 
-const baseUrl = import.meta.env.BASE_URL;
-
 const defaultUser = {
   email: '',
   password: '',
@@ -40,9 +38,13 @@ function App() {
     const fetchNotifications = async () => {
       try {
         const response = await axios.get(
-          '/notifications.json'
+          '/notifications.json',
         );
-        
+
+        if (!isMounted) {
+          return;
+        }
+
         const updatedNotifications =
           response.data.map((notification) => {
             if (Number(notification.id) === 3) {
@@ -93,7 +95,7 @@ function App() {
     const fetchCourses = async () => {
       try {
         const response = await axios.get(
-           '/courses.json'
+          '/courses.json',
         );
 
         if (isMounted) {
@@ -146,13 +148,12 @@ function App() {
         `Notification ${id} has been marked as read`,
       );
 
-      setNotifications(
-        (previousNotifications) =>
-          previousNotifications.filter(
-            (notification) =>
-              String(notification.id)
-              !== String(id),
-          ),
+      setNotifications((previousNotifications) =>
+        previousNotifications.filter(
+          (notification) =>
+            String(notification.id)
+            !== String(id),
+        ),
       );
     },
     [],
