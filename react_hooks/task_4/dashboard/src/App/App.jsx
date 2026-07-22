@@ -38,7 +38,7 @@ function App() {
     const fetchNotifications = async () => {
       try {
         const response = await axios.get(
-          '/notifications.json',
+          'http://localhost:5173/notifications.json',
         );
 
         if (!isMounted) {
@@ -51,8 +51,7 @@ function App() {
               return {
                 ...notification,
                 html: {
-                  __html:
-                    getLatestNotification(),
+                  __html: getLatestNotification(),
                 },
               };
             }
@@ -85,10 +84,18 @@ function App() {
   useEffect(() => {
     let isMounted = true;
 
+    if (!user.isLoggedIn) {
+      setCourses([]);
+
+      return () => {
+        isMounted = false;
+      };
+    }
+
     const fetchCourses = async () => {
       try {
         const response = await axios.get(
-          '/courses.json',
+          'http://localhost:5173/courses.json',
         );
 
         if (isMounted) {
@@ -113,7 +120,7 @@ function App() {
     return () => {
       isMounted = false;
     };
-  }, [user]);
+  }, [user.isLoggedIn]);
 
   const handleDisplayDrawer = useCallback(() => {
     setDisplayDrawer(true);
