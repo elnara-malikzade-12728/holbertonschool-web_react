@@ -25,7 +25,7 @@ describe('Footer component tests', () => {
     ).toBeInTheDocument();
   });
 
-  test('does not display Contact us when logged out', () => {
+  test('does not display Contact us when user is logged out', () => {
     const contextValue = {
       user: {
         email: '',
@@ -48,7 +48,7 @@ describe('Footer component tests', () => {
     ).not.toBeInTheDocument();
   });
 
-  test('displays Contact us when logged in', () => {
+  test('displays Contact us when user is logged in', () => {
     const contextValue = {
       user: {
         email: 'student@example.com',
