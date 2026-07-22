@@ -58,62 +58,44 @@ const coursesList = [
 ];
 
 function App() {
-  const [
-    displayDrawer,
-    setDisplayDrawer,
-  ] = useState(true);
+  const [displayDrawer, setDisplayDrawer] =
+    useState(true);
 
-  const [user, setUser] =
-    useState(defaultUser);
+  const [user, setUser] = useState(defaultUser);
 
-  const [
-    notifications,
-    setNotifications,
-  ] = useState(notificationsList);
+  const [notifications, setNotifications] =
+    useState(notificationsList);
 
-  const handleDisplayDrawer =
-    useCallback(() => {
-      setDisplayDrawer(true);
-    }, []);
+  const handleDisplayDrawer = useCallback(() => {
+    setDisplayDrawer(true);
+  }, []);
 
-  const handleHideDrawer =
-    useCallback(() => {
-      setDisplayDrawer(false);
-    }, []);
+  const handleHideDrawer = useCallback(() => {
+    setDisplayDrawer(false);
+  }, []);
 
-  const logIn = useCallback(
-    (email, password) => {
-      setUser({
-        email,
-        password,
-        isLoggedIn: true,
-      });
-    },
-    [],
-  );
-
-  const logOut = useCallback(() => {
+  const logIn = useCallback((email, password) => {
     setUser({
-      email: '',
-      password: '',
-      isLoggedIn: false,
+      email,
+      password,
+      isLoggedIn: true,
     });
   }, []);
 
-  const markNotificationAsRead =
-    useCallback((id) => {
-      console.log(
-        `Notification ${id} has been marked as read`,
-      );
+  const logOut = useCallback(() => {
+    setUser(defaultUser);
+  }, []);
 
-      setNotifications(
-        (previousNotifications) =>
-          previousNotifications.filter(
-            (notification) =>
-              notification.id !== id,
-          ),
+  const markNotificationAsRead = useCallback(
+    (id) => {
+      setNotifications((previousNotifications) =>
+        previousNotifications.filter(
+          (notification) => notification.id !== id,
+        ),
       );
-    }, []);
+    },
+    [],
+  );
 
   const contextValue = useMemo(
     () => ({
@@ -144,9 +126,7 @@ function App() {
             handleDisplayDrawer={
               handleDisplayDrawer
             }
-            handleHideDrawer={
-              handleHideDrawer
-            }
+            handleHideDrawer={handleHideDrawer}
             markNotificationAsRead={
               markNotificationAsRead
             }
