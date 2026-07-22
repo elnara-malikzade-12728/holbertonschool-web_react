@@ -15,6 +15,8 @@ import BodySection from '../BodySection/BodySection';
 import BodySectionWithMarginBottom from '../BodySection/BodySectionWithMarginBottom';
 import AppContext from '../Context/context';
 
+const baseUrl = import.meta.env.BASE_URL;
+
 const defaultUser = {
   email: '',
   password: '',
@@ -38,16 +40,12 @@ function App() {
     const fetchNotifications = async () => {
       try {
         const response = await axios.get(
-          'http://localhost:5173/notifications.json',
+          `${baseUrl}notifications.json`
         );
-
-        if (!isMounted) {
-          return;
-        }
-
+        
         const updatedNotifications =
           response.data.map((notification) => {
-            if (notification.id === 3) {
+            if (Number(notification.id) === 3) {
               return {
                 ...notification,
                 html: {
@@ -95,7 +93,7 @@ function App() {
     const fetchCourses = async () => {
       try {
         const response = await axios.get(
-          'http://localhost:5173/courses.json',
+           `${baseUrl}courses.json`
         );
 
         if (isMounted) {
@@ -152,7 +150,8 @@ function App() {
         (previousNotifications) =>
           previousNotifications.filter(
             (notification) =>
-              notification.id !== id,
+              String(notification.id)
+              !== String(id),
           ),
       );
     },
