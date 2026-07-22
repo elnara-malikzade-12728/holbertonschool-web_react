@@ -38,7 +38,7 @@ function App() {
     const fetchNotifications = async () => {
       try {
         const response = await axios.get(
-          '/notifications.json',
+          'http://localhost:5173/notifications.json',
         );
 
         if (!isMounted) {
@@ -95,7 +95,7 @@ function App() {
     const fetchCourses = async () => {
       try {
         const response = await axios.get(
-          '/courses.json',
+          'http://localhost:5173/courses.json',
         );
 
         if (isMounted) {
