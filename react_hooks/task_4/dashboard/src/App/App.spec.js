@@ -1,13 +1,81 @@
 import {
+  act,
   fireEvent,
   render,
   screen,
+  waitFor,
 } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import mockAxios from 'jest-mock-axios';
 import App from './App';
+
+const notificationsData = [
+  {
+    id: 1,
+    type: 'default',
+    value: 'New course available',
+  },
+  {
+    id: 2,
+    type: 'urgent',
+    value: 'New resume available',
+  },
+  {
+    id: 3,
+    type: 'urgent',
+    html: {
+      __html: '',
+    },
+  },
+];
+
+const coursesData = [
+  {
+    id: 1,
+    name: 'ES6',
+    credit: 60,
+  },
+  {
+    id: 2,
+    name: 'Webpack',
+    credit: 20,
+  },
+  {
+    id: 3,
+    name: 'React',
+    credit: 40,
+  },
+];
+
+const respondWithNotifications = async () => {
+  await act(async () => {
+    mockAxios.mockResponseFor(
+      {
+        url: '/notifications.json',
+      },
+      {
+        data: notificationsData,
+      },
+    );
+  });
+};
+
+const respondWithCourses = async () => {
+  await act(async () => {
+    mockAxios.mockResponseFor(
+      {
+        url: '/courses.json',
+      },
+      {
+        data: coursesData,
+      },
+    );
+  });
+};
 
 describe('App component', () => {
   afterEach(() => {
+    mockAxios.reset();
     jest.restoreAllMocks();
   });
 
@@ -83,10 +151,84 @@ describe('App component', () => {
     ).toBeInTheDocument();
   });
 
+  test('retrieves notifications when App initially loads', async () => {
+    render(<App />);
+
+    expect(mockAxios.get).toHaveBeenCalledWith(
+      '/notifications.json',
+    );
+
+    await respondWithNotifications();
+
+    expect(
+      await screen.findByText(
+        /new course available/i,
+      ),
+    ).toBeInTheDocument();
+
+    expect(
+      screen.getByText(
+        /new resume available/i,
+      ),
+    ).toBeInTheDocument();
+  });
+
+  test('retrieves courses when App initially loads', async () => {
+    render(<App />);
+
+    expect(mockAxios.get).toHaveBeenCalledWith(
+      '/courses.json',
+    );
+
+    await respondWithCourses();
+  });
+
+  test('retrieves courses whenever the user state changes', async () => {
+    const user = userEvent.setup();
+
+    render(<App />);
+
+    await respondWithCourses();
+
+    const initialCoursesRequests =
+      mockAxios.get.mock.calls.filter(
+        ([url]) => url === '/courses.json',
+      );
+
+    expect(initialCoursesRequests).toHaveLength(1);
+
+    await user.type(
+      screen.getByLabelText(/email/i),
+      'student@example.com',
+    );
+
+    await user.type(
+      screen.getByLabelText(/password/i),
+      'password123',
+    );
+
+    await user.click(
+      screen.getByDisplayValue('OK'),
+    );
+
+    await waitFor(() => {
+      const coursesRequests =
+        mockAxios.get.mock.calls.filter(
+          ([url]) => url === '/courses.json',
+        );
+
+      expect(coursesRequests).toHaveLength(2);
+    });
+
+    await respondWithCourses();
+  });
+
   test('updates the user state after successful login', async () => {
     const user = userEvent.setup();
 
     render(<App />);
+
+    await respondWithCourses();
 
     const emailInput =
       screen.getByLabelText(/email/i);
@@ -108,8 +250,10 @@ describe('App component', () => {
       screen.getByDisplayValue('OK'),
     );
 
+    await respondWithCourses();
+
     expect(
-      screen.getByText('ES6'),
+      await screen.findByText('ES6'),
     ).toBeInTheDocument();
 
     expect(
@@ -129,12 +273,20 @@ describe('App component', () => {
         /welcome student@example\.com/i,
       ),
     ).toBeInTheDocument();
+
+    expect(
+      screen.getByRole('link', {
+        name: /contact us/i,
+      }),
+    ).toBeInTheDocument();
   });
 
   test('clears the user state after logout', async () => {
     const user = userEvent.setup();
 
     render(<App />);
+
+    await respondWithCourses();
 
     await user.type(
       screen.getByLabelText(/email/i),
@@ -150,9 +302,13 @@ describe('App component', () => {
       screen.getByDisplayValue('OK'),
     );
 
+    await respondWithCourses();
+
     await user.click(
       screen.getByText(/\(logout\)/i),
     );
+
+    await respondWithCourses();
 
     expect(
       screen.getByText(
@@ -175,17 +331,25 @@ describe('App component', () => {
     expect(
       screen.getByLabelText(/password/i),
     ).toHaveValue('');
+
+    expect(
+      screen.queryByRole('link', {
+        name: /contact us/i,
+      }),
+    ).not.toBeInTheDocument();
   });
 
-  test('removes a notification and logs its ID when clicked', () => {
+  test('removes a notification and logs its ID when clicked', async () => {
     const logSpy = jest
       .spyOn(console, 'log')
       .mockImplementation(() => {});
 
     render(<App />);
 
+    await respondWithNotifications();
+
     expect(
-      screen.getByText(
+      await screen.findByText(
         /new course available/i,
       ),
     ).toBeInTheDocument();

@@ -1,8 +1,10 @@
 import {
   useCallback,
+  useEffect,
   useMemo,
   useState,
 } from 'react';
+import axios from 'axios';
 import Header from '../Header/Header';
 import Footer from '../Footer/Footer';
 import Login from '../Login/Login';
@@ -19,44 +21,6 @@ const defaultUser = {
   isLoggedIn: false,
 };
 
-const notificationsList = [
-  {
-    id: 1,
-    type: 'default',
-    value: 'New course available',
-  },
-  {
-    id: 2,
-    type: 'urgent',
-    value: 'New resume available',
-  },
-  {
-    id: 3,
-    type: 'urgent',
-    html: {
-      __html: getLatestNotification(),
-    },
-  },
-];
-
-const coursesList = [
-  {
-    id: 1,
-    name: 'ES6',
-    credit: 60,
-  },
-  {
-    id: 2,
-    name: 'Webpack',
-    credit: 20,
-  },
-  {
-    id: 3,
-    name: 'React',
-    credit: 40,
-  },
-];
-
 function App() {
   const [displayDrawer, setDisplayDrawer] =
     useState(true);
@@ -64,7 +28,92 @@ function App() {
   const [user, setUser] = useState(defaultUser);
 
   const [notifications, setNotifications] =
-    useState(notificationsList);
+    useState([]);
+
+  const [courses, setCourses] = useState([]);
+
+  useEffect(() => {
+    let isMounted = true;
+
+    const fetchNotifications = async () => {
+      try {
+        const response = await axios.get(
+          '/notifications.json',
+        );
+
+        if (!isMounted) {
+          return;
+        }
+
+        const updatedNotifications =
+          response.data.map((notification) => {
+            if (notification.id === 3) {
+              return {
+                ...notification,
+                html: {
+                  __html:
+                    getLatestNotification(),
+                },
+              };
+            }
+
+            return notification;
+          });
+
+        setNotifications(updatedNotifications);
+      } catch (error) {
+        if (
+          typeof process !== 'undefined'
+          && process.env.NODE_ENV
+            === 'development'
+        ) {
+          console.error(
+            'Error fetching notifications:',
+            error,
+          );
+        }
+      }
+    };
+
+    fetchNotifications();
+
+    return () => {
+      isMounted = false;
+    };
+  }, []);
+
+  useEffect(() => {
+    let isMounted = true;
+
+    const fetchCourses = async () => {
+      try {
+        const response = await axios.get(
+          '/courses.json',
+        );
+
+        if (isMounted) {
+          setCourses(response.data);
+        }
+      } catch (error) {
+        if (
+          typeof process !== 'undefined'
+          && process.env.NODE_ENV
+            === 'development'
+        ) {
+          console.error(
+            'Error fetching courses:',
+            error,
+          );
+        }
+      }
+    };
+
+    fetchCourses();
+
+    return () => {
+      isMounted = false;
+    };
+  }, [user]);
 
   const handleDisplayDrawer = useCallback(() => {
     setDisplayDrawer(true);
@@ -92,10 +141,12 @@ function App() {
         `Notification ${id} has been marked as read`,
       );
 
-      setNotifications((previousNotifications) =>
-        previousNotifications.filter(
-          (notification) => notification.id !== id,
-        ),
+      setNotifications(
+        (previousNotifications) =>
+          previousNotifications.filter(
+            (notification) =>
+              notification.id !== id,
+          ),
       );
     },
     [],
@@ -130,7 +181,9 @@ function App() {
             handleDisplayDrawer={
               handleDisplayDrawer
             }
-            handleHideDrawer={handleHideDrawer}
+            handleHideDrawer={
+              handleHideDrawer
+            }
             markNotificationAsRead={
               markNotificationAsRead
             }
@@ -142,7 +195,7 @@ function App() {
         <main className="flex flex-1 flex-col">
           {user.isLoggedIn ? (
             <BodySectionWithMarginBottom title="Course list">
-              <CourseList courses={coursesList} />
+              <CourseList courses={courses} />
             </BodySectionWithMarginBottom>
           ) : (
             <BodySectionWithMarginBottom title="Log in to continue">
@@ -169,9 +222,9 @@ function App() {
               Similique, asperiores architecto
               blanditiis fuga doloribus sit illum
               aliquid ea distinctio minus
-              accusantium, impedit quo voluptatibus
-              ut magni dicta. Recusandae, quia
-              dicta?
+              accusantium, impedit quo
+              voluptatibus ut magni dicta.
+              Recusandae, quia dicta?
             </p>
           </BodySection>
         </main>
