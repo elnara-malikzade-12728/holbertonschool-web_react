@@ -8,5 +8,5 @@ export default defineConfig({
     react(),
     tailwindcss()
   ],
-  base: '/holbertonschool-web_react/',
+  base: '/',
 });

@@ -40,7 +40,7 @@ function App() {
     const fetchNotifications = async () => {
       try {
         const response = await axios.get(
-          `${baseUrl}notifications.json`
+          '/notifications.json'
         );
         
         const updatedNotifications =
@@ -93,7 +93,7 @@ function App() {
     const fetchCourses = async () => {
       try {
         const response = await axios.get(
-           `${baseUrl}courses.json`
+           '/courses.json'
         );
 
         if (isMounted) {
