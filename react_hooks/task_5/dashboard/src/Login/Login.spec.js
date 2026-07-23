@@ -37,10 +37,10 @@ describe('Login component tests', () => {
       screen.getByLabelText(/password/i);
 
     const emailLabel =
-      screen.getByText(/^email:$/i);
+      screen.getByText(/^email$/i);
 
     const passwordLabel =
-      screen.getByText(/^password:$/i);
+      screen.getByText(/^password$/i);
 
     await user.click(emailLabel);
 
