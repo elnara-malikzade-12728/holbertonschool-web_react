@@ -38,7 +38,7 @@ function App() {
     const fetchNotifications = async () => {
       try {
         const response = await axios.get(
-          'http://localhost:5173/notifications.json',
+          '/notifications.json',
         );
 
         if (!isMounted) {
@@ -95,7 +95,7 @@ function App() {
     const fetchCourses = async () => {
       try {
         const response = await axios.get(
-          'http://localhost:5173/courses.json',
+          '/courses.json',
         );
 
         if (isMounted) {
@@ -148,12 +148,13 @@ function App() {
         `Notification ${id} has been marked as read`,
       );
 
-      setNotifications((previousNotifications) =>
-        previousNotifications.filter(
-          (notification) =>
-            String(notification.id)
-            !== String(id),
-        ),
+      setNotifications(
+        (previousNotifications) =>
+          previousNotifications.filter(
+            (notification) =>
+              String(notification.id)
+              !== String(id),
+          ),
       );
     },
     [],
