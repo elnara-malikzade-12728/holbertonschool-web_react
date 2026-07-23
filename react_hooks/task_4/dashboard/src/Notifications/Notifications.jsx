@@ -3,11 +3,11 @@ import closeButton from '../assets/close-button.png';
 import NotificationItem from './NotificationItem';
 
 function Notifications({
-  notifications,
-  displayDrawer,
-  handleDisplayDrawer,
-  handleHideDrawer,
-  markNotificationAsRead,
+  notifications = [],
+  displayDrawer = false,
+  handleDisplayDrawer = () => {},
+  handleHideDrawer = () => {},
+  markNotificationAsRead = () => {},
 }) {
   const shouldBounce =
     notifications.length > 0 && !displayDrawer;
@@ -148,9 +148,7 @@ function Notifications({
                     type={notification.type}
                     value={notification.value}
                     html={notification.html}
-                    markAsRead={
-                      markNotificationAsRead
-                    }
+                    markAsRead={markNotificationAsRead}
                   />
                 ))}
               </ul>
@@ -162,27 +160,4 @@ function Notifications({
   );
 }
 
-Notifications.defaultProps = {
-  notifications: [],
-  displayDrawer: false,
-  handleDisplayDrawer: () => {},
-  handleHideDrawer: () => {},
-  markNotificationAsRead: () => {},
-};
-
-function areEqual(previousProps, nextProps) {
-  return (
-    previousProps.notifications ===
-      nextProps.notifications
-    && previousProps.displayDrawer ===
-      nextProps.displayDrawer
-    && previousProps.handleDisplayDrawer ===
-      nextProps.handleDisplayDrawer
-    && previousProps.handleHideDrawer ===
-      nextProps.handleHideDrawer
-    && previousProps.markNotificationAsRead ===
-      nextProps.markNotificationAsRead
-  );
-}
-
-export default memo(Notifications, areEqual);
+export default memo(Notifications);
