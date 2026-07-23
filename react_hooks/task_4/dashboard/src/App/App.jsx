@@ -25,25 +25,21 @@ function App() {
   const [displayDrawer, setDisplayDrawer] =
     useState(true);
 
-  const [user, setUser] = useState(defaultUser);
+  const [user, setUser] =
+    useState(defaultUser);
 
   const [notifications, setNotifications] =
     useState([]);
 
-  const [courses, setCourses] = useState([]);
+  const [courses, setCourses] =
+    useState([]);
 
   useEffect(() => {
-    let isMounted = true;
-
     const fetchNotifications = async () => {
       try {
         const response = await axios.get(
-          '/notifications.json',
+          'notifications.json',
         );
-
-        if (!isMounted) {
-          return;
-        }
 
         const updatedNotifications =
           response.data.map((notification) => {
@@ -63,8 +59,7 @@ function App() {
       } catch (error) {
         if (
           typeof process !== 'undefined'
-          && process.env.NODE_ENV
-            === 'development'
+          && process.env.NODE_ENV === 'development'
         ) {
           console.error(
             'Error fetching notifications:',
@@ -75,37 +70,25 @@ function App() {
     };
 
     fetchNotifications();
-
-    return () => {
-      isMounted = false;
-    };
   }, []);
 
   useEffect(() => {
-    let isMounted = true;
-
     if (!user.isLoggedIn) {
       setCourses([]);
-
-      return () => {
-        isMounted = false;
-      };
+      return;
     }
 
     const fetchCourses = async () => {
       try {
         const response = await axios.get(
-          '/courses.json',
+          'courses.json',
         );
 
-        if (isMounted) {
-          setCourses(response.data);
-        }
+        setCourses(response.data);
       } catch (error) {
         if (
           typeof process !== 'undefined'
-          && process.env.NODE_ENV
-            === 'development'
+          && process.env.NODE_ENV === 'development'
         ) {
           console.error(
             'Error fetching courses:',
@@ -116,49 +99,45 @@ function App() {
     };
 
     fetchCourses();
+  }, [user]);
 
-    return () => {
-      isMounted = false;
-    };
-  }, [user.isLoggedIn]);
+  const handleDisplayDrawer =
+    useCallback(() => {
+      setDisplayDrawer(true);
+    }, []);
 
-  const handleDisplayDrawer = useCallback(() => {
-    setDisplayDrawer(true);
-  }, []);
+  const handleHideDrawer =
+    useCallback(() => {
+      setDisplayDrawer(false);
+    }, []);
 
-  const handleHideDrawer = useCallback(() => {
-    setDisplayDrawer(false);
-  }, []);
-
-  const logIn = useCallback((email, password) => {
-    setUser({
-      email,
-      password,
-      isLoggedIn: true,
-    });
-  }, []);
+  const logIn =
+    useCallback((email, password) => {
+      setUser({
+        email,
+        password,
+        isLoggedIn: true,
+      });
+    }, []);
 
   const logOut = useCallback(() => {
     setUser(defaultUser);
   }, []);
 
-  const markNotificationAsRead = useCallback(
-    (id) => {
+  const markNotificationAsRead =
+    useCallback((id) => {
       console.log(
         `Notification ${id} has been marked as read`,
       );
 
       setNotifications(
-        (previousNotifications) =>
-          previousNotifications.filter(
+        (currentNotifications) =>
+          currentNotifications.filter(
             (notification) =>
-              String(notification.id)
-              !== String(id),
+              notification.id !== id,
           ),
       );
-    },
-    [],
-  );
+    }, []);
 
   const contextValue = useMemo(
     () => ({
@@ -202,11 +181,15 @@ function App() {
 
         <main className="flex flex-1 flex-col">
           {user.isLoggedIn ? (
-            <BodySectionWithMarginBottom title="Course list">
+            <BodySectionWithMarginBottom
+              title="Course list"
+            >
               <CourseList courses={courses} />
             </BodySectionWithMarginBottom>
           ) : (
-            <BodySectionWithMarginBottom title="Log in to continue">
+            <BodySectionWithMarginBottom
+              title="Log in to continue"
+            >
               <Login
                 email={user.email}
                 password={user.password}
