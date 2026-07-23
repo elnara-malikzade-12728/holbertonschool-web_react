@@ -38,7 +38,7 @@ function App() {
     const fetchNotifications = async () => {
       try {
         const response = await axios.get(
-          'notifications.json',
+          '/notifications.json',
         );
 
         const updatedNotifications =
@@ -81,7 +81,7 @@ function App() {
     const fetchCourses = async () => {
       try {
         const response = await axios.get(
-          'courses.json',
+          '/courses.json',
         );
 
         setCourses(response.data);

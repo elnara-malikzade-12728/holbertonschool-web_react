@@ -173,29 +173,42 @@ describe('App component', () => {
     ).toBeInTheDocument();
   });
 
-  test('retrieves courses when App initially loads', async () => {
+  test('retrieves notifications only once when App mounts', () => {
+    render(<App />);
+
+    const notificationRequests =
+      mockAxios.get.mock.calls.filter(
+        ([url]) =>
+          url === '/notifications.json',
+      );
+
+    expect(notificationRequests).toHaveLength(1);
+  });
+
+  test('does not retrieve courses before login', () => {
     render(<App />);
 
     expect(mockAxios.get).toHaveBeenCalledWith(
-      '/courses.json',
+      '/notifications.json',
     );
 
-    await respondWithCourses();
+    expect(
+      mockAxios.get,
+    ).not.toHaveBeenCalledWith(
+      '/courses.json',
+    );
   });
 
-  test('retrieves courses whenever the user state changes', async () => {
+  test('retrieves courses after the user logs in', async () => {
     const user = userEvent.setup();
 
     render(<App />);
 
-    await respondWithCourses();
-
-    const initialCoursesRequests =
-      mockAxios.get.mock.calls.filter(
-        ([url]) => url === '/courses.json',
-      );
-
-    expect(initialCoursesRequests).toHaveLength(1);
+    expect(
+      mockAxios.get,
+    ).not.toHaveBeenCalledWith(
+      '/courses.json',
+    );
 
     await user.type(
       screen.getByLabelText(/email/i),
@@ -212,15 +225,60 @@ describe('App component', () => {
     );
 
     await waitFor(() => {
-      const coursesRequests =
+      expect(mockAxios.get).toHaveBeenCalledWith(
+        '/courses.json',
+      );
+    });
+
+    await respondWithCourses();
+
+    expect(
+      await screen.findByText('ES6'),
+    ).toBeInTheDocument();
+
+    expect(
+      screen.getByText('Webpack'),
+    ).toBeInTheDocument();
+
+    expect(
+      screen.getByText('React'),
+    ).toBeInTheDocument();
+  });
+
+  test('retrieves courses only after login', async () => {
+    const user = userEvent.setup();
+
+    render(<App />);
+
+    let courseRequests =
+      mockAxios.get.mock.calls.filter(
+        ([url]) => url === '/courses.json',
+      );
+
+    expect(courseRequests).toHaveLength(0);
+
+    await user.type(
+      screen.getByLabelText(/email/i),
+      'student@example.com',
+    );
+
+    await user.type(
+      screen.getByLabelText(/password/i),
+      'password123',
+    );
+
+    await user.click(
+      screen.getByDisplayValue('OK'),
+    );
+
+    await waitFor(() => {
+      courseRequests =
         mockAxios.get.mock.calls.filter(
           ([url]) => url === '/courses.json',
         );
 
-      expect(coursesRequests).toHaveLength(2);
+      expect(courseRequests).toHaveLength(1);
     });
-
-    await respondWithCourses();
   });
 
   test('updates the user state after successful login', async () => {
@@ -228,27 +286,25 @@ describe('App component', () => {
 
     render(<App />);
 
-    await respondWithCourses();
-
-    const emailInput =
-      screen.getByLabelText(/email/i);
-
-    const passwordInput =
-      screen.getByLabelText(/password/i);
-
     await user.type(
-      emailInput,
+      screen.getByLabelText(/email/i),
       'student@example.com',
     );
 
     await user.type(
-      passwordInput,
+      screen.getByLabelText(/password/i),
       'password123',
     );
 
     await user.click(
       screen.getByDisplayValue('OK'),
     );
+
+    await waitFor(() => {
+      expect(mockAxios.get).toHaveBeenCalledWith(
+        '/courses.json',
+      );
+    });
 
     await respondWithCourses();
 
@@ -286,8 +342,6 @@ describe('App component', () => {
 
     render(<App />);
 
-    await respondWithCourses();
-
     await user.type(
       screen.getByLabelText(/email/i),
       'student@example.com',
@@ -302,13 +356,21 @@ describe('App component', () => {
       screen.getByDisplayValue('OK'),
     );
 
+    await waitFor(() => {
+      expect(mockAxios.get).toHaveBeenCalledWith(
+        '/courses.json',
+      );
+    });
+
     await respondWithCourses();
+
+    expect(
+      await screen.findByText('ES6'),
+    ).toBeInTheDocument();
 
     await user.click(
       screen.getByText(/\(logout\)/i),
     );
-
-    await respondWithCourses();
 
     expect(
       screen.getByText(
@@ -339,10 +401,8 @@ describe('App component', () => {
     ).not.toBeInTheDocument();
   });
 
-  test('removes a notification and logs its ID when clicked', async () => {
-    const logSpy = jest
-      .spyOn(console, 'log')
-      .mockImplementation(() => {});
+  test('notifications remain unchanged through login and logout', async () => {
+    const user = userEvent.setup();
 
     render(<App />);
 
@@ -354,17 +414,74 @@ describe('App component', () => {
       ),
     ).toBeInTheDocument();
 
-    fireEvent.click(
+    await user.type(
+      screen.getByLabelText(/email/i),
+      'student@example.com',
+    );
+
+    await user.type(
+      screen.getByLabelText(/password/i),
+      'password123',
+    );
+
+    await user.click(
+      screen.getByDisplayValue('OK'),
+    );
+
+    await waitFor(() => {
+      expect(mockAxios.get).toHaveBeenCalledWith(
+        '/courses.json',
+      );
+    });
+
+    await respondWithCourses();
+
+    expect(
       screen.getByText(
         /new course available/i,
       ),
+    ).toBeInTheDocument();
+
+    await user.click(
+      screen.getByText(/\(logout\)/i),
     );
 
     expect(
-      screen.queryByText(
+      screen.getByText(
         /new course available/i,
       ),
-    ).not.toBeInTheDocument();
+    ).toBeInTheDocument();
+  });
+
+  test('removes a notification and logs its ID when clicked', async () => {
+    const logSpy = jest
+      .spyOn(console, 'log')
+      .mockImplementation(() => {});
+
+    render(<App />);
+
+    expect(mockAxios.get).toHaveBeenCalledWith(
+      '/notifications.json',
+    );
+
+    await respondWithNotifications();
+
+    const notification =
+      await screen.findByText(
+        /new course available/i,
+      );
+
+    expect(notification).toBeInTheDocument();
+
+    fireEvent.click(notification);
+
+    await waitFor(() => {
+      expect(
+        screen.queryByText(
+          /new course available/i,
+        ),
+      ).not.toBeInTheDocument();
+    });
 
     expect(logSpy).toHaveBeenCalledWith(
       'Notification 1 has been marked as read',
