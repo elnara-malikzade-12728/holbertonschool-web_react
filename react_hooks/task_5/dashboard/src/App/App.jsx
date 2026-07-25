@@ -1,8 +1,9 @@
 import {
   useCallback,
-  useMemo,
+  useEffect,
   useState,
 } from 'react';
+import axios from 'axios';
 
 import Header from '../Header/Header';
 import Login from '../Login/Login';
@@ -11,67 +12,23 @@ import Notifications from '../Notifications/Notifications';
 import CourseList from '../CourseList/CourseList';
 import BodySection from '../BodySection/BodySection';
 import BodySectionWithMarginBottom from
-  '../BodySectionWithMarginBottom/BodySectionWithMarginBottom';
-import AppContext, {
-  user as defaultUser,
-} from '../Context/context';
-import {
-  getLatestNotification,
-} from '../utils/utils';
-
-const notificationsList = [
-  {
-    id: 1,
-    type: 'default',
-    value: 'New course available',
-  },
-  {
-    id: 2,
-    type: 'urgent',
-    value: 'New resume available',
-  },
-  {
-    id: 3,
-    type: 'urgent',
-    html: {
-      __html: getLatestNotification(),
-    },
-  },
-];
-
-const coursesList = [
-  {
-    id: 1,
-    name: 'ES6',
-    credit: 60,
-  },
-  {
-    id: 2,
-    name: 'Webpack',
-    credit: 20,
-  },
-  {
-    id: 3,
-    name: 'React',
-    credit: 40,
-  },
-];
+  '../BodySection/BodySectionWithMarginBottom';
+import { getLatestNotification } from '../utils/utils';
 
 function App() {
-  const [
-    displayDrawer,
-    setDisplayDrawer,
-  ] = useState(true);
+  const [displayDrawer, setDisplayDrawer] =
+    useState(true);
 
-  const [
-    user,
-    setUser,
-  ] = useState(defaultUser);
+  const [notifications, setNotifications] =
+    useState([]);
 
-  const [
-    notifications,
-    setNotifications,
-  ] = useState(notificationsList);
+  const [courses, setCourses] = useState([]);
+
+  const [user, setUser] = useState({
+    email: '',
+    password: '',
+    isLoggedIn: false,
+  });
 
   const handleDisplayDrawer =
     useCallback(() => {
@@ -100,6 +57,8 @@ function App() {
       password: '',
       isLoggedIn: false,
     });
+
+    setCourses([]);
   }, []);
 
   const markNotificationAsRead =
@@ -112,77 +71,165 @@ function App() {
         (previousNotifications) =>
           previousNotifications.filter(
             (notification) =>
-              notification.id !== id,
+              String(notification.id)
+              !== String(id),
           ),
       );
     }, []);
 
-  const contextValue = useMemo(
-    () => ({
-      user,
-      logOut,
-    }),
-    [user, logOut],
-  );
+  useEffect(() => {
+    let isMounted = true;
+
+    axios
+      .get('/notifications.json')
+      .then((response) => {
+        if (!isMounted) {
+          return;
+        }
+
+        const loadedNotifications =
+          Array.isArray(response.data)
+            ? response.data
+            : [];
+
+        const formattedNotifications =
+          loadedNotifications.map(
+            (notification) => {
+              if (notification.id === 3) {
+                return {
+                  ...notification,
+                  html: {
+                    __html:
+                      getLatestNotification(),
+                  },
+                };
+              }
+
+              return notification;
+            },
+          );
+
+        setNotifications(
+          formattedNotifications,
+        );
+      })
+      .catch(() => null);
+
+    return () => {
+      isMounted = false;
+    };
+  }, []);
+
+  useEffect(() => {
+    if (!user.isLoggedIn) {
+      return undefined;
+    }
+
+    let isMounted = true;
+
+    axios
+      .get('/courses.json')
+      .then((response) => {
+        if (!isMounted) {
+          return;
+        }
+
+        const loadedCourses =
+          Array.isArray(response.data)
+            ? response.data
+            : [];
+
+        setCourses(loadedCourses);
+      })
+      .catch(() => null);
+
+    return () => {
+      isMounted = false;
+    };
+  }, [user.isLoggedIn]);
+
+  useEffect(() => {
+    const handleKeyDown = (event) => {
+      if (
+        event.ctrlKey
+        && event.key.toLowerCase() === 'h'
+      ) {
+        event.preventDefault();
+        alert('Logging you out');
+        logOut();
+      }
+    };
+
+    document.addEventListener(
+      'keydown',
+      handleKeyDown,
+    );
+
+    return () => {
+      document.removeEventListener(
+        'keydown',
+        handleKeyDown,
+      );
+    };
+  }, [logOut]);
 
   return (
-    <AppContext.Provider value={contextValue}>
-      <div
-        className="
-          App
-          flex
-          min-h-screen
-          flex-col
-          px-5
-        "
-      >
-        <div id="root-notifications">
-          <Notifications
-            notifications={notifications}
-            displayDrawer={displayDrawer}
-            handleDisplayDrawer={
-              handleDisplayDrawer
-            }
-            handleHideDrawer={
-              handleHideDrawer
-            }
-            markNotificationAsRead={
-              markNotificationAsRead
-            }
-          />
-        </div>
-
-        <Header />
-
-        <main className="flex flex-1 flex-col">
-          {user.isLoggedIn ? (
-            <BodySectionWithMarginBottom
-              title="Course list"
-            >
-              <CourseList
-                courses={coursesList}
-              />
-            </BodySectionWithMarginBottom>
-          ) : (
-            <BodySectionWithMarginBottom
-              title="Log in to continue"
-            >
-              <Login logIn={logIn} />
-            </BodySectionWithMarginBottom>
-          )}
-
-          <BodySection
-            title="News from the School"
-          >
-            <p>
-              Holberton School News goes here
-            </p>
-          </BodySection>
-        </main>
-
-        <Footer />
+    <div
+      className="
+        App
+        flex
+        min-h-screen
+        flex-col
+        px-5
+      "
+    >
+      <div id="root-notifications">
+        <Notifications
+          notifications={notifications}
+          displayDrawer={displayDrawer}
+          handleDisplayDrawer={
+            handleDisplayDrawer
+          }
+          handleHideDrawer={
+            handleHideDrawer
+          }
+          markNotificationAsRead={
+            markNotificationAsRead
+          }
+        />
       </div>
-    </AppContext.Provider>
+
+      <Header
+        user={user}
+        logOut={logOut}
+      />
+
+      <main className="flex flex-1 flex-col">
+        {user.isLoggedIn ? (
+          <BodySectionWithMarginBottom
+            title="Course list"
+          >
+            <CourseList
+              courses={courses}
+            />
+          </BodySectionWithMarginBottom>
+        ) : (
+          <Login logIn={logIn} />
+        )}
+
+        <BodySection
+          title="News from the School"
+        >
+          <p>
+            Holberton School News goes here
+          </p>
+        </BodySection>
+      </main>
+
+      <Footer
+        user={user}
+      />
+    </div>
   );
 }
 
