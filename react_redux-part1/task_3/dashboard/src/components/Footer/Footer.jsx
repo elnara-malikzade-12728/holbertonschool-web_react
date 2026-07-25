@@ -1,17 +1,15 @@
+import { useSelector } from 'react-redux';
+
 import {
   getCurrentYear,
   getFooterCopy,
 } from '../../utils/utils';
 
-const defaultUser = {
-  email: '',
-  password: '',
-  isLoggedIn: false,
-};
+function Footer() {
+  const isLoggedIn = useSelector(
+    (state) => state.auth.isLoggedIn,
+  );
 
-function Footer({
-  user = defaultUser,
-}) {
   return (
     <footer
       className="
@@ -35,11 +33,11 @@ function Footer({
         Copyright {getCurrentYear()} -{' '}
         {getFooterCopy(false)}
 
-        {user?.isLoggedIn && (
+        {isLoggedIn && (
           <>
-            {'|'}
+            {' | '}
             <a
-              href="#"
+              href="#contact"
               className="
                 text-purple-400
                 no-underline

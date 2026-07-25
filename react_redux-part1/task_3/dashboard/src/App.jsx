@@ -4,6 +4,10 @@ import {
   useReducer,
 } from 'react';
 import axios from 'axios';
+import {
+  useDispatch,
+  useSelector,
+} from 'react-redux';
 
 import Header from './components/Header/Header';
 import Login from './pages/Login/Login';
@@ -17,6 +21,9 @@ import BodySection from
 import BodySectionWithMarginBottom from
   './components/BodySectionWithMarginBottom/BodySectionWithMarginBottom';
 import {
+  logout,
+} from './features/auth/authSlice.js';
+import {
   getLatestNotification,
 } from './utils/utils';
 import {
@@ -26,21 +33,27 @@ import {
 } from './appReducer';
 
 function App() {
-  const [state, dispatch] = useReducer(
+  const [state, appDispatch] = useReducer(
     appReducer,
     initialState,
   );
 
+  const reduxDispatch = useDispatch();
+
+  const isLoggedIn = useSelector(
+    (reduxState) =>
+      reduxState.auth.isLoggedIn,
+  );
+
   const {
     displayDrawer,
-    user,
     notifications,
     courses,
   } = state;
 
   const handleDisplayDrawer =
     useCallback(() => {
-      dispatch({
+      appDispatch({
         type: APP_ACTIONS.TOGGLE_DRAWER,
         displayDrawer: true,
       });
@@ -48,28 +61,20 @@ function App() {
 
   const handleHideDrawer =
     useCallback(() => {
-      dispatch({
+      appDispatch({
         type: APP_ACTIONS.TOGGLE_DRAWER,
         displayDrawer: false,
       });
     }, []);
 
-  const logIn = useCallback(
-    (email, password) => {
-      dispatch({
-        type: APP_ACTIONS.LOGIN,
-        email,
-        password,
-      });
-    },
-    [],
-  );
-
   const logOut = useCallback(() => {
-    dispatch({
-      type: APP_ACTIONS.LOGOUT,
+    reduxDispatch(logout());
+
+    appDispatch({
+      type: APP_ACTIONS.SET_COURSES,
+      courses: [],
     });
-  }, []);
+  }, [reduxDispatch]);
 
   const markNotificationAsRead =
     useCallback((id) => {
@@ -77,7 +82,7 @@ function App() {
         `Notification ${id} has been marked as read`,
       );
 
-      dispatch({
+      appDispatch({
         type:
           APP_ACTIONS.MARK_NOTIFICATION_READ,
         id,
@@ -122,7 +127,7 @@ function App() {
             },
           );
 
-        dispatch({
+        appDispatch({
           type:
             APP_ACTIONS.SET_NOTIFICATIONS,
           notifications:
@@ -130,7 +135,7 @@ function App() {
         });
       } catch (error) {
         if (isMounted) {
-          dispatch({
+          appDispatch({
             type:
               APP_ACTIONS.SET_NOTIFICATIONS,
             notifications: [],
@@ -150,8 +155,8 @@ function App() {
     let isMounted = true;
 
     const fetchCourses = async () => {
-      if (!user.isLoggedIn) {
-        dispatch({
+      if (!isLoggedIn) {
+        appDispatch({
           type: APP_ACTIONS.SET_COURSES,
           courses: [],
         });
@@ -175,13 +180,13 @@ function App() {
         const fetchedCourses =
           Array.isArray(data) ? data : [];
 
-        dispatch({
+        appDispatch({
           type: APP_ACTIONS.SET_COURSES,
           courses: fetchedCourses,
         });
       } catch (error) {
         if (isMounted) {
-          dispatch({
+          appDispatch({
             type: APP_ACTIONS.SET_COURSES,
             courses: [],
           });
@@ -194,7 +199,7 @@ function App() {
     return () => {
       isMounted = false;
     };
-  }, [user.isLoggedIn]);
+  }, [isLoggedIn]);
 
   useEffect(() => {
     const handleKeyDown = (event) => {
@@ -250,13 +255,10 @@ function App() {
         />
       </div>
 
-      <Header
-        user={user}
-        logOut={logOut}
-      />
+      <Header />
 
       <main className="flex flex-1 flex-col">
-        {user.isLoggedIn ? (
+        {isLoggedIn ? (
           <BodySectionWithMarginBottom
             title="Course list"
           >
@@ -266,11 +268,7 @@ function App() {
           <BodySectionWithMarginBottom
             title="Log in to continue"
           >
-            <Login
-              logIn={logIn}
-              email={user.email}
-              password={user.password}
-            />
+            <Login />
           </BodySectionWithMarginBottom>
         )}
 
@@ -288,7 +286,7 @@ function App() {
         </BodySection>
       </main>
 
-      <Footer user={user} />
+      <Footer />
     </div>
   );
 }

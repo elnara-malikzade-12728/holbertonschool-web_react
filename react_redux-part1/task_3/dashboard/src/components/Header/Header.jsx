@@ -11,13 +11,19 @@ import {
 function Header() {
   const dispatch = useDispatch();
 
-  const user = useSelector(
-    (state) => state.auth.user,
+  const auth = useSelector(
+    (state) => state.auth,
   );
 
-  const isLoggedIn = useSelector(
-    (state) => state.auth.isLoggedIn,
-  );
+  const user = auth?.user ?? {
+    email: '',
+    password: '',
+  };
+
+  const isLoggedIn =
+    auth?.isLoggedIn ??
+    user?.isLoggedIn ??
+    false;
 
   const handleLogout = (event) => {
     event.preventDefault();
@@ -86,7 +92,8 @@ function Header() {
               min-[912px]:text-sm
             "
           >
-            Welcome {user.email}{' '}
+            Welcome{' '}
+            <strong>{user.email}</strong>{' '}
 
             <a
               href="#logout"
