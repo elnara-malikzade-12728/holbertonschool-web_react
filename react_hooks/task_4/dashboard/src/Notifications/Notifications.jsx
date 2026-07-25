@@ -3,14 +3,21 @@ import closeButton from '../assets/close-button.png';
 import NotificationItem from './NotificationItem';
 
 function Notifications({
+  notifications = [],
   listNotifications = [],
   displayDrawer = false,
   handleDisplayDrawer = () => {},
   handleHideDrawer = () => {},
   markNotificationAsRead = () => {},
 }) {
+  const notificationList =
+    notifications.length > 0
+      ? notifications
+      : listNotifications;
+
   const shouldBounce =
-    listNotifications.length > 0 && !displayDrawer;
+    notificationList.length > 0 &&
+    !displayDrawer;
 
   return (
     <div
@@ -40,6 +47,17 @@ function Notifications({
           ${shouldBounce ? 'animate-bounce' : ''}
         `}
         onClick={handleDisplayDrawer}
+        onKeyDown={(event) => {
+          if (
+            event.key === 'Enter' ||
+            event.key === ' '
+          ) {
+            event.preventDefault();
+            handleDisplayDrawer();
+          }
+        }}
+        role="button"
+        tabIndex={0}
       >
         Your notifications
       </p>
@@ -106,7 +124,7 @@ function Notifications({
             />
           </button>
 
-          {listNotifications.length === 0 ? (
+          {notificationList.length === 0 ? (
             <p
               className="
                 pr-8
@@ -141,16 +159,20 @@ function Notifications({
                   min-[912px]:pl-4
                 "
               >
-                {listNotifications.map((notification) => (
-                  <NotificationItem
-                    key={notification.id}
-                    id={notification.id}
-                    type={notification.type}
-                    value={notification.value}
-                    html={notification.html}
-                    markAsRead={markNotificationAsRead}
-                  />
-                ))}
+                {notificationList.map(
+                  (notification) => (
+                    <NotificationItem
+                      key={notification.id}
+                      id={notification.id}
+                      type={notification.type}
+                      value={notification.value}
+                      html={notification.html}
+                      markAsRead={
+                        markNotificationAsRead
+                      }
+                    />
+                  ),
+                )}
               </ul>
             </>
           )}
