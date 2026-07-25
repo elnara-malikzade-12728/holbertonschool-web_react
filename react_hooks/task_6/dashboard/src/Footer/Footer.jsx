@@ -1,52 +1,58 @@
 import {
-  getCurrentYear,
-  getFooterCopy,
-} from '../utils/utils';
+  render,
+  screen,
+} from '@testing-library/react';
+import Footer from './Footer';
 
-function Footer({
-  user = {
-    email: '',
-    password: '',
-    isLoggedIn: false,
-  },
-}) {
-  return (
-    <footer
-      className="
-        App-footer
-        mx-3
-        mt-auto
-        border-t-2
-        border-main
-        px-2
-        py-2
-        text-center
-        text-[9px]
-        italic
-        min-[520px]:mx-5
-        min-[520px]:text-[10px]
-        min-[912px]:mx-9
-        min-[912px]:text-[7px]
-      "
-    >
-      <p>
-        Copyright {getCurrentYear()} -{' '}
-        {getFooterCopy(false)}
+describe('Footer component tests', () => {
+  test('renders Footer without crashing', () => {
+    render(<Footer />);
+  });
 
-        {user.isLoggedIn && (
-          <>
-            {' | '}
-            <a
-              href="#contact"
-              className="underline"
-            >
-              Contact us
-            </a>
-          </>
-        )}
-      </p>
-    </footer>
-  );
-}
+  test('renders the correct copyright text', () => {
+    render(<Footer />);
 
-export default Footer;
+    const currentYear = new Date().getFullYear();
+
+    expect(
+      screen.getByText(
+        new RegExp(
+          `Copyright ${currentYear} - Holberton School`,
+          'i',
+        ),
+      ),
+    ).toBeInTheDocument();
+  });
+
+  test('does not display Contact us when user is logged out', () => {
+    const user = {
+      email: '',
+      password: '',
+      isLoggedIn: false,
+    };
+
+    render(<Footer user={user} />);
+
+    expect(
+      screen.queryByRole('link', {
+        name: /contact us/i,
+      }),
+    ).not.toBeInTheDocument();
+  });
+
+  test('displays Contact us when user is logged in', () => {
+    const user = {
+      email: 'student@example.com',
+      password: 'password123',
+      isLoggedIn: true,
+    };
+
+    render(<Footer user={user} />);
+
+    expect(
+      screen.getByRole('link', {
+        name: /contact us/i,
+      }),
+    ).toBeInTheDocument();
+  });
+});

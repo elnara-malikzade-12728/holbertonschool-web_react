@@ -2,6 +2,8 @@ import WithLogging from '../HOC/WithLogging';
 import useLogin from '../hooks/useLogin';
 
 function Login({
+  email: initialEmail = '',
+  password: initialPassword = '',
   logIn = () => {},
 }) {
   const {
@@ -11,7 +13,11 @@ function Login({
     handleChangeEmail,
     handleChangePassword,
     handleLoginSubmit,
-  } = useLogin(logIn);
+  } = useLogin(
+    logIn,
+    initialEmail,
+    initialPassword,
+  );
 
   return (
     <div

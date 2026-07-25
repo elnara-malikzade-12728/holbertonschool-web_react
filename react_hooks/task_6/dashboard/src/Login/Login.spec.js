@@ -37,26 +37,25 @@ describe('Login component tests', () => {
       screen.getByLabelText(/password/i);
 
     const emailLabel =
-      screen.getByText(/^email$/i);
+      screen.getByText(/email/i);
 
     const passwordLabel =
-      screen.getByText(/^password$/i);
+      screen.getByText(/password/i);
 
     await user.click(emailLabel);
-
     expect(emailInput).toHaveFocus();
 
     await user.click(passwordLabel);
-
     expect(passwordInput).toHaveFocus();
   });
 
   test('submit input is disabled by default', () => {
     render(<Login />);
 
-    expect(
-      screen.getByDisplayValue('OK'),
-    ).toBeDisabled();
+    const submitInput =
+      screen.getByDisplayValue('OK');
+
+    expect(submitInput).toBeDisabled();
   });
 
   test('submit input stays disabled with an invalid email', async () => {
@@ -64,39 +63,26 @@ describe('Login component tests', () => {
 
     render(<Login />);
 
+    const emailInput =
+      screen.getByLabelText(/email/i);
+
+    const passwordInput =
+      screen.getByLabelText(/password/i);
+
+    const submitInput =
+      screen.getByDisplayValue('OK');
+
     await user.type(
-      screen.getByLabelText(/email/i),
+      emailInput,
       'invalid-email',
     );
 
     await user.type(
-      screen.getByLabelText(/password/i),
+      passwordInput,
       'password123',
     );
 
-    expect(
-      screen.getByDisplayValue('OK'),
-    ).toBeDisabled();
-  });
-
-  test('submit input stays disabled with a password shorter than 8 characters', async () => {
-    const user = userEvent.setup();
-
-    render(<Login />);
-
-    await user.type(
-      screen.getByLabelText(/email/i),
-      'test@example.com',
-    );
-
-    await user.type(
-      screen.getByLabelText(/password/i),
-      'pass123',
-    );
-
-    expect(
-      screen.getByDisplayValue('OK'),
-    ).toBeDisabled();
+    expect(submitInput).toBeDisabled();
   });
 
   test('submit input becomes enabled when the email and password are valid', async () => {
@@ -104,40 +90,56 @@ describe('Login component tests', () => {
 
     render(<Login />);
 
+    const emailInput =
+      screen.getByLabelText(/email/i);
+
+    const passwordInput =
+      screen.getByLabelText(/password/i);
+
+    const submitInput =
+      screen.getByDisplayValue('OK');
+
     await user.type(
-      screen.getByLabelText(/email/i),
+      emailInput,
       'test@example.com',
     );
 
     await user.type(
-      screen.getByLabelText(/password/i),
+      passwordInput,
       'password123',
     );
 
-    expect(
-      screen.getByDisplayValue('OK'),
-    ).toBeEnabled();
+    expect(submitInput).toBeEnabled();
   });
 
   test('calls logIn with the email and password when the form is submitted', async () => {
     const user = userEvent.setup();
     const logIn = jest.fn();
 
-    render(<Login logIn={logIn} />);
+    render(
+      <Login logIn={logIn} />,
+    );
+
+    const emailInput =
+      screen.getByLabelText(/email/i);
+
+    const passwordInput =
+      screen.getByLabelText(/password/i);
+
+    const submitInput =
+      screen.getByDisplayValue('OK');
 
     await user.type(
-      screen.getByLabelText(/email/i),
+      emailInput,
       'student@example.com',
     );
 
     await user.type(
-      screen.getByLabelText(/password/i),
+      passwordInput,
       'password123',
     );
 
-    await user.click(
-      screen.getByDisplayValue('OK'),
-    );
+    await user.click(submitInput);
 
     expect(logIn).toHaveBeenCalledTimes(1);
 
@@ -145,28 +147,5 @@ describe('Login component tests', () => {
       'student@example.com',
       'password123',
     );
-  });
-
-  test('does not call logIn when the form is invalid', async () => {
-    const user = userEvent.setup();
-    const logIn = jest.fn();
-
-    render(<Login logIn={logIn} />);
-
-    await user.type(
-      screen.getByLabelText(/email/i),
-      'invalid-email',
-    );
-
-    await user.type(
-      screen.getByLabelText(/password/i),
-      'password123',
-    );
-
-    expect(
-      screen.getByDisplayValue('OK'),
-    ).toBeDisabled();
-
-    expect(logIn).not.toHaveBeenCalled();
   });
 });

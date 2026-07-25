@@ -10,23 +10,26 @@ export const APP_ACTIONS = {
 
 export const initialState = {
   displayDrawer: true,
+
   user: {
     email: '',
     password: '',
     isLoggedIn: false,
   },
+
   notifications: [],
   courses: [],
 };
 
 export function appReducer(
   state = initialState,
-  action,
+  action = {},
 ) {
   switch (action.type) {
     case APP_ACTIONS.LOGIN:
       return {
         ...state,
+
         user: {
           email: action.payload.email,
           password: action.payload.password,
@@ -37,31 +40,31 @@ export function appReducer(
     case APP_ACTIONS.LOGOUT:
       return {
         ...state,
+
         user: {
           email: '',
           password: '',
           isLoggedIn: false,
         },
+
         courses: [],
       };
 
     case APP_ACTIONS.TOGGLE_DRAWER:
       return {
         ...state,
-        displayDrawer:
-          typeof action.payload === 'boolean'
-            ? action.payload
-            : !state.displayDrawer,
+        displayDrawer: action.payload,
       };
 
     case APP_ACTIONS.MARK_NOTIFICATION_READ:
       return {
         ...state,
+
         notifications:
           state.notifications.filter(
             (notification) =>
-              String(notification.id)
-              !== String(action.payload),
+              notification.id !==
+              action.payload,
           ),
       };
 

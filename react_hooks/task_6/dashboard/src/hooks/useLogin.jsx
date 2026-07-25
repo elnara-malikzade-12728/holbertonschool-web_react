@@ -1,34 +1,60 @@
-import { useState } from 'react';
+import {
+  useCallback,
+  useMemo,
+  useState,
+} from 'react';
 
-function useLogin(onLogin = () => {}) {
+function useLogin(onLogin) {
   const [email, setEmail] = useState('');
   const [password, setPassword] =
     useState('');
 
-  const emailRegex =
-    /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  const isValidEmail = useCallback(
+    (value) => {
+      const emailPattern =
+        /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-  const enableSubmit =
-    emailRegex.test(email)
-    && password.length >= 8;
+      return emailPattern.test(value);
+    },
+    [],
+  );
 
-  const handleChangeEmail = (event) => {
-    setEmail(event.target.value);
-  };
+  const enableSubmit = useMemo(
+    () =>
+      isValidEmail(email) &&
+      password.length >= 8,
+    [email, password, isValidEmail],
+  );
 
-  const handleChangePassword = (event) => {
-    setPassword(event.target.value);
-  };
+  const handleChangeEmail = useCallback(
+    (event) => {
+      setEmail(event.target.value);
+    },
+    [],
+  );
 
-  const handleLoginSubmit = (event) => {
-    event.preventDefault();
+  const handleChangePassword =
+    useCallback((event) => {
+      setPassword(event.target.value);
+    }, []);
 
-    if (!enableSubmit) {
-      return;
-    }
+  const handleLoginSubmit = useCallback(
+    (event) => {
+      event.preventDefault();
 
-    onLogin(email, password);
-  };
+      if (!enableSubmit) {
+        return;
+      }
+
+      onLogin(email, password);
+    },
+    [
+      email,
+      password,
+      enableSubmit,
+      onLogin,
+    ],
+  );
 
   return {
     email,

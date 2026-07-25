@@ -43,7 +43,9 @@ describe('Header component', () => {
     );
 
     expect(
-      document.querySelector('#logoutSection'),
+      document.querySelector(
+        '#logoutSection',
+      ),
     ).not.toBeInTheDocument();
   });
 
@@ -62,7 +64,9 @@ describe('Header component', () => {
     );
 
     expect(
-      document.querySelector('#logoutSection'),
+      document.querySelector(
+        '#logoutSection',
+      ),
     ).toBeInTheDocument();
 
     expect(
