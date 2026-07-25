@@ -1,5 +1,5 @@
-import WithLogging from '../HOC/WithLogging';
-import useLogin from '../hooks/useLogin';
+import WithLogging from '../../components/HOC/WithLogging';
+import useLogin from '../../hooks/useLogin';
 
 function Login({
   logIn = () => {},

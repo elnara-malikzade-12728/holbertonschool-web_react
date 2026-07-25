@@ -1,7 +1,7 @@
 import {
   getCurrentYear,
   getFooterCopy,
-} from '../utils/utils';
+} from '../../utils/utils';
 
 function Footer({
   user = {

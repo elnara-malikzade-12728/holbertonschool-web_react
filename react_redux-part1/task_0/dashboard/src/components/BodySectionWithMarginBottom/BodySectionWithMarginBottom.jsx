@@ -1,4 +1,4 @@
-import BodySection from './BodySection';
+import BodySection from '../BodySection/BodySection';
 
 function BodySectionWithMarginBottom({
   title = '',

@@ -1,5 +1,5 @@
 import { memo } from 'react';
-import closeButton from '../assets/close-button.png';
+import closeButton from '../../assets/close-button.png';
 import NotificationItem from '../NotificationItem/NotificationItem';
 
 function Notifications({

@@ -6,16 +6,16 @@ import {
 import axios from 'axios';
 
 import Header from './components/Header/Header';
-import Login from './Login/Login';
-import Footer from './Footer/Footer';
+import Login from './pages/Login/Login';
+import Footer from './components/Footer/Footer';
 import Notifications from
-  './HOC/Notifications/Notifications';
+  './components/Notifications/Notifications';
 import CourseList from
-  './CourseList/CourseList';
+  './pages/CourseList/CourseList';
 import BodySection from
   './components/BodySection/BodySection';
 import BodySectionWithMarginBottom from
-  './components/BodySection/BodySectionWithMarginBottom';
+  './components/BodySectionWithMarginBottom/BodySectionWithMarginBottom';
 import {
   getLatestNotification,
 } from './utils/utils';
