@@ -3,12 +3,14 @@ import {
   getFooterCopy,
 } from '../../utils/utils';
 
+const defaultUser = {
+  email: '',
+  password: '',
+  isLoggedIn: false,
+};
+
 function Footer({
-  user = {
-    email: '',
-    password: '',
-    isLoggedIn: false,
-  },
+  user = defaultUser,
 }) {
   return (
     <footer

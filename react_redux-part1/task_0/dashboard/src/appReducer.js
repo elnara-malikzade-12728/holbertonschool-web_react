@@ -2,37 +2,50 @@ export const APP_ACTIONS = {
   LOGIN: 'LOGIN',
   LOGOUT: 'LOGOUT',
   TOGGLE_DRAWER: 'TOGGLE_DRAWER',
+  SET_NOTIFICATIONS: 'SET_NOTIFICATIONS',
   MARK_NOTIFICATION_READ:
     'MARK_NOTIFICATION_READ',
-  SET_NOTIFICATIONS: 'SET_NOTIFICATIONS',
   SET_COURSES: 'SET_COURSES',
 };
 
 export const initialState = {
   displayDrawer: true,
+
   user: {
     email: '',
     password: '',
     isLoggedIn: false,
   },
+
   notifications: [],
   courses: [],
 };
 
 export function appReducer(
   state = initialState,
-  action,
+  action = {},
 ) {
   switch (action.type) {
-    case APP_ACTIONS.LOGIN:
+    case APP_ACTIONS.LOGIN: {
+      const email =
+        action.email ??
+        action.payload?.email ??
+        '';
+
+      const password =
+        action.password ??
+        action.payload?.password ??
+        '';
+
       return {
         ...state,
         user: {
-          email: action.payload.email,
-          password: action.payload.password,
+          email,
+          password,
           isLoggedIn: true,
         },
       };
+    }
 
     case APP_ACTIONS.LOGOUT:
       return {
@@ -49,40 +62,47 @@ export function appReducer(
       return {
         ...state,
         displayDrawer:
-          typeof action.payload === 'boolean'
-            ? action.payload
-            : !state.displayDrawer,
-      };
-
-    case APP_ACTIONS.MARK_NOTIFICATION_READ:
-      return {
-        ...state,
-        notifications:
-          state.notifications.filter(
-            (notification) =>
-              notification.id !== action.payload,
-          ),
+          action.displayDrawer ??
+          action.payload ??
+          false,
       };
 
     case APP_ACTIONS.SET_NOTIFICATIONS:
       return {
         ...state,
-        notifications: Array.isArray(
-          action.payload,
-        )
-          ? action.payload
-          : [],
+        notifications:
+          action.notifications ??
+          action.payload ??
+          [],
       };
+
+    case APP_ACTIONS.MARK_NOTIFICATION_READ: {
+      const notificationId =
+        action.id ?? action.payload;
+
+      return {
+        ...state,
+        notifications:
+          state.notifications.filter(
+            (notification) =>
+              notification.id !==
+              notificationId,
+          ),
+      };
+    }
 
     case APP_ACTIONS.SET_COURSES:
       return {
         ...state,
-        courses: Array.isArray(action.payload)
-          ? action.payload
-          : [],
+        courses:
+          action.courses ??
+          action.payload ??
+          [],
       };
 
     default:
       return state;
   }
 }
+
+export default appReducer;
