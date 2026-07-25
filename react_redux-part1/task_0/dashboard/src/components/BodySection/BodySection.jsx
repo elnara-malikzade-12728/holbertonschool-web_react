@@ -12,10 +12,10 @@ function BodySection({ title = '', children = null }) {
       <h2
         className="
           mb-2
-          text-sm
+          text-lg
           font-bold
           min-[520px]:text-base
-          min-[912px]:text-[8px]
+          min-[912px]:text-base
         "
       >
         {title}

@@ -226,13 +226,17 @@ function App() {
             />
           </BodySectionWithMarginBottom>
         ) : (
-          <Login logIn={logIn} />
+          <BodySectionWithMarginBottom
+            title="Log in to continue"
+          >
+            <Login logIn={logIn} />
+          </BodySectionWithMarginBottom>
         )}
 
         <BodySection
           title="News from the School"
         >
-          <p>
+          <p  className="text-sm min-[912px]:text-xs">
             Holberton School News goes here
           </p>
         </BodySection>
