@@ -151,7 +151,7 @@ export function App() {
     return () => {
       isMounted = false;
     };
-  }, [user]);
+  }, [user.isLoggedIn]);
 
   const handleDisplayDrawer =
     useCallback(() => {
@@ -188,7 +188,7 @@ export function App() {
           ),
       );
 
-      console.log(
+      globalThis.console.log(
         `Notification ${id} has been marked as read`,
       );
     }, []);
