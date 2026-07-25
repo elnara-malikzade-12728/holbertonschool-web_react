@@ -72,7 +72,7 @@ function Header() {
               min-[912px]:text-sm
             "
           >
-            Welcome <strong>{user.email}</strong>{' '}
+            Welcome {user.email}{' '}
             <a
               href="#logout"
               onClick={handleLogout}
