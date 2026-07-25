@@ -23,7 +23,7 @@ const defaultUser = {
   isLoggedIn: false,
 };
 
-export function App() {
+function App() {
   const [displayDrawer, setDisplayDrawer] =
     useState(true);
 
@@ -194,5 +194,5 @@ export function App() {
     </AppContext.Provider>
   );
 }
-
+export { App };
 export default App;
