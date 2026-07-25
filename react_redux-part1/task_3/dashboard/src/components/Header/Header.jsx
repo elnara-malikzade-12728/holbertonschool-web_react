@@ -11,10 +11,16 @@ import {
 function Header() {
   const dispatch = useDispatch();
 
-  const {
-    user,
-    isLoggedIn,
-  } = useSelector((state) => state.auth);
+  const auth = useSelector(
+    (state) => state.auth,
+  );
+
+  const user = auth.user;
+
+  const isLoggedIn =
+    auth.isLoggedIn ??
+    user?.isLoggedIn ??
+    false;
 
   const handleLogout = (event) => {
     event.preventDefault();
