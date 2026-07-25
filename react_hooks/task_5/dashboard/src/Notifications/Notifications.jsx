@@ -3,23 +3,17 @@ import closeButton from '../assets/close-button.png';
 import NotificationItem from './NotificationItem';
 
 function Notifications({
-  listNotifications = [],
   notifications = [],
+  listNotifications = [],
   displayDrawer = false,
   handleDisplayDrawer = () => {},
   handleHideDrawer = () => {},
   markNotificationAsRead = () => {},
 }) {
-  /*
-   * Task versions may pass either:
-   *   listNotifications
-   * or:
-   *   notifications
-   */
   const notificationList =
-    listNotifications.length > 0
-      ? listNotifications
-      : notifications;
+    notifications.length > 0
+      ? notifications
+      : listNotifications;
 
   const shouldBounce =
     notificationList.length > 0 &&
