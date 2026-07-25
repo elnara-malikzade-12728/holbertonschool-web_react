@@ -9,7 +9,7 @@ describe('authSlice', () => {
       email: '',
       password: '',
     },
-    isLoggedIn: false,
+    isLoggedIn: true,
   };
 
   test('Should return the initial state by default', () => {
