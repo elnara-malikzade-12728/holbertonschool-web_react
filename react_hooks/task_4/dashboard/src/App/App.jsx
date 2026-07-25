@@ -6,20 +6,15 @@ import {
 } from 'react';
 import axios from 'axios';
 
-import Notifications from
-  '../Notifications/Notifications';
+import Notifications from '../Notifications/Notifications';
 import Footer from '../Footer/Footer';
 import Header from '../Header/Header';
 import Login from '../Login/Login';
-import CourseList from
-  '../CourseList/CourseList';
-import {
-  getLatestNotification,
-} from '../utils/utils';
+import CourseList from '../CourseList/CourseList';
+import { getLatestNotification } from '../utils/utils';
 import BodySectionWithMarginBottom from
   '../BodySection/BodySectionWithMarginBottom';
-import BodySection from
-  '../BodySection/BodySection';
+import BodySection from '../BodySection/BodySection';
 import AppContext from '../Context/context';
 
 const defaultUser = {
@@ -29,25 +24,17 @@ const defaultUser = {
 };
 
 export function App() {
-  const [
-    displayDrawer,
-    setDisplayDrawer,
-  ] = useState(true);
+  const [displayDrawer, setDisplayDrawer] =
+    useState(true);
 
-  const [
-    user,
-    setUser,
-  ] = useState(defaultUser);
+  const [user, setUser] =
+    useState(defaultUser);
 
-  const [
-    notifications,
-    setNotifications,
-  ] = useState([]);
+  const [notifications, setNotifications] =
+    useState([]);
 
-  const [
-    courses,
-    setCourses,
-  ] = useState([]);
+  const [courses, setCourses] =
+    useState([]);
 
   useEffect(() => {
     let isMounted = true;
@@ -149,20 +136,22 @@ export function App() {
     });
   }, []);
 
-  const markNotificationAsRead =
-    useCallback((id) => {
-      console.log(
-        `Notification ${id} has been marked as read`,
-      );
-
+  const markNotificationAsRead = useCallback(
+    (id) => {
       setNotifications(
-        (previousNotifications) =>
-          previousNotifications.filter(
+        (currentNotifications) =>
+          currentNotifications.filter(
             (notification) =>
               notification.id !== id,
           ),
       );
-    }, []);
+
+      console.log(
+        `Notification ${id} has been marked as read`,
+      );
+    },
+    [],
+  );
 
   const contextValue = useMemo(
     () => ({
