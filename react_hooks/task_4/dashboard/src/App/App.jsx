@@ -17,26 +17,25 @@ import BodySectionWithMarginBottom from
 import BodySection from '../BodySection/BodySection';
 import AppContext from '../Context/context';
 
+const defaultUser = {
+  email: '',
+  password: '',
+  isLoggedIn: false,
+};
+
 export function App() {
-  // 1. Initialize state variables exactly per guidelines
   const [displayDrawer, setDisplayDrawer] =
     useState(true);
 
-  // Initialized with the default context user object
   const [user, setUser] =
-    useState({
-      email: '',
-      password: '',
-      isLoggedIn: false,
-    });
+    useState(defaultUser);
 
-  const [notifications, setNotifications] =
+  const [listNotifications, setListNotifications] =
     useState([]);
 
   const [courses, setCourses] =
     useState([]);
 
-  // Fetch notifications
   useEffect(() => {
     let isMounted = true;
 
@@ -47,9 +46,11 @@ export function App() {
           return;
         }
 
+        // Handles both plain arrays and response.data.notifications shapes safely
+        const dataPayload = response.data?.notifications || response.data;
         const notificationList =
-          Array.isArray(response.data)
-            ? response.data
+          Array.isArray(dataPayload)
+            ? dataPayload
             : [];
 
         const updatedNotifications =
@@ -70,7 +71,7 @@ export function App() {
             },
           );
 
-        setNotifications(
+        setListNotifications(
           updatedNotifications,
         );
       })
@@ -81,7 +82,6 @@ export function App() {
     };
   }, []);
 
-  // Fetch courses
   useEffect(() => {
     if (!user.isLoggedIn) {
       setCourses([]);
@@ -97,9 +97,10 @@ export function App() {
           return;
         }
 
+        const dataPayload = response.data?.courses || response.data;
         const courseList =
-          Array.isArray(response.data)
-            ? response.data
+          Array.isArray(dataPayload)
+            ? dataPayload
             : [];
 
         setCourses(courseList);
@@ -111,7 +112,6 @@ export function App() {
     };
   }, [user.isLoggedIn]);
 
-  // 2. Memoize callbacks for reference stability
   const handleDisplayDrawer = useCallback(() => {
     setDisplayDrawer(true);
   }, []);
@@ -137,7 +137,7 @@ export function App() {
   }, []);
 
   const markNotificationAsRead = useCallback((id) => {
-    setNotifications((prev) =>
+    setListNotifications((prev) =>
       prev.filter((notification) => notification.id !== id)
     );
 
@@ -146,7 +146,6 @@ export function App() {
     );
   }, []);
 
-  // 3. Memoize context value so reference doesn't break children re-renders
   const contextValue = useMemo(() => ({
     user,
     logOut,
@@ -156,7 +155,8 @@ export function App() {
     <AppContext.Provider value={contextValue}>
       <div className="App">
         <Notifications
-          notifications={notifications}
+          listNotifications={listNotifications}
+          notifications={listNotifications}
           handleHideDrawer={handleHideDrawer}
           handleDisplayDrawer={handleDisplayDrawer}
           displayDrawer={displayDrawer}
@@ -169,7 +169,11 @@ export function App() {
           <BodySectionWithMarginBottom
             title="Log in to continue"
           >
-            <Login logIn={logIn} />
+            <Login
+              logIn={logIn}
+              email={user.email}
+              password={user.password}
+            />
           </BodySectionWithMarginBottom>
         ) : (
           <BodySectionWithMarginBottom
