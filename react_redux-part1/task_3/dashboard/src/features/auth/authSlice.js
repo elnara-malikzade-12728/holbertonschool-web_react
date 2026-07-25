@@ -4,8 +4,8 @@ export const initialState = {
   user: {
     email: '',
     password: '',
-    isLoggedIn: false,
   },
+  isLoggedIn: false,
 };
 
 const authSlice = createSlice({
@@ -16,20 +16,18 @@ const authSlice = createSlice({
     login: (state, action) => {
       state.user.email = action.payload.email;
       state.user.password = action.payload.password;
-      state.user.isLoggedIn = true;
+      state.isLoggedIn = true;
     },
 
     logout: (state) => {
       state.user.email = '';
       state.user.password = '';
-      state.user.isLoggedIn = false;
+      state.isLoggedIn = false;
     },
   },
 });
 
-export const {
-  login,
-  logout,
-} = authSlice.actions;
+export const { login, logout } =
+  authSlice.actions;
 
 export default authSlice.reducer;

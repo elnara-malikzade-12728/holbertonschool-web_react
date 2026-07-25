@@ -1,11 +1,34 @@
+import {
+  useCallback,
+} from 'react';
+import {
+  useDispatch,
+} from 'react-redux';
+
 import WithLogging from '../../components/HOC/WithLogging';
+import {
+  login,
+} from '../../features/auth/authSlice.js';
 import useLogin from '../../hooks/useLogin';
 
 function Login({
   email: initialEmail = '',
   password: initialPassword = '',
-  logIn = () => {},
 }) {
+  const dispatch = useDispatch();
+
+  const logIn = useCallback(
+    (email, password) => {
+      dispatch(
+        login({
+          email,
+          password,
+        }),
+      );
+    },
+    [dispatch],
+  );
+
   const {
     email,
     password,

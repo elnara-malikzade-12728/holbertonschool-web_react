@@ -15,6 +15,10 @@ function Header() {
     (state) => state.auth.user,
   );
 
+  const isLoggedIn = useSelector(
+    (state) => state.auth.isLoggedIn,
+  );
+
   const handleLogout = (event) => {
     event.preventDefault();
     dispatch(logout());
@@ -73,7 +77,7 @@ function Header() {
           School Dashboard
         </h1>
 
-        {user.isLoggedIn && (
+        {isLoggedIn && (
           <div
             id="logoutSection"
             className="
