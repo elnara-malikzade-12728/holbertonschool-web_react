@@ -9,7 +9,7 @@ export const APP_ACTIONS = {
 };
 
 export const initialState = {
-  displayDrawer: true,
+  displayDrawer: false,
   user: {
     email: '',
     password: '',
@@ -60,21 +60,26 @@ export function appReducer(
         notifications:
           state.notifications.filter(
             (notification) =>
-              String(notification.id)
-              !== String(action.payload),
+              notification.id !== action.payload,
           ),
       };
 
     case APP_ACTIONS.SET_NOTIFICATIONS:
       return {
         ...state,
-        notifications: action.payload,
+        notifications: Array.isArray(
+          action.payload,
+        )
+          ? action.payload
+          : [],
       };
 
     case APP_ACTIONS.SET_COURSES:
       return {
         ...state,
-        courses: action.payload,
+        courses: Array.isArray(action.payload)
+          ? action.payload
+          : [],
       };
 
     default:

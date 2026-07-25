@@ -17,9 +17,6 @@ import BodySection from
 import BodySectionWithMarginBottom from
   './components/BodySectionWithMarginBottom/BodySectionWithMarginBottom';
 import {
-  getLatestNotification,
-} from './utils/utils';
-import {
   APP_ACTIONS,
   appReducer,
   initialState,
@@ -96,34 +93,23 @@ function App() {
           return;
         }
 
-        const data = Array.isArray(
-          response.data,
-        )
-          ? response.data
-          : [];
-
-        const formattedNotifications =
-          data.map((notification) => {
-            if (notification.id === 3) {
-              return {
-                ...notification,
-                html: {
-                  __html:
-                    getLatestNotification(),
-                },
-              };
-            }
-
-            return notification;
-          });
-
         dispatch({
           type:
             APP_ACTIONS.SET_NOTIFICATIONS,
-          payload: formattedNotifications,
+          payload: Array.isArray(response.data)
+            ? response.data
+            : [],
         });
       })
-      .catch(() => {});
+      .catch(() => {
+        if (isMounted) {
+          dispatch({
+            type:
+              APP_ACTIONS.SET_NOTIFICATIONS,
+            payload: [],
+          });
+        }
+      });
 
     return () => {
       isMounted = false;
@@ -146,14 +132,19 @@ function App() {
 
         dispatch({
           type: APP_ACTIONS.SET_COURSES,
-          payload: Array.isArray(
-            response.data,
-          )
+          payload: Array.isArray(response.data)
             ? response.data
             : [],
         });
       })
-      .catch(() => {});
+      .catch(() => {
+        if (isMounted) {
+          dispatch({
+            type: APP_ACTIONS.SET_COURSES,
+            payload: [],
+          });
+        }
+      });
 
     return () => {
       isMounted = false;
@@ -221,9 +212,7 @@ function App() {
           <BodySectionWithMarginBottom
             title="Course list"
           >
-            <CourseList
-              courses={courses}
-            />
+            <CourseList courses={courses} />
           </BodySectionWithMarginBottom>
         ) : (
           <BodySectionWithMarginBottom
@@ -236,7 +225,12 @@ function App() {
         <BodySection
           title="News from the School"
         >
-          <p  className="text-sm min-[912px]:text-xs">
+          <p
+            className="
+              text-sm
+              min-[912px]:text-xs
+            "
+          >
             Holberton School News goes here
           </p>
         </BodySection>
