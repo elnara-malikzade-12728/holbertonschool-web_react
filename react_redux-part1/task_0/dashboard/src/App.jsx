@@ -42,7 +42,7 @@ function App() {
     useCallback(() => {
       dispatch({
         type: APP_ACTIONS.TOGGLE_DRAWER,
-        payload: true,
+        displayDrawer: true,
       });
     }, []);
 
@@ -50,7 +50,7 @@ function App() {
     useCallback(() => {
       dispatch({
         type: APP_ACTIONS.TOGGLE_DRAWER,
-        payload: false,
+        displayDrawer: false,
       });
     }, []);
 
@@ -58,10 +58,8 @@ function App() {
     (email, password) => {
       dispatch({
         type: APP_ACTIONS.LOGIN,
-        payload: {
-          email,
-          password,
-        },
+        email,
+        password,
       });
     },
     [],
@@ -82,57 +80,66 @@ function App() {
       dispatch({
         type:
           APP_ACTIONS.MARK_NOTIFICATION_READ,
-        payload: id,
+        id,
       });
     }, []);
 
   useEffect(() => {
     let isMounted = true;
 
-    axios
-      .get('/notifications.json')
-      .then((response) => {
+    const fetchNotifications = async () => {
+      try {
+        const response = await axios.get(
+          '/notifications.json',
+        );
+
         if (!isMounted) {
           return;
         }
 
+        const data =
+          response.data?.notifications ??
+          response.data;
+
         const fetchedNotifications =
-          Array.isArray(response.data)
-            ? response.data
-            : [];
+          Array.isArray(data) ? data : [];
 
         const updatedNotifications =
           fetchedNotifications.map(
             (notification) => {
-              if (notification.id === 3) {
-                return {
-                  ...notification,
-                  html: {
-                    __html:
-                      getLatestNotification(),
-                  },
-                };
+              if (notification.id !== 3) {
+                return notification;
               }
 
-              return notification;
+              return {
+                ...notification,
+                type: 'urgent',
+                html: {
+                  __html:
+                    getLatestNotification(),
+                },
+              };
             },
           );
 
         dispatch({
           type:
             APP_ACTIONS.SET_NOTIFICATIONS,
-          payload: updatedNotifications,
+          notifications:
+            updatedNotifications,
         });
-      })
-      .catch(() => {
+      } catch (error) {
         if (isMounted) {
           dispatch({
             type:
               APP_ACTIONS.SET_NOTIFICATIONS,
-            payload: [],
+            notifications: [],
           });
         }
-      });
+      }
+    };
+
+    fetchNotifications();
 
     return () => {
       isMounted = false;
@@ -140,34 +147,49 @@ function App() {
   }, []);
 
   useEffect(() => {
-    if (!user.isLoggedIn) {
-      return undefined;
-    }
-
     let isMounted = true;
 
-    axios
-      .get('/courses.json')
-      .then((response) => {
+    const fetchCourses = async () => {
+      if (!user.isLoggedIn) {
+        dispatch({
+          type: APP_ACTIONS.SET_COURSES,
+          courses: [],
+        });
+
+        return;
+      }
+
+      try {
+        const response = await axios.get(
+          '/courses.json',
+        );
+
         if (!isMounted) {
           return;
         }
 
+        const data =
+          response.data?.courses ??
+          response.data;
+
+        const fetchedCourses =
+          Array.isArray(data) ? data : [];
+
         dispatch({
           type: APP_ACTIONS.SET_COURSES,
-          payload: Array.isArray(response.data)
-            ? response.data
-            : [],
+          courses: fetchedCourses,
         });
-      })
-      .catch(() => {
+      } catch (error) {
         if (isMounted) {
           dispatch({
             type: APP_ACTIONS.SET_COURSES,
-            payload: [],
+            courses: [],
           });
         }
-      });
+      }
+    };
+
+    fetchCourses();
 
     return () => {
       isMounted = false;
@@ -212,6 +234,9 @@ function App() {
       <div id="root-notifications">
         <Notifications
           notifications={notifications}
+          listNotifications={
+            notifications
+          }
           displayDrawer={displayDrawer}
           handleDisplayDrawer={
             handleDisplayDrawer
@@ -241,7 +266,11 @@ function App() {
           <BodySectionWithMarginBottom
             title="Log in to continue"
           >
-            <Login logIn={logIn} />
+            <Login
+              logIn={logIn}
+              email={user.email}
+              password={user.password}
+            />
           </BodySectionWithMarginBottom>
         )}
 
@@ -264,4 +293,5 @@ function App() {
   );
 }
 
+export { App };
 export default App;
