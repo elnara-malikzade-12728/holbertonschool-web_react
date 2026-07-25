@@ -70,7 +70,7 @@ function Login({
             min-[520px]:items-center
           "
         >
-          Email:
+          Email
 
           <input
             type="email"
@@ -106,7 +106,7 @@ function Login({
             min-[520px]:items-center
           "
         >
-          Password:
+          Password
 
           <input
             type="password"
