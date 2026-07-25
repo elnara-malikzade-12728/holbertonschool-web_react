@@ -1,7 +1,7 @@
 import authReducer, {
   login,
   logout,
-} from '../auth/authSlice';
+} from '../auth/authSlice.js';
 
 describe('authSlice', () => {
   const expectedInitialState = {
