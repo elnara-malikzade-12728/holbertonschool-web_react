@@ -5,15 +5,21 @@ import authReducer, {
 } from '../auth/authSlice';
 
 describe('authSlice', () => {
-  test('returns the correct initial state by default', () => {
+  test('returns the initial state by default', () => {
     expect(
       authReducer(undefined, {
         type: undefined,
       }),
-    ).toEqual(initialState);
+    ).toEqual({
+      user: {
+        email: '',
+        password: '',
+      },
+      isLoggedIn: false,
+    });
   });
 
-  test('updates the state when login is dispatched', () => {
+  test('updates state correctly with login action', () => {
     const credentials = {
       email: 'student@example.com',
       password: 'password123',
@@ -28,18 +34,18 @@ describe('authSlice', () => {
       user: {
         email: 'student@example.com',
         password: 'password123',
-        isLoggedIn: true,
       },
+      isLoggedIn: true,
     });
   });
 
-  test('resets the state when logout is dispatched', () => {
+  test('resets state correctly with logout action', () => {
     const loggedInState = {
       user: {
         email: 'student@example.com',
         password: 'password123',
-        isLoggedIn: true,
       },
+      isLoggedIn: true,
     };
 
     const state = authReducer(

@@ -1,13 +1,11 @@
-import {
-  createSlice,
-} from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit';
 
 export const initialState = {
   user: {
     email: '',
     password: '',
-    isLoggedIn: false,
   },
+  isLoggedIn: false,
 };
 
 const authSlice = createSlice({
@@ -16,20 +14,16 @@ const authSlice = createSlice({
 
   reducers: {
     login: (state, action) => {
-      const {
-        email,
-        password,
-      } = action.payload;
-
-      state.user.email = email;
-      state.user.password = password;
-      state.user.isLoggedIn = true;
+      state.user.email = action.payload.email;
+      state.user.password =
+        action.payload.password;
+      state.isLoggedIn = true;
     },
 
     logout: (state) => {
       state.user.email = '';
       state.user.password = '';
-      state.user.isLoggedIn = false;
+      state.isLoggedIn = false;
     },
   },
 });
