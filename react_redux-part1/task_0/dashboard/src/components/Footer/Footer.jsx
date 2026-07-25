@@ -34,21 +34,21 @@ function Footer({
       <p>
         Copyright {getCurrentYear()} -{' '}
         {getFooterCopy(false)}
-
-        {user.isLoggedIn && (
-          <>
-            {' | '}
-            <a
-              href="#contact"
-              className="underline"
-            >
-              Contact us
-            </a>
-          </>
-        )}
       </p>
+
+      {user.isLoggedIn && (
+        <p>
+          <a
+            href="#"
+            className="underline"
+          >
+            Contact us
+          </a>
+        </p>
+      )}
     </footer>
   );
 }
 
+export { Footer };
 export default Footer;
