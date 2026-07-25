@@ -1,17 +1,82 @@
+import { useState } from 'react';
 import WithLogging from '../HOC/WithLogging';
-import useLogin from '../hooks/useLogin';
 
 function Login({
+  email: initialEmail = '',
+  password: initialPassword = '',
   logIn = () => {},
 }) {
-  const {
-    email,
-    password,
-    enableSubmit,
-    handleChangeEmail,
-    handleChangePassword,
-    handleLoginSubmit,
-  } = useLogin(logIn);
+  const [formData, setFormData] = useState({
+    email: initialEmail,
+    password: initialPassword,
+  });
+
+  const [enableSubmit, setEnableSubmit] = useState(
+    false,
+  );
+
+  const isFormValid = (email, password) => {
+    const emailRegex =
+      /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    return (
+      emailRegex.test(email)
+      && password.length >= 8
+    );
+  };
+
+  const handleChangeEmail = (event) => {
+    const email = event.target.value;
+
+    setFormData((previousFormData) => {
+      const updatedFormData = {
+        ...previousFormData,
+        email,
+      };
+
+      setEnableSubmit(
+        isFormValid(
+          updatedFormData.email,
+          updatedFormData.password,
+        ),
+      );
+
+      return updatedFormData;
+    });
+  };
+
+  const handleChangePassword = (event) => {
+    const password = event.target.value;
+
+    setFormData((previousFormData) => {
+      const updatedFormData = {
+        ...previousFormData,
+        password,
+      };
+
+      setEnableSubmit(
+        isFormValid(
+          updatedFormData.email,
+          updatedFormData.password,
+        ),
+      );
+
+      return updatedFormData;
+    });
+  };
+
+  const handleLoginSubmit = (event) => {
+    event.preventDefault();
+
+    if (!enableSubmit) {
+      return;
+    }
+
+    logIn(
+      formData.email,
+      formData.password,
+    );
+  };
 
   return (
     <div
@@ -64,13 +129,13 @@ function Login({
             min-[520px]:items-center
           "
         >
-          Email
+          Email:
 
           <input
             type="email"
             id="email"
             name="email"
-            value={email}
+            value={formData.email}
             onChange={handleChangeEmail}
             className="
               h-7
@@ -100,13 +165,13 @@ function Login({
             min-[520px]:items-center
           "
         >
-          Password
+          Password:
 
           <input
             type="password"
             id="password"
             name="password"
-            value={password}
+            value={formData.password}
             onChange={handleChangePassword}
             className="
               h-7
