@@ -3,14 +3,14 @@ import closeButton from '../assets/close-button.png';
 import NotificationItem from './NotificationItem';
 
 function Notifications({
-  notifications = [],
+  listNotifications = [],
   displayDrawer = false,
   handleDisplayDrawer = () => {},
   handleHideDrawer = () => {},
   markNotificationAsRead = () => {},
 }) {
   const shouldBounce =
-    notifications.length > 0 && !displayDrawer;
+    listNotifications.length > 0 && !displayDrawer;
 
   return (
     <div
@@ -106,7 +106,7 @@ function Notifications({
             />
           </button>
 
-          {notifications.length === 0 ? (
+          {listNotifications.length === 0 ? (
             <p
               className="
                 pr-8
@@ -141,7 +141,7 @@ function Notifications({
                   min-[912px]:pl-4
                 "
               >
-                {notifications.map((notification) => (
+                {listNotifications.map((notification) => (
                   <NotificationItem
                     key={notification.id}
                     id={notification.id}

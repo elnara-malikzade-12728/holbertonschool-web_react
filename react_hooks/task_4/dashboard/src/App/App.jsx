@@ -30,7 +30,7 @@ export function App() {
   const [user, setUser] =
     useState(defaultUser);
 
-  const [notifications, setNotifications] =
+  const [listNotifications, setListNotifications] =
     useState([]);
 
   const [courses, setCourses] =
@@ -69,7 +69,7 @@ export function App() {
             },
           );
 
-        setNotifications(
+        setListNotifications(
           updatedNotifications,
         );
       })
@@ -134,8 +134,8 @@ export function App() {
   }, []);
 
   const markNotificationAsRead = useCallback((id) => {
-    setNotifications(prev =>
-      prev.filter(notification => notification.id !== id)
+    setListNotifications((prev) =>
+      prev.filter((notification) => notification.id !== id)
     );
 
     console.log(
@@ -152,7 +152,7 @@ export function App() {
     <AppContext.Provider value={contextValue}>
       <div className="App">
         <Notifications
-          notifications={notifications}
+          listNotifications={listNotifications}
           handleHideDrawer={handleHideDrawer}
           handleDisplayDrawer={handleDisplayDrawer}
           displayDrawer={displayDrawer}
