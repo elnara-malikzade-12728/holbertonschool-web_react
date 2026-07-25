@@ -5,15 +5,20 @@ import {
 } from 'react';
 import axios from 'axios';
 
-import Notifications from '../Notifications/Notifications';
+import Notifications from
+  '../Notifications/Notifications';
 import Footer from '../Footer/Footer';
 import Header from '../Header/Header';
 import Login from '../Login/Login';
-import CourseList from '../CourseList/CourseList';
-import { getLatestNotification } from '../utils/utils';
+import CourseList from
+  '../CourseList/CourseList';
+import {
+  getLatestNotification,
+} from '../utils/utils';
 import BodySectionWithMarginBottom from
   '../BodySection/BodySectionWithMarginBottom';
-import BodySection from '../BodySection/BodySection';
+import BodySection from
+  '../BodySection/BodySection';
 
 import {
   APP_ACTIONS,
@@ -75,8 +80,10 @@ function App() {
           );
 
         dispatch({
-          type: APP_ACTIONS.SET_NOTIFICATIONS,
-          payload: updatedNotifications,
+          type:
+            APP_ACTIONS.SET_NOTIFICATIONS,
+          notifications:
+            updatedNotifications,
         });
       } catch (error) {
         if (
@@ -105,7 +112,7 @@ function App() {
       if (!user.isLoggedIn) {
         dispatch({
           type: APP_ACTIONS.SET_COURSES,
-          payload: [],
+          courses: [],
         });
 
         return;
@@ -131,7 +138,7 @@ function App() {
 
         dispatch({
           type: APP_ACTIONS.SET_COURSES,
-          payload: coursesData,
+          courses: coursesData,
         });
       } catch (error) {
         if (
@@ -156,16 +163,18 @@ function App() {
   const handleDisplayDrawer =
     useCallback(() => {
       dispatch({
-        type: APP_ACTIONS.TOGGLE_DRAWER,
-        payload: true,
+        type:
+          APP_ACTIONS.TOGGLE_DRAWER,
+        displayDrawer: true,
       });
     }, []);
 
   const handleHideDrawer =
     useCallback(() => {
       dispatch({
-        type: APP_ACTIONS.TOGGLE_DRAWER,
-        payload: false,
+        type:
+          APP_ACTIONS.TOGGLE_DRAWER,
+        displayDrawer: false,
       });
     }, []);
 
@@ -173,10 +182,8 @@ function App() {
     (email, password) => {
       dispatch({
         type: APP_ACTIONS.LOGIN,
-        payload: {
-          email,
-          password,
-        },
+        email,
+        password,
       });
     },
     [],
@@ -192,8 +199,9 @@ function App() {
     useCallback((id) => {
       dispatch({
         type:
-          APP_ACTIONS.MARK_NOTIFICATION_READ,
-        payload: id,
+          APP_ACTIONS
+            .MARK_NOTIFICATION_READ,
+        id,
       });
 
       console['log'](
@@ -204,9 +212,13 @@ function App() {
   return (
     <div className="App">
       <Notifications
-        listNotifications={notifications}
+        listNotifications={
+          notifications
+        }
         notifications={notifications}
-        handleHideDrawer={handleHideDrawer}
+        handleHideDrawer={
+          handleHideDrawer
+        }
         handleDisplayDrawer={
           handleDisplayDrawer
         }
@@ -235,13 +247,18 @@ function App() {
         <BodySectionWithMarginBottom
           title="Course list"
         >
-          <CourseList courses={courses} />
+          <CourseList
+            courses={courses}
+          />
         </BodySectionWithMarginBottom>
       )}
 
-      <BodySection title="News from the School">
+      <BodySection
+        title="News from the School"
+      >
         <p>
-          Holberton School news goes here
+          Holberton School news goes
+          here
         </p>
       </BodySection>
 
