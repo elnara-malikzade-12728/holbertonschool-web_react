@@ -6,8 +6,11 @@ import {
 } from '../../utils/utils';
 
 function Footer() {
-  const isLoggedIn = useSelector(
-    (state) => state.auth.isLoggedIn,
+  const {
+    user,
+    isLoggedIn,
+  } = useSelector(
+    (state) => state.auth,
   );
 
   return (
@@ -38,6 +41,11 @@ function Footer() {
             {' | '}
             <a
               href="#contact"
+              title={
+                user?.email
+                  ? `Contact us as ${user.email}`
+                  : 'Contact us'
+              }
               className="
                 text-purple-400
                 no-underline
