@@ -14,7 +14,7 @@ import notificationsReducer, {
 describe('notificationsSlice', () => {
   const expectedInitialState = {
     notifications: [],
-    displayDrawer: true,
+    displayDrawer: false,
   };
 
   afterEach(() => {
