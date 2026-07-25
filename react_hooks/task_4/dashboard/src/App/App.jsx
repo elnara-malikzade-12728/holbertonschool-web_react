@@ -5,11 +5,6 @@ import {
   useState,
 } from 'react';
 import axios from 'axios';
-import {
-  StyleSheet,
-  css,
-} from 'aphrodite';
-
 import Notifications from
   '../Notifications/Notifications';
 import Footer from '../Footer/Footer';
@@ -26,11 +21,6 @@ import BodySection from
   '../BodySection/BodySection';
 import AppContext from '../Context/context';
 
-const styles = StyleSheet.create({
-  app: {
-    position: 'relative',
-  },
-});
 
 export function App() {
   const [
