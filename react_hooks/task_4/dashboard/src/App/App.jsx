@@ -17,25 +17,26 @@ import BodySectionWithMarginBottom from
 import BodySection from '../BodySection/BodySection';
 import AppContext from '../Context/context';
 
-const defaultUser = {
-  email: '',
-  password: '',
-  isLoggedIn: false,
-};
-
 export function App() {
+  // 1. Initialize state variables exactly per guidelines
   const [displayDrawer, setDisplayDrawer] =
     useState(true);
 
+  // Initialized with the default context user object
   const [user, setUser] =
-    useState(defaultUser);
+    useState({
+      email: '',
+      password: '',
+      isLoggedIn: false,
+    });
 
-  const [listNotifications, setListNotifications] =
+  const [notifications, setNotifications] =
     useState([]);
 
   const [courses, setCourses] =
     useState([]);
 
+  // Fetch notifications
   useEffect(() => {
     let isMounted = true;
 
@@ -69,7 +70,7 @@ export function App() {
             },
           );
 
-        setListNotifications(
+        setNotifications(
           updatedNotifications,
         );
       })
@@ -80,6 +81,7 @@ export function App() {
     };
   }, []);
 
+  // Fetch courses
   useEffect(() => {
     if (!user.isLoggedIn) {
       setCourses([]);
@@ -109,6 +111,7 @@ export function App() {
     };
   }, [user.isLoggedIn]);
 
+  // 2. Memoize callbacks for reference stability
   const handleDisplayDrawer = useCallback(() => {
     setDisplayDrawer(true);
   }, []);
@@ -134,7 +137,7 @@ export function App() {
   }, []);
 
   const markNotificationAsRead = useCallback((id) => {
-    setListNotifications((prev) =>
+    setNotifications((prev) =>
       prev.filter((notification) => notification.id !== id)
     );
 
@@ -143,6 +146,7 @@ export function App() {
     );
   }, []);
 
+  // 3. Memoize context value so reference doesn't break children re-renders
   const contextValue = useMemo(() => ({
     user,
     logOut,
@@ -152,7 +156,7 @@ export function App() {
     <AppContext.Provider value={contextValue}>
       <div className="App">
         <Notifications
-          listNotifications={listNotifications}
+          notifications={notifications}
           handleHideDrawer={handleHideDrawer}
           handleDisplayDrawer={handleDisplayDrawer}
           displayDrawer={displayDrawer}
