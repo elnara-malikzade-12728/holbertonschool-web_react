@@ -8,15 +8,15 @@ export const APP_ACTIONS = {
   SET_COURSES: 'SET_COURSES',
 };
 
+const defaultUser = {
+  email: '',
+  password: '',
+  isLoggedIn: false,
+};
+
 export const initialState = {
   displayDrawer: true,
-
-  user: {
-    email: '',
-    password: '',
-    isLoggedIn: false,
-  },
-
+  user: defaultUser,
   notifications: [],
   courses: [],
 };
@@ -26,59 +26,88 @@ export function appReducer(
   action = {},
 ) {
   switch (action.type) {
-    case APP_ACTIONS.LOGIN:
+    case APP_ACTIONS.LOGIN: {
+      const email =
+        action.email ??
+        action.payload?.email ??
+        '';
+
+      const password =
+        action.password ??
+        action.payload?.password ??
+        '';
+
       return {
         ...state,
-
         user: {
-          email: action.payload.email,
-          password: action.payload.password,
+          email,
+          password,
           isLoggedIn: true,
         },
       };
+    }
 
     case APP_ACTIONS.LOGOUT:
       return {
         ...state,
-
         user: {
-          email: '',
-          password: '',
-          isLoggedIn: false,
+          ...defaultUser,
         },
-
         courses: [],
       };
 
-    case APP_ACTIONS.TOGGLE_DRAWER:
+    case APP_ACTIONS.TOGGLE_DRAWER: {
+      const displayDrawer =
+        action.displayDrawer ??
+        action.payload ??
+        !state.displayDrawer;
+
       return {
         ...state,
-        displayDrawer: action.payload,
+        displayDrawer,
       };
+    }
 
-    case APP_ACTIONS.MARK_NOTIFICATION_READ:
+    case APP_ACTIONS.SET_NOTIFICATIONS: {
+      const notifications =
+        action.notifications ??
+        action.payload ??
+        [];
+
       return {
         ...state,
+        notifications: [...notifications],
+      };
+    }
 
+    case APP_ACTIONS.MARK_NOTIFICATION_READ: {
+      const notificationId =
+        action.id ??
+        action.notificationId ??
+        action.payload;
+
+      return {
+        ...state,
         notifications:
           state.notifications.filter(
             (notification) =>
               notification.id !==
-              action.payload,
+              notificationId,
           ),
       };
+    }
 
-    case APP_ACTIONS.SET_NOTIFICATIONS:
+    case APP_ACTIONS.SET_COURSES: {
+      const courses =
+        action.courses ??
+        action.payload ??
+        [];
+
       return {
         ...state,
-        notifications: action.payload,
+        courses: [...courses],
       };
-
-    case APP_ACTIONS.SET_COURSES:
-      return {
-        ...state,
-        courses: action.payload,
-      };
+    }
 
     default:
       return state;

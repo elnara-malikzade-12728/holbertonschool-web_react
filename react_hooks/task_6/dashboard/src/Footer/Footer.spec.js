@@ -3,7 +3,6 @@ import {
   screen,
 } from '@testing-library/react';
 import Footer from './Footer';
-import AppContext from '../Context/context';
 
 describe('Footer component tests', () => {
   test('renders Footer without crashing', () => {
@@ -26,20 +25,13 @@ describe('Footer component tests', () => {
   });
 
   test('does not display Contact us when user is logged out', () => {
-    const contextValue = {
-      user: {
-        email: '',
-        password: '',
-        isLoggedIn: false,
-      },
-      logOut: jest.fn(),
+    const user = {
+      email: '',
+      password: '',
+      isLoggedIn: false,
     };
 
-    render(
-      <AppContext.Provider value={contextValue}>
-        <Footer />
-      </AppContext.Provider>,
-    );
+    render(<Footer user={user} />);
 
     expect(
       screen.queryByRole('link', {
@@ -49,20 +41,13 @@ describe('Footer component tests', () => {
   });
 
   test('displays Contact us when user is logged in', () => {
-    const contextValue = {
-      user: {
-        email: 'student@example.com',
-        password: 'password123',
-        isLoggedIn: true,
-      },
-      logOut: jest.fn(),
+    const user = {
+      email: 'student@example.com',
+      password: 'password123',
+      isLoggedIn: true,
     };
 
-    render(
-      <AppContext.Provider value={contextValue}>
-        <Footer />
-      </AppContext.Provider>,
-    );
+    render(<Footer user={user} />);
 
     expect(
       screen.getByRole('link', {
