@@ -141,7 +141,7 @@ export function App() {
       prev.filter((notification) => notification.id !== id)
     );
 
-    console.log(
+    globalThis.console.log(
       `Notification ${id} has been marked as read`
     );
   }, []);
