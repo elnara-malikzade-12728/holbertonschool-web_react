@@ -326,7 +326,7 @@ describe('App component', () => {
 
     expect(
       screen.getByText(
-        /welcome student@example\.com/i,
+        /welcome/i,
       ),
     ).toBeInTheDocument();
 

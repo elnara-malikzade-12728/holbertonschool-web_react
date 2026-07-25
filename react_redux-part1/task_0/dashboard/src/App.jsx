@@ -17,6 +17,9 @@ import BodySection from
 import BodySectionWithMarginBottom from
   './components/BodySectionWithMarginBottom/BodySectionWithMarginBottom';
 import {
+  getLatestNotification,
+} from './utils/utils';
+import {
   APP_ACTIONS,
   appReducer,
   initialState,
@@ -93,12 +96,32 @@ function App() {
           return;
         }
 
+        const fetchedNotifications =
+          Array.isArray(response.data)
+            ? response.data
+            : [];
+
+        const updatedNotifications =
+          fetchedNotifications.map(
+            (notification) => {
+              if (notification.id === 3) {
+                return {
+                  ...notification,
+                  html: {
+                    __html:
+                      getLatestNotification(),
+                  },
+                };
+              }
+
+              return notification;
+            },
+          );
+
         dispatch({
           type:
             APP_ACTIONS.SET_NOTIFICATIONS,
-          payload: Array.isArray(response.data)
-            ? response.data
-            : [],
+          payload: updatedNotifications,
         });
       })
       .catch(() => {

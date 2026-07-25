@@ -9,7 +9,7 @@ export const APP_ACTIONS = {
 };
 
 export const initialState = {
-  displayDrawer: false,
+  displayDrawer: true,
   user: {
     email: '',
     password: '',
