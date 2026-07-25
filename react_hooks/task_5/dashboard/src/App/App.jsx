@@ -188,7 +188,7 @@ function App() {
           ),
       );
 
-      globalThis.console.log(
+      console['log'](
         `Notification ${id} has been marked as read`,
       );
     }, []);
