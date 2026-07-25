@@ -109,75 +109,54 @@ export function App() {
     };
   }, [user.isLoggedIn]);
 
-  const handleDisplayDrawer =
-    useCallback(() => {
-      setDisplayDrawer(true);
-    }, []);
+  const handleDisplayDrawer = useCallback(() => {
+    setDisplayDrawer(true);
+  }, []);
 
-  const handleHideDrawer =
-    useCallback(() => {
-      setDisplayDrawer(false);
-    }, []);
+  const handleHideDrawer = useCallback(() => {
+    setDisplayDrawer(false);
+  }, []);
 
-  const logIn = useCallback(
-    (email, password) => {
-      setUser({
-        email,
-        password,
-        isLoggedIn: true,
-      });
-    },
-    [],
-  );
-
-  const logOut = useCallback(() => {
+  const logIn = useCallback((email, password) => {
     setUser({
-      ...defaultUser,
+      email,
+      password,
+      isLoggedIn: true,
     });
   }, []);
 
-  const markNotificationAsRead = useCallback(
-    (id) => {
-      setNotifications(
-        (currentNotifications) =>
-          currentNotifications.filter(
-            (notification) =>
-              notification.id !== id,
-          ),
-      );
+  const logOut = useCallback(() => {
+    setUser({
+      email: '',
+      password: '',
+      isLoggedIn: false,
+    });
+  }, []);
 
-      console.log(
-        `Notification ${id} has been marked as read`,
-      );
-    },
-    [],
-  );
+  const markNotificationAsRead = useCallback((id) => {
+    setNotifications(prev =>
+      prev.filter(notification => notification.id !== id)
+    );
 
-  const contextValue = useMemo(
-    () => ({
-      user,
-      logOut,
-    }),
-    [user, logOut],
-  );
+    console.log(
+      `Notification ${id} has been marked as read`
+    );
+  }, []);
+
+  const contextValue = useMemo(() => ({
+    user,
+    logOut,
+  }), [user, logOut]);
 
   return (
-    <AppContext.Provider
-      value={contextValue}
-    >
+    <AppContext.Provider value={contextValue}>
       <div className="App">
         <Notifications
           notifications={notifications}
-          handleHideDrawer={
-            handleHideDrawer
-          }
-          handleDisplayDrawer={
-            handleDisplayDrawer
-          }
+          handleHideDrawer={handleHideDrawer}
+          handleDisplayDrawer={handleDisplayDrawer}
           displayDrawer={displayDrawer}
-          markNotificationAsRead={
-            markNotificationAsRead
-          }
+          markNotificationAsRead={markNotificationAsRead}
         />
 
         <Header />
@@ -192,15 +171,11 @@ export function App() {
           <BodySectionWithMarginBottom
             title="Course list"
           >
-            <CourseList
-              courses={courses}
-            />
+            <CourseList courses={courses} />
           </BodySectionWithMarginBottom>
         )}
 
-        <BodySection
-          title="News from the School"
-        >
+        <BodySection title="News from the School">
           <p>
             Holberton School news goes here
           </p>
