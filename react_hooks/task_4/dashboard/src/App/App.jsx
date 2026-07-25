@@ -5,6 +5,7 @@ import {
   useState,
 } from 'react';
 import axios from 'axios';
+
 import Notifications from
   '../Notifications/Notifications';
 import Footer from '../Footer/Footer';
@@ -21,6 +22,11 @@ import BodySection from
   '../BodySection/BodySection';
 import AppContext from '../Context/context';
 
+const defaultUser = {
+  email: '',
+  password: '',
+  isLoggedIn: false,
+};
 
 export function App() {
   const [
@@ -31,9 +37,7 @@ export function App() {
   const [
     user,
     setUser,
-  ] = useState({
-    ...AppContext.user,
-  });
+  ] = useState(defaultUser);
 
   const [
     notifications,
@@ -55,26 +59,26 @@ export function App() {
           return;
         }
 
-        const loadedNotifications =
+        const notificationList =
           Array.isArray(response.data)
             ? response.data
             : [];
 
         const updatedNotifications =
-          loadedNotifications.map(
+          notificationList.map(
             (notification) => {
-              if (notification.id === 3) {
-                return {
-                  ...notification,
-                  type: 'urgent',
-                  html: {
-                    __html:
-                      getLatestNotification(),
-                  },
-                };
+              if (notification.id !== 3) {
+                return notification;
               }
 
-              return notification;
+              return {
+                ...notification,
+                type: 'urgent',
+                html: {
+                  __html:
+                    getLatestNotification(),
+                },
+              };
             },
           );
 
@@ -104,12 +108,12 @@ export function App() {
           return;
         }
 
-        const loadedCourses =
+        const courseList =
           Array.isArray(response.data)
             ? response.data
             : [];
 
-        setCourses(loadedCourses);
+        setCourses(courseList);
       })
       .catch(() => {});
 
@@ -141,9 +145,7 @@ export function App() {
 
   const logOut = useCallback(() => {
     setUser({
-      email: '',
-      password: '',
-      isLoggedIn: false,
+      ...defaultUser,
     });
   }, []);
 
@@ -174,7 +176,7 @@ export function App() {
     <AppContext.Provider
       value={contextValue}
     >
-      <div className={css(styles.app)}>
+      <div className="App">
         <Notifications
           notifications={notifications}
           handleHideDrawer={
@@ -195,11 +197,7 @@ export function App() {
           <BodySectionWithMarginBottom
             title="Log in to continue"
           >
-            <Login
-              logIn={logIn}
-              email={user.email}
-              password={user.password}
-            />
+            <Login logIn={logIn} />
           </BodySectionWithMarginBottom>
         ) : (
           <BodySectionWithMarginBottom
