@@ -8,11 +8,11 @@ function WithLogging(WrappedComponent) {
 
   class WithLoggingComponent extends Component {
     componentDidMount() {
-      console.log(`Component ${componentName} is mounted`);
+      globalThis.console.log(`Component ${componentName} is mounted`);
     }
 
     componentWillUnmount() {
-      console.log(
+      globalThis.console.log(
         `Component ${componentName} is going to unmount`
       );
     }
