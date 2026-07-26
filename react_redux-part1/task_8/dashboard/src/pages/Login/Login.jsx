@@ -11,7 +11,7 @@ import {
 } from '../../features/auth/authSlice.js';
 import useLogin from '../../hooks/useLogin';
 
-function Login() {
+export function Login() {
   const dispatch = useDispatch();
 
   const logIn = useCallback(
