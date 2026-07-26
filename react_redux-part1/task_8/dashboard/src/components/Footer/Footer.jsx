@@ -36,7 +36,7 @@ function Footer() {
         Copyright {getCurrentYear()} -{' '}
         {getFooterCopy(false)}
 
-        {isLoggedIn && (
+        {!isLoggedIn && (
           <>
             {' | '}
             <a

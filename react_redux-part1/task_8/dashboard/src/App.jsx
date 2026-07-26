@@ -5,7 +5,7 @@ import {
 } from 'react-redux';
 
 import Header from './components/Header/Header';
-import { Login } from './pages/Login/Login';
+import Login from './pages/Login/Login';
 import Footer from './components/Footer/Footer';
 import Notifications from
   './components/Notifications/Notifications';
