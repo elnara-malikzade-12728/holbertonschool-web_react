@@ -22,13 +22,11 @@ const styles = StyleSheet.create({
   notificationDrawer: {
     opacity: 0,
     visibility: 'hidden',
-    pointerEvents: 'none',
   },
 
   visible: {
     opacity: 1,
     visibility: 'visible',
-    pointerEvents: 'auto',
   },
 });
 
@@ -46,10 +44,22 @@ function Notifications() {
       return;
     }
 
-    DrawerRef.current.classList.toggle('visible');
-    DrawerRef.current.classList.toggle(
-      css(styles.visible),
-    );
+    const visibleClass =
+      css(styles.visible);
+
+    if (
+      DrawerRef.current.classList.contains(
+        visibleClass,
+      )
+    ) {
+      DrawerRef.current.classList.remove(
+        visibleClass,
+      );
+    } else {
+      DrawerRef.current.classList.add(
+        visibleClass,
+      );
+    }
   };
 
   const handleMarkNotificationAsRead = (
