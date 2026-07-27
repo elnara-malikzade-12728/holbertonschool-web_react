@@ -1,6 +1,6 @@
 import {
   memo,
-  useEffect,
+  useCallback,
   useRef,
 } from 'react';
 import {
@@ -16,7 +16,6 @@ import closeButton from '../../assets/close-icon.png';
 import NotificationItem from '../NotificationItem/NotificationItem.jsx';
 
 import {
-  fetchNotifications,
   markNotificationAsRead,
 } from '../../features/notifications/notificationsSlice.js';
 
@@ -29,6 +28,15 @@ const styles = StyleSheet.create({
   visible: {
     opacity: 1,
     visibility: 'visible',
+  },
+
+  loading: {
+    position: 'absolute',
+    top: '25px',
+    right: '20px',
+    fontSize: '1.2rem',
+    fontWeight: 'bold',
+    color: 'rgb(114, 111, 111)',
   },
 });
 
@@ -43,44 +51,24 @@ function Notifications() {
     (state) => state.notifications,
   );
 
-  useEffect(() => {
-    dispatch(fetchNotifications());
-  }, [dispatch]);
+  const handleToggleDrawer =
+    useCallback(() => {
+      if (DrawerRef.current) {
+        DrawerRef.current.classList.toggle(
+          css(styles.visible),
+        );
+      }
+    }, []);
 
-  const handleToggleDrawer = () => {
-    if (!DrawerRef.current) {
-      return;
-    }
-
-    const visibleClass =
-      css(styles.visible);
-
-    if (
-      DrawerRef.current.classList.contains(
-        visibleClass,
-      )
-    ) {
-      DrawerRef.current.classList.remove(
-        visibleClass,
-      );
-    } else {
-      DrawerRef.current.classList.add(
-        visibleClass,
-      );
-    }
-  };
-
-  const handleMarkNotificationAsRead = (
-    id,
-  ) => {
-    dispatch(
-      markNotificationAsRead(id),
+  const handleMarkNotificationAsRead =
+    useCallback(
+      (id) => {
+        dispatch(
+          markNotificationAsRead(id),
+        );
+      },
+      [dispatch],
     );
-  };
-
-  if (loading) {
-    return <p>Loading...</p>;
-  }
 
   return (
     <div
@@ -129,127 +117,137 @@ function Notifications() {
         Your notifications
       </p>
 
-      <div
-        ref={DrawerRef}
-        className={`
-          ${css(
-            styles.notificationDrawer,
-          )}
-          Notifications
-          notification-items
-          fixed
-          inset-0
-          z-50
-          h-screen
-          w-screen
-          overflow-y-auto
-          border
-          border-dashed
-          border-main
-          bg-white
-          p-3
-          text-sm
-          min-[520px]:text-base
-          min-[912px]:absolute
-          min-[912px]:inset-auto
-          min-[912px]:right-0
-          min-[912px]:top-6
-          min-[912px]:h-auto
-          min-[912px]:w-full
-          min-[912px]:overflow-visible
-          min-[912px]:p-[6px]
-          min-[912px]:text-[8px]
-        `}
-      >
-        <button
-          type="button"
-          aria-label="Close"
-          onClick={handleToggleDrawer}
-          className="
-            absolute
-            right-3
-            top-3
-            flex
-            h-7
-            w-7
-            cursor-pointer
-            items-center
-            justify-center
-            border-none
-            bg-transparent
-            min-[912px]:right-1
-            min-[912px]:top-1
-            min-[912px]:h-4
-            min-[912px]:w-4
-          "
+      {loading ? (
+        <div className={css(styles.loading)}>
+          Loading...
+        </div>
+      ) : (
+        <div
+          ref={DrawerRef}
+          className={`
+            ${css(styles.notificationDrawer)}
+            Notifications
+            notification-items
+            fixed
+            inset-0
+            z-50
+            h-screen
+            w-screen
+            overflow-y-auto
+            border
+            border-dashed
+            border-main
+            bg-white
+            p-3
+            text-sm
+            min-[520px]:text-base
+            min-[912px]:absolute
+            min-[912px]:inset-auto
+            min-[912px]:right-0
+            min-[912px]:top-6
+            min-[912px]:h-auto
+            min-[912px]:w-full
+            min-[912px]:overflow-visible
+            min-[912px]:p-[6px]
+            min-[912px]:text-[8px]
+          `}
         >
-          <img
-            src={closeButton}
-            alt="Close"
+          <button
+            type="button"
+            aria-label="Close"
+            onClick={handleToggleDrawer}
             className="
-              h-4
-              w-4
-              min-[912px]:h-2
-              min-[912px]:w-2
-            "
-          />
-        </button>
-
-        {notifications.length === 0 ? (
-          <p
-            className="
-              pr-8
-              text-sm
-              min-[912px]:text-[8px]
+              absolute
+              right-3
+              top-3
+              flex
+              h-7
+              w-7
+              cursor-pointer
+              items-center
+              justify-center
+              border-none
+              bg-transparent
+              min-[912px]:right-1
+              min-[912px]:top-1
+              min-[912px]:h-4
+              min-[912px]:w-4
             "
           >
-            No new notification for now
-          </p>
-        ) : (
-          <>
-            <p
+            <img
+              src={closeButton}
+              alt="Close"
               className="
-                mb-4
-                pr-8
-                text-[15px]
-                min-[520px]:text-base
-                min-[912px]:mb-1
-                min-[912px]:text-[8px]
+                h-4
+                w-4
+                min-[912px]:h-2
+                min-[912px]:w-2
               "
-            >
-              Here is the list of notifications
-            </p>
+            />
+          </button>
 
-            <ul
-              className="
-                list-none
-                space-y-1
-                p-0
-                min-[912px]:list-disc
-                min-[912px]:space-y-0
-                min-[912px]:pl-4
-              "
-            >
-              {notifications.map(
-                (notification) => (
-                  <NotificationItem
-                    key={notification.id}
-                    id={notification.id}
-                    type={notification.type}
-                    value={
-                      notification.value
-                    }
-                    html={notification.html}
-                    markAsRead={
-                      handleMarkNotificationAsRead
-                    }
-                  />
-                ),
-              )}
-            </ul>
-          </>
-        )}
-      </div>
+          {notifications
+            && notifications.length > 0 ? (
+              <>
+                <p
+                  className="
+                    mb-4
+                    pr-8
+                    text-[15px]
+                    min-[520px]:text-base
+                    min-[912px]:mb-1
+                    min-[912px]:text-[8px]
+                  "
+                >
+                  Here is the list of
+                  notifications
+                </p>
+
+                <ul
+                  className="
+                    list-none
+                    space-y-1
+                    p-0
+                    min-[912px]:list-disc
+                    min-[912px]:space-y-0
+                    min-[912px]:pl-4
+                  "
+                >
+                  {notifications.map(
+                    (notification) => (
+                      <NotificationItem
+                        key={notification.id}
+                        id={notification.id}
+                        type={
+                          notification.type
+                        }
+                        value={
+                          notification.value
+                        }
+                        html={
+                          notification.html
+                        }
+                        markAsRead={
+                          handleMarkNotificationAsRead
+                        }
+                      />
+                    ),
+                  )}
+                </ul>
+              </>
+            ) : (
+              <p
+                className="
+                  pr-8
+                  text-sm
+                  min-[912px]:text-[8px]
+                "
+              >
+                No new notification for now
+              </p>
+            )}
+        </div>
+      )}
     </div>
   );
 }
