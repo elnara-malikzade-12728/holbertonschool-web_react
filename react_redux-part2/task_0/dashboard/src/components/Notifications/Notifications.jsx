@@ -34,7 +34,7 @@ const styles = StyleSheet.create({
 
 function Notifications() {
   const dispatch = useDispatch();
-  const drawerRef = useRef(null);
+  const DrawerRef = useRef(null);
 
   const notifications = useSelector(
     (state) =>
@@ -42,13 +42,29 @@ function Notifications() {
   );
 
   const handleToggleDrawer = () => {
-    if (!drawerRef.current) {
+    if (!DrawerRef.current) {
       return;
     }
 
-    drawerRef.current.classList.toggle(
-      'visible',
-    );
+    const visibleStyle =
+      css(styles.visible);
+
+    const isVisible =
+      DrawerRef.current.classList.contains(
+        'visible',
+      );
+
+    if (isVisible) {
+      DrawerRef.current.classList.remove(
+        'visible',
+        visibleStyle,
+      );
+    } else {
+      DrawerRef.current.classList.add(
+        'visible',
+        visibleStyle,
+      );
+    }
   };
 
   const handleMarkNotificationAsRead = (
@@ -110,7 +126,7 @@ function Notifications() {
       </p>
 
       <div
-        ref={drawerRef}
+        ref={DrawerRef}
         className={`
           ${css(
             styles.notificationDrawer,
@@ -214,9 +230,15 @@ function Notifications() {
                   <NotificationItem
                     key={notification.id}
                     id={notification.id}
-                    type={notification.type}
-                    value={notification.value}
-                    html={notification.html}
+                    type={
+                      notification.type
+                    }
+                    value={
+                      notification.value
+                    }
+                    html={
+                      notification.html
+                    }
                     markAsRead={
                       handleMarkNotificationAsRead
                     }
