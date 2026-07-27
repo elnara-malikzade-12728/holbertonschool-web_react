@@ -19,7 +19,7 @@ import {
 } from '../../features/notifications/notificationsSlice.js';
 
 const styles = StyleSheet.create({
-  drawer: {
+  notificationDrawer: {
     opacity: 0,
     visibility: 'hidden',
   },
@@ -32,7 +32,6 @@ const styles = StyleSheet.create({
 
 function Notifications() {
   const dispatch = useDispatch();
-
   const DrawerRef = useRef(null);
 
   const notifications = useSelector(
@@ -111,7 +110,9 @@ function Notifications() {
       <div
         ref={DrawerRef}
         className={`
-          ${css(styles.drawer)}
+          ${css(
+            styles.notificationDrawer,
+          )}
           notification-items
           fixed
           inset-0
