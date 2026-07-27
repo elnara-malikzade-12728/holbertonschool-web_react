@@ -75,9 +75,6 @@ function Notifications() {
     );
   };
 
-  const shouldBounce =
-    notifications.length > 0;
-
   return (
     <div
       className="
@@ -90,7 +87,7 @@ function Notifications() {
       "
     >
       <p
-        className={`
+        className="
           notification-title
           absolute
           right-4
@@ -99,16 +96,12 @@ function Notifications() {
           whitespace-nowrap
           text-right
           text-[8px]
+          hover:animate-bounce
           min-[520px]:text-[10px]
           min-[912px]:right-0
           min-[912px]:top-0
           min-[912px]:text-[8px]
-          ${
-            shouldBounce
-              ? 'animate-bounce'
-              : ''
-          }
-        `}
+        "
         onClick={handleToggleDrawer}
         onKeyDown={(event) => {
           if (
