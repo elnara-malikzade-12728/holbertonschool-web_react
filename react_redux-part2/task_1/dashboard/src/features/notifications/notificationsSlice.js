@@ -14,7 +14,7 @@ export const ENDPOINTS = {
 
 export const initialState = {
   notifications: [],
-  loading: false,
+  loading: true,
 };
 
 export const fetchNotifications =
