@@ -41,6 +41,14 @@ function Notifications() {
     (state) => state.notifications,
   );
 
+  if (loading) {
+    return (
+      <p className="notification-loading">
+        Loading...
+      </p>
+    );
+  }
+
   const handleToggleDrawer = () => {
     if (!DrawerRef.current) {
       return;
@@ -185,17 +193,7 @@ function Notifications() {
           />
         </button>
 
-        {loading ? (
-          <p
-            className="
-              pr-8
-              text-sm
-              min-[912px]:text-[8px]
-            "
-          >
-            Loading...
-          </p>
-        ) : notifications.length === 0 ? (
+        {notifications.length === 0 ? (
           <p
             className="
               pr-8
