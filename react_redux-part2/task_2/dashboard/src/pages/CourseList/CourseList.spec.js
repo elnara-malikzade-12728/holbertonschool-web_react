@@ -15,7 +15,7 @@ import mockAxios from 'jest-mock-axios';
 import CourseList from './CourseList';
 import coursesReducer, {
   fetchCourses,
-} from '../../features/courses/coursesSlice.js';
+} from '../../features/courses/courseSlice.js';
 import authReducer, {
   logout,
 } from '../../features/auth/authSlice.js';

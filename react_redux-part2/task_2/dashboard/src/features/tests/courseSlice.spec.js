@@ -9,7 +9,7 @@ import {
 import coursesReducer, {
   ENDPOINTS,
   fetchCourses,
-} from '../courses/coursesSlice.js';
+} from '../courses/courseSlice.js';
 
 describe('coursesSlice', () => {
   const expectedInitialState = {

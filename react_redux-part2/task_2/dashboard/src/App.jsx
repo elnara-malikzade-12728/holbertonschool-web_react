@@ -24,7 +24,7 @@ import {
 } from './features/notifications/notificationsSlice.js';
 import {
   fetchCourses,
-} from './features/courses/coursesSlice.js';
+} from './features/courses/courseSlice.js';
 
 function App() {
   const dispatch = useDispatch();
