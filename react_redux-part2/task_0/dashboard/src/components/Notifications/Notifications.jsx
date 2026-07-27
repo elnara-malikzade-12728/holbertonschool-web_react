@@ -22,11 +22,13 @@ const styles = StyleSheet.create({
   notificationDrawer: {
     opacity: 0,
     visibility: 'hidden',
+    pointerEvents: 'none',
   },
 
   visible: {
     opacity: 1,
     visibility: 'visible',
+    pointerEvents: 'auto',
   },
 });
 
@@ -70,6 +72,7 @@ function Notifications() {
     >
       <p
         className="
+          menuItem
           notification-title
           absolute
           right-4
@@ -106,7 +109,10 @@ function Notifications() {
       <div
         ref={DrawerRef}
         className={`
-          ${css(styles.notificationDrawer)}
+          ${css(
+            styles.notificationDrawer,
+          )}
+          Notifications
           notification-items
           fixed
           inset-0
