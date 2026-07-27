@@ -41,6 +41,7 @@ const notifications = [
 
 const createTestStore = ({
   notificationList = [],
+  loading = false,
 } = {}) =>
   configureStore({
     reducer: {
@@ -52,6 +53,7 @@ const createTestStore = ({
       notifications: {
         notifications:
           notificationList,
+        loading,
       },
     },
   });
@@ -82,12 +84,41 @@ describe('Notifications component', () => {
   });
 
   test(
+    'displays Loading while notifications are being fetched',
+    () => {
+      renderWithStore(
+        createTestStore({
+          notificationList: [],
+          loading: true,
+        }),
+      );
+
+      expect(
+        screen.getByText('Loading...'),
+      ).toBeInTheDocument();
+
+      expect(
+        screen.queryByText(
+          /no new notification/i,
+        ),
+      ).not.toBeInTheDocument();
+
+      expect(
+        document.querySelector(
+          '.notification-items',
+        ),
+      ).not.toBeInTheDocument();
+    },
+  );
+
+  test(
     'toggles the drawer visibility',
     () => {
       renderWithStore(
         createTestStore({
           notificationList:
             notifications,
+          loading: false,
         }),
       );
 
@@ -124,12 +155,13 @@ describe('Notifications component', () => {
   test(
     'renders notification items from Redux',
     () => {
-      const store = createTestStore({
-        notificationList:
-          notifications,
-      });
-
-      renderWithStore(store);
+      renderWithStore(
+        createTestStore({
+          notificationList:
+            notifications,
+          loading: false,
+        }),
+      );
 
       expect(
         screen.getByText(
@@ -161,6 +193,7 @@ describe('Notifications component', () => {
       const store = createTestStore({
         notificationList:
           notifications,
+        loading: false,
       });
 
       renderWithStore(store);
@@ -197,6 +230,7 @@ describe('Notifications component', () => {
     renderWithStore(
       createTestStore({
         notificationList: [],
+        loading: false,
       }),
     );
 
@@ -208,10 +242,59 @@ describe('Notifications component', () => {
   });
 
   test(
+    'displays loading while fetchNotifications is pending',
+    async () => {
+      const store = createTestStore({
+        notificationList: [],
+        loading: false,
+      });
+
+      renderWithStore(store);
+
+      const request = store.dispatch(
+        fetchNotifications(),
+      );
+
+      expect(
+        await screen.findByText(
+          'Loading...',
+        ),
+      ).toBeInTheDocument();
+
+      await act(async () => {
+        mockAxios.mockResponseFor(
+          {
+            url:
+              '/notifications.json',
+          },
+          {
+            data: notifications,
+          },
+        );
+
+        await request;
+      });
+
+      expect(
+        screen.queryByText(
+          'Loading...',
+        ),
+      ).not.toBeInTheDocument();
+
+      expect(
+        await screen.findByText(
+          /new course available/i,
+        ),
+      ).toBeInTheDocument();
+    },
+  );
+
+  test(
     'displays notifications returned by fetchNotifications',
     async () => {
       const store = createTestStore({
         notificationList: [],
+        loading: false,
       });
 
       renderWithStore(store);

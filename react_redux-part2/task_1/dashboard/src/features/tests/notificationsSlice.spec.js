@@ -12,6 +12,7 @@ import notificationsReducer, {
 describe('notificationsSlice', () => {
   const expectedInitialState = {
     notifications: [],
+    loading: false,
   };
 
   afterEach(() => {
@@ -33,6 +34,39 @@ describe('notificationsSlice', () => {
       expect(state).toEqual(
         expectedInitialState,
       );
+    },
+  );
+
+  test(
+    'sets loading to true while fetch is pending',
+    () => {
+      const state =
+        notificationsReducer(
+          expectedInitialState,
+          fetchNotifications.pending(),
+        );
+
+      expect(state.loading).toBe(true);
+    },
+  );
+
+  test(
+    'sets loading to false when fetch is rejected',
+    () => {
+      const previousState = {
+        notifications: [],
+        loading: true,
+      };
+
+      const state =
+        notificationsReducer(
+          previousState,
+          fetchNotifications.rejected(
+            new Error('Request failed'),
+          ),
+        );
+
+      expect(state.loading).toBe(false);
     },
   );
 
@@ -70,6 +104,10 @@ describe('notificationsSlice', () => {
         );
 
       expect(
+        store.getState().loading,
+      ).toBe(true);
+
+      expect(
         mockAxios.get,
       ).toHaveBeenCalledWith(
         ENDPOINTS.notifications,
@@ -82,6 +120,8 @@ describe('notificationsSlice', () => {
       await request;
 
       const state = store.getState();
+
+      expect(state.loading).toBe(false);
 
       expect(
         state.notifications,
@@ -123,6 +163,7 @@ describe('notificationsSlice', () => {
               'Notification two',
           },
         ],
+        loading: false,
       };
 
       const state =
@@ -141,12 +182,12 @@ describe('notificationsSlice', () => {
         },
       ]);
 
+      expect(state.loading).toBe(false);
+
       expect(consoleSpy)
         .toHaveBeenCalledWith(
           'Notification 1 has been marked as read',
         );
-
-      consoleSpy.mockRestore();
     },
   );
 });
