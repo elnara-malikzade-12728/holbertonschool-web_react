@@ -41,7 +41,6 @@ const notifications = [
 
 const createTestStore = ({
   notificationList = [],
-  displayDrawer = true,
 } = {}) =>
   configureStore({
     reducer: {
@@ -53,7 +52,6 @@ const createTestStore = ({
       notifications: {
         notifications:
           notificationList,
-        displayDrawer,
       },
     },
   });
@@ -83,138 +81,122 @@ describe('Notifications component', () => {
     renderWithStore();
   });
 
-  test('opens the drawer when the title is clicked', () => {
-    const store = createTestStore({
-      notificationList:
-        notifications,
-      displayDrawer: false,
-    });
+  test(
+    'toggles the drawer visibility',
+    () => {
+      renderWithStore(
+        createTestStore({
+          notificationList:
+            notifications,
+        }),
+      );
 
-    renderWithStore(store);
+      const drawer =
+        document.querySelector(
+          '.notification-items',
+        );
 
-    expect(
-      document.querySelector(
-        '.notification-items',
-      ),
-    ).not.toBeInTheDocument();
+      expect(drawer).toBeInTheDocument();
 
-    fireEvent.click(
-      screen.getByText(
-        /your notifications/i,
-      ),
-    );
+      expect(drawer.className)
+        .not.toMatch(/visible/);
 
-    expect(
-      document.querySelector(
-        '.notification-items',
-      ),
-    ).toBeInTheDocument();
+      fireEvent.click(
+        screen.getByText(
+          /your notifications/i,
+        ),
+      );
 
-    expect(
-      store.getState()
-        .notifications
-        .displayDrawer,
-    ).toBe(true);
-  });
+      expect(drawer.className)
+        .toMatch(/visible/);
 
-  test('closes the drawer when close is clicked', () => {
-    const store = createTestStore({
-      notificationList:
-        notifications,
-      displayDrawer: true,
-    });
+      fireEvent.click(
+        screen.getByRole('button', {
+          name: /close/i,
+        }),
+      );
 
-    renderWithStore(store);
+      expect(drawer.className)
+        .not.toMatch(/visible/);
+    },
+  );
 
-    fireEvent.click(
-      screen.getByRole('button', {
-        name: /close/i,
-      }),
-    );
+  test(
+    'renders notification items from Redux',
+    () => {
+      const store = createTestStore({
+        notificationList:
+          notifications,
+      });
 
-    expect(
-      document.querySelector(
-        '.notification-items',
-      ),
-    ).not.toBeInTheDocument();
+      renderWithStore(store);
 
-    expect(
-      store.getState()
-        .notifications
-        .displayDrawer,
-    ).toBe(false);
-  });
-
-  test('renders notification items from Redux', () => {
-    const store = createTestStore({
-      notificationList:
-        notifications,
-    });
-
-    renderWithStore(store);
-
-    expect(
-      screen.getByText(
-        /new course available/i,
-      ),
-    ).toBeInTheDocument();
-
-    expect(
-      screen.getByText(
-        /new resume available/i,
-      ),
-    ).toBeInTheDocument();
-
-    expect(
-      screen.getByText(
-        /urgent requirement/i,
-      ),
-    ).toBeInTheDocument();
-  });
-
-  test('removes a notification when it is marked as read', async () => {
-    const logSpy = jest
-      .spyOn(console, 'log')
-      .mockImplementation(() => {});
-
-    const store = createTestStore({
-      notificationList:
-        notifications,
-    });
-
-    renderWithStore(store);
-
-    fireEvent.click(
-      screen.getByText(
-        /new course available/i,
-      ),
-    );
-
-    await waitFor(() => {
       expect(
-        screen.queryByText(
+        screen.getByText(
           /new course available/i,
         ),
-      ).not.toBeInTheDocument();
-    });
+      ).toBeInTheDocument();
 
-    expect(
-      store
-        .getState()
-        .notifications
-        .notifications,
-    ).toHaveLength(2);
+      expect(
+        screen.getByText(
+          /new resume available/i,
+        ),
+      ).toBeInTheDocument();
 
-    expect(logSpy).toHaveBeenCalledWith(
-      'Notification 1 has been marked as read',
-    );
-  });
+      expect(
+        screen.getByText(
+          /urgent requirement/i,
+        ),
+      ).toBeInTheDocument();
+    },
+  );
+
+  test(
+    'removes a notification when it is marked as read',
+    async () => {
+      const logSpy = jest
+        .spyOn(console, 'log')
+        .mockImplementation(() => {});
+
+      const store = createTestStore({
+        notificationList:
+          notifications,
+      });
+
+      renderWithStore(store);
+
+      fireEvent.click(
+        screen.getByText(
+          /new course available/i,
+        ),
+      );
+
+      await waitFor(() => {
+        expect(
+          screen.queryByText(
+            /new course available/i,
+          ),
+        ).not.toBeInTheDocument();
+      });
+
+      expect(
+        store
+          .getState()
+          .notifications
+          .notifications,
+      ).toHaveLength(2);
+
+      expect(logSpy)
+        .toHaveBeenCalledWith(
+          'Notification 1 has been marked as read',
+        );
+    },
+  );
 
   test('shows an empty-list message', () => {
     renderWithStore(
       createTestStore({
         notificationList: [],
-        displayDrawer: true,
       }),
     );
 
@@ -225,45 +207,50 @@ describe('Notifications component', () => {
     ).toBeInTheDocument();
   });
 
-  test('displays notifications returned by fetchNotifications', async () => {
-    const store = createTestStore({
-      notificationList: [],
-      displayDrawer: true,
-    });
+  test(
+    'displays notifications returned by fetchNotifications',
+    async () => {
+      const store = createTestStore({
+        notificationList: [],
+      });
 
-    renderWithStore(store);
+      renderWithStore(store);
 
-    store.dispatch(
-      fetchNotifications(),
-    );
-
-    expect(
-      mockAxios.get,
-    ).toHaveBeenCalledWith(
-      '/notifications.json',
-    );
-
-    await act(async () => {
-      mockAxios.mockResponseFor(
-        {
-          url: '/notifications.json',
-        },
-        {
-          data: notifications,
-        },
+      const request = store.dispatch(
+        fetchNotifications(),
       );
-    });
 
-    expect(
-      await screen.findByText(
-        /new course available/i,
-      ),
-    ).toBeInTheDocument();
+      expect(
+        mockAxios.get,
+      ).toHaveBeenCalledWith(
+        '/notifications.json',
+      );
 
-    expect(
-      screen.getByText(
-        /new resume available/i,
-      ),
-    ).toBeInTheDocument();
-  });
+      await act(async () => {
+        mockAxios.mockResponseFor(
+          {
+            url:
+              '/notifications.json',
+          },
+          {
+            data: notifications,
+          },
+        );
+
+        await request;
+      });
+
+      expect(
+        await screen.findByText(
+          /new course available/i,
+        ),
+      ).toBeInTheDocument();
+
+      expect(
+        screen.getByText(
+          /new resume available/i,
+        ),
+      ).toBeInTheDocument();
+    },
+  );
 });

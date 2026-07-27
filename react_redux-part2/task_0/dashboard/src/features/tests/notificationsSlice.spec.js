@@ -6,15 +6,12 @@ import mockAxios from 'jest-mock-axios';
 import notificationsReducer, {
   ENDPOINTS,
   fetchNotifications,
-  hideDrawer,
   markNotificationAsRead,
-  showDrawer,
 } from '../notifications/notificationsSlice.js';
 
 describe('notificationsSlice', () => {
   const expectedInitialState = {
     notifications: [],
-    displayDrawer: false,
   };
 
   afterEach(() => {
@@ -25,12 +22,13 @@ describe('notificationsSlice', () => {
   test(
     'returns the correct initial state',
     () => {
-      const state = notificationsReducer(
-        undefined,
-        {
-          type: 'unknown',
-        },
-      );
+      const state =
+        notificationsReducer(
+          undefined,
+          {
+            type: 'unknown',
+          },
+        );
 
       expect(state).toEqual(
         expectedInitialState,
@@ -42,7 +40,8 @@ describe('notificationsSlice', () => {
     'fetches notifications correctly',
     async () => {
       const store = configureStore({
-        reducer: notificationsReducer,
+        reducer:
+          notificationsReducer,
       });
 
       const mockNotifications = [
@@ -90,7 +89,9 @@ describe('notificationsSlice', () => {
 
       expect(
         state.notifications[0],
-      ).toEqual(mockNotifications[0]);
+      ).toEqual(
+        mockNotifications[0],
+      );
 
       expect(
         state.notifications[2].id,
@@ -113,25 +114,30 @@ describe('notificationsSlice', () => {
         notifications: [
           {
             id: 1,
-            value: 'Notification one',
+            value:
+              'Notification one',
           },
           {
             id: 2,
-            value: 'Notification two',
+            value:
+              'Notification two',
           },
         ],
-        displayDrawer: true,
       };
 
-      const state = notificationsReducer(
-        previousState,
-        markNotificationAsRead(1),
-      );
+      const state =
+        notificationsReducer(
+          previousState,
+          markNotificationAsRead(1),
+        );
 
-      expect(state.notifications).toEqual([
+      expect(
+        state.notifications,
+      ).toEqual([
         {
           id: 2,
-          value: 'Notification two',
+          value:
+            'Notification two',
         },
       ]);
 
@@ -141,44 +147,6 @@ describe('notificationsSlice', () => {
         );
 
       consoleSpy.mockRestore();
-    },
-  );
-
-  test(
-    'sets displayDrawer to true',
-    () => {
-      const previousState = {
-        notifications: [],
-        displayDrawer: false,
-      };
-
-      const state = notificationsReducer(
-        previousState,
-        showDrawer(),
-      );
-
-      expect(
-        state.displayDrawer,
-      ).toBe(true);
-    },
-  );
-
-  test(
-    'sets displayDrawer to false',
-    () => {
-      const previousState = {
-        notifications: [],
-        displayDrawer: true,
-      };
-
-      const state = notificationsReducer(
-        previousState,
-        hideDrawer(),
-      );
-
-      expect(
-        state.displayDrawer,
-      ).toBe(false);
     },
   );
 });
