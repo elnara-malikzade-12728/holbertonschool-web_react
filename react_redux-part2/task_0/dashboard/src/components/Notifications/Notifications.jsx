@@ -22,17 +22,19 @@ const styles = StyleSheet.create({
   notificationDrawer: {
     opacity: 0,
     visibility: 'hidden',
+    pointerEvents: 'none',
   },
 
   visible: {
     opacity: 1,
     visibility: 'visible',
+    pointerEvents: 'auto',
   },
 });
 
 function Notifications() {
   const dispatch = useDispatch();
-  const DrawerRef = useRef(null);
+  const drawerRef = useRef(null);
 
   const notifications = useSelector(
     (state) =>
@@ -40,12 +42,12 @@ function Notifications() {
   );
 
   const handleToggleDrawer = () => {
-    if (!DrawerRef.current) {
+    if (!drawerRef.current) {
       return;
     }
 
-    DrawerRef.current.classList.toggle(
-      css(styles.visible),
+    drawerRef.current.classList.toggle(
+      'visible',
     );
   };
 
@@ -108,7 +110,7 @@ function Notifications() {
       </p>
 
       <div
-        ref={DrawerRef}
+        ref={drawerRef}
         className={`
           ${css(
             styles.notificationDrawer,
