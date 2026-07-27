@@ -1,5 +1,6 @@
 import {
   memo,
+  useEffect,
   useRef,
 } from 'react';
 import {
@@ -15,6 +16,7 @@ import closeButton from '../../assets/close-icon.png';
 import NotificationItem from '../NotificationItem/NotificationItem.jsx';
 
 import {
+  fetchNotifications,
   markNotificationAsRead,
 } from '../../features/notifications/notificationsSlice.js';
 
@@ -41,13 +43,9 @@ function Notifications() {
     (state) => state.notifications,
   );
 
-  if (loading) {
-    return (
-      <p className="notification-loading">
-        Loading...
-      </p>
-    );
-  }
+  useEffect(() => {
+    dispatch(fetchNotifications());
+  }, [dispatch]);
 
   const handleToggleDrawer = () => {
     if (!DrawerRef.current) {
@@ -79,6 +77,10 @@ function Notifications() {
       markNotificationAsRead(id),
     );
   };
+
+  if (loading) {
+    return <p>Loading...</p>;
+  }
 
   return (
     <div
@@ -233,15 +235,11 @@ function Notifications() {
                   <NotificationItem
                     key={notification.id}
                     id={notification.id}
-                    type={
-                      notification.type
-                    }
+                    type={notification.type}
                     value={
                       notification.value
                     }
-                    html={
-                      notification.html
-                    }
+                    html={notification.html}
                     markAsRead={
                       handleMarkNotificationAsRead
                     }
