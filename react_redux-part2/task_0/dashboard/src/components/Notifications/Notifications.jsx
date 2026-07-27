@@ -41,30 +41,26 @@ function Notifications() {
       state.notifications.notifications,
   );
 
-  const handleToggleDrawer = () => {
+  const handleDisplayDrawer = () => {
     if (!DrawerRef.current) {
       return;
     }
 
-    const visibleStyle =
-      css(styles.visible);
+    DrawerRef.current.classList.add(
+      'visible',
+      css(styles.visible),
+    );
+  };
 
-    const isVisible =
-      DrawerRef.current.classList.contains(
-        'visible',
-      );
-
-    if (isVisible) {
-      DrawerRef.current.classList.remove(
-        'visible',
-        visibleStyle,
-      );
-    } else {
-      DrawerRef.current.classList.add(
-        'visible',
-        visibleStyle,
-      );
+  const handleHideDrawer = () => {
+    if (!DrawerRef.current) {
+      return;
     }
+
+    DrawerRef.current.classList.remove(
+      'visible',
+      css(styles.visible),
+    );
   };
 
   const handleMarkNotificationAsRead = (
@@ -96,20 +92,23 @@ function Notifications() {
           whitespace-nowrap
           text-right
           text-[8px]
+          transition-opacity
+          duration-300
           hover:animate-bounce
+          hover:opacity-50
           min-[520px]:text-[10px]
           min-[912px]:right-0
           min-[912px]:top-0
           min-[912px]:text-[8px]
         "
-        onClick={handleToggleDrawer}
+        onClick={handleDisplayDrawer}
         onKeyDown={(event) => {
           if (
             event.key === 'Enter'
             || event.key === ' '
           ) {
             event.preventDefault();
-            handleToggleDrawer();
+            handleDisplayDrawer();
           }
         }}
         role="button"
@@ -152,7 +151,7 @@ function Notifications() {
         <button
           type="button"
           aria-label="Close"
-          onClick={handleToggleDrawer}
+          onClick={handleHideDrawer}
           className="
             absolute
             right-3
