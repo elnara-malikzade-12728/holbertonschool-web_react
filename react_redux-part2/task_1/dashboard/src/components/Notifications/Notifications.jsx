@@ -50,7 +50,6 @@ function Notifications() {
   } = useSelector(
     (state) => state.notifications,
   );
-  console.log('loading:', loading);
 
   const handleToggleDrawer =
     useCallback(() => {
