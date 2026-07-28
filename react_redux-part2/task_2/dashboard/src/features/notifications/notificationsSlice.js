@@ -9,7 +9,8 @@ import {
 } from '../../utils/utils.js';
 
 export const ENDPOINTS = {
-  notifications: '/notifications.json',
+  notifications:
+    '/notifications.json',
 };
 
 export const initialState = {
@@ -26,74 +27,88 @@ export const fetchNotifications =
       );
 
       const notifications =
-        response.data?.notifications ??
-        response.data;
+        response.data?.notifications
+        ?? response.data
+        ?? [];
 
-      return notifications.map(
-        (notification) => {
-          if (notification.id === 3) {
-            return {
-              ...notification,
-              html: {
-                __html:
-                  getLatestNotification(),
-              },
-            };
-          }
-
-          return notification;
-        },
-      );
+      return Array.isArray(
+        notifications,
+      )
+        ? notifications
+        : [];
     },
   );
 
-const notificationsSlice = createSlice({
-  name: 'notifications',
-  initialState,
+const notificationsSlice =
+  createSlice({
+    name: 'notifications',
+    initialState,
 
-  reducers: {
-    markNotificationAsRead: (
-      state,
-      action,
-    ) => {
-      const notificationId =
-        action.payload;
+    reducers: {
+      markNotificationAsRead: (
+        state,
+        action,
+      ) => {
+        console.log(
+          `Notification ${action.payload} has been marked as read`,
+        );
 
-      state.notifications =
-        state.notifications.filter(
-          (notification) =>
-            notification.id !==
-            notificationId,
+        state.notifications =
+          state.notifications.filter(
+            (notification) =>
+              String(notification.id)
+              !== String(
+                action.payload,
+              ),
+          );
+      },
+    },
+
+    extraReducers: (builder) => {
+      builder
+        .addCase(
+          fetchNotifications.pending,
+          (state) => {
+            state.loading = true;
+          },
+        )
+
+        .addCase(
+          fetchNotifications.fulfilled,
+          (state, action) => {
+            state.loading = false;
+
+            state.notifications =
+              action.payload.map(
+                (notification) => {
+                  if (
+                    Number(
+                      notification.id,
+                    ) === 3
+                  ) {
+                    return {
+                      ...notification,
+                      html: {
+                        __html:
+                          getLatestNotification(),
+                      },
+                    };
+                  }
+
+                  return notification;
+                },
+              );
+          },
+        )
+
+        .addCase(
+          fetchNotifications.rejected,
+          (state) => {
+            state.loading = false;
+          },
         );
     },
-  },
-
-  extraReducers: (builder) => {
-    builder
-      .addCase(
-        fetchNotifications.pending,
-        (state) => {
-          state.loading = true;
-        },
-      )
-
-      .addCase(
-        fetchNotifications.fulfilled,
-        (state, action) => {
-          state.loading = false;
-          state.notifications =
-            action.payload;
-        },
-      )
-
-      .addCase(
-        fetchNotifications.rejected,
-        (state) => {
-          state.loading = false;
-        },
-      );
-  },
-});
+  });
 
 export const {
   markNotificationAsRead,

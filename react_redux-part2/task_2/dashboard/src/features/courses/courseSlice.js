@@ -25,13 +25,14 @@ export const fetchCourses =
       );
 
       return (
-        response.data?.courses ??
-        response.data
+        response.data?.courses
+        ?? response.data
+        ?? []
       );
     },
   );
 
-const coursesSlice = createSlice({
+const courseSlice = createSlice({
   name: 'courses',
   initialState,
 
@@ -39,7 +40,8 @@ const coursesSlice = createSlice({
     selectCourse: (state, action) => {
       const course = state.courses.find(
         (item) =>
-          item.id === action.payload,
+          String(item.id)
+          === String(action.payload),
       );
 
       if (course) {
@@ -50,7 +52,8 @@ const coursesSlice = createSlice({
     unSelectCourse: (state, action) => {
       const course = state.courses.find(
         (item) =>
-          item.id === action.payload,
+          String(item.id)
+          === String(action.payload),
       );
 
       if (course) {
@@ -64,15 +67,21 @@ const coursesSlice = createSlice({
       .addCase(
         fetchCourses.fulfilled,
         (state, action) => {
-          state.courses =
-            action.payload.map(
-              (course) => ({
-                ...course,
-                isSelected: false,
-              }),
-            );
+          const courses = Array.isArray(
+            action.payload,
+          )
+            ? action.payload
+            : [];
+
+          state.courses = courses.map(
+            (course) => ({
+              ...course,
+              isSelected: false,
+            }),
+          );
         },
       )
+
       .addCase(
         logout,
         () => initialState,
@@ -83,6 +92,6 @@ const coursesSlice = createSlice({
 export const {
   selectCourse,
   unSelectCourse,
-} = coursesSlice.actions;
+} = courseSlice.actions;
 
-export default coursesSlice.reducer;
+export default courseSlice.reducer;

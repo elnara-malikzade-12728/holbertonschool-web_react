@@ -81,7 +81,7 @@ function CourseList() {
             {courses.map((course) => (
               <CourseListRow
                 key={course.id}
-                id={course.id}
+                id={String(course.id)}
                 isSelected={
                   course.isSelected
                 }

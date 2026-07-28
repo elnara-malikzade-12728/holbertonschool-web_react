@@ -9,6 +9,8 @@ import {
 import coursesReducer, {
   ENDPOINTS,
   fetchCourses,
+  selectCourse,
+  unSelectCourse,
 } from '../courses/courseSlice.js';
 
 describe('coursesSlice', () => {
@@ -81,8 +83,63 @@ describe('coursesSlice', () => {
       expect(
         store.getState(),
       ).toEqual({
-        courses: mockCourses,
+        courses: mockCourses.map(
+          (course) => ({
+            ...course,
+            isSelected: false,
+          }),
+        ),
       });
+    },
+  );
+
+  test(
+    'selects a course',
+    () => {
+      const previousState = {
+        courses: [
+          {
+            id: 1,
+            name: 'ES6',
+            credit: 60,
+            isSelected: false,
+          },
+        ],
+      };
+
+      const state = coursesReducer(
+        previousState,
+        selectCourse(1),
+      );
+
+      expect(
+        state.courses[0].isSelected,
+      ).toBe(true);
+    },
+  );
+
+  test(
+    'unselects a course',
+    () => {
+      const previousState = {
+        courses: [
+          {
+            id: 1,
+            name: 'ES6',
+            credit: 60,
+            isSelected: true,
+          },
+        ],
+      };
+
+      const state = coursesReducer(
+        previousState,
+        unSelectCourse(1),
+      );
+
+      expect(
+        state.courses[0].isSelected,
+      ).toBe(false);
     },
   );
 
@@ -95,6 +152,7 @@ describe('coursesSlice', () => {
             id: 1,
             name: 'ES6',
             credit: 60,
+            isSelected: true,
           },
         ],
       };

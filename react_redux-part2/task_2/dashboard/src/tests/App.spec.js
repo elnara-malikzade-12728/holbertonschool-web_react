@@ -16,7 +16,7 @@ import App from '../App';
 import authReducer from
   '../features/auth/authSlice.js';
 import coursesReducer from
-  '../features/courses/coursesSlice.js';
+  '../features/courses/courseSlice.js';
 import notificationsReducer from
   '../features/notifications/notificationsSlice.js';
 

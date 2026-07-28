@@ -42,7 +42,7 @@ const styles = StyleSheet.create({
 
 function Notifications() {
   const dispatch = useDispatch();
-  const DrawerRef = useRef(null);
+  const drawerRef = useRef(null);
 
   const {
     notifications,
@@ -53,8 +53,8 @@ function Notifications() {
 
   const handleToggleDrawer =
     useCallback(() => {
-      if (DrawerRef.current) {
-        DrawerRef.current.classList.toggle(
+      if (drawerRef.current) {
+        drawerRef.current.classList.toggle(
           css(styles.visible),
         );
       }
@@ -118,14 +118,20 @@ function Notifications() {
       </p>
 
       {loading ? (
-        <div className={css(styles.loading)}>
+        <div
+          className={css(
+            styles.loading,
+          )}
+        >
           Loading...
         </div>
       ) : (
         <div
-          ref={DrawerRef}
+          ref={drawerRef}
           className={`
-            ${css(styles.notificationDrawer)}
+            ${css(
+              styles.notificationDrawer,
+            )}
             Notifications
             notification-items
             fixed
@@ -147,7 +153,7 @@ function Notifications() {
             min-[912px]:top-6
             min-[912px]:h-auto
             min-[912px]:w-full
-            min-[912px]:overflow-visible
+            min-[912px]:overflow-auto
             min-[912px]:p-[6px]
             min-[912px]:text-[8px]
           `}
@@ -155,7 +161,9 @@ function Notifications() {
           <button
             type="button"
             aria-label="Close"
-            onClick={handleToggleDrawer}
+            onClick={
+              handleToggleDrawer
+            }
             className="
               absolute
               right-3
@@ -216,8 +224,12 @@ function Notifications() {
                   {notifications.map(
                     (notification) => (
                       <NotificationItem
-                        key={notification.id}
-                        id={notification.id}
+                        key={
+                          notification.id
+                        }
+                        id={
+                          notification.id
+                        }
                         type={
                           notification.type
                         }
