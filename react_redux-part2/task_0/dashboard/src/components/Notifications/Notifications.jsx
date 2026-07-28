@@ -23,11 +23,16 @@ const styles = StyleSheet.create({
     opacity: 0,
     visibility: 'hidden',
   },
+
+  visible: {
+    opacity: 1,
+    visibility: 'visible',
+  },
 });
 
 function Notifications() {
   const dispatch = useDispatch();
-  const drawerRef = useRef(null);
+  const DrawerRef = useRef(null);
 
   const notifications = useSelector(
     (state) =>
@@ -35,14 +40,22 @@ function Notifications() {
   );
 
   const handleDisplayDrawer = () => {
-    drawerRef.current?.classList.add(
-      'visible',
+    if (!DrawerRef.current) {
+      return;
+    }
+
+    DrawerRef.current.classList.add(
+      css(styles.visible),
     );
   };
 
   const handleHideDrawer = () => {
-    drawerRef.current?.classList.remove(
-      'visible',
+    if (!DrawerRef.current) {
+      return;
+    }
+
+    DrawerRef.current.classList.remove(
+      css(styles.visible),
     );
   };
 
@@ -102,7 +115,7 @@ function Notifications() {
       </p>
 
       <div
-        ref={drawerRef}
+        ref={DrawerRef}
         className={`
           ${css(
             styles.notificationDrawer,
@@ -189,8 +202,7 @@ function Notifications() {
                 min-[912px]:text-[8px]
               "
             >
-              Here is the list of
-              notifications
+              Here is the list of notifications
             </p>
 
             <ul
