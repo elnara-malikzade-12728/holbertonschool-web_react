@@ -2,6 +2,7 @@ import {
   useEffect,
   useState,
 } from 'react';
+
 import {
   useDispatch,
   useSelector,
@@ -25,6 +26,10 @@ function Notifications() {
   const [displayDrawer, setDisplayDrawer] =
     useState(false);
 
+  /*
+   * All notifications are shown initially.
+   * Clicking a filter button changes this value.
+   */
   const [currentFilter, setCurrentFilter] =
     useState('all');
 
@@ -52,16 +57,20 @@ function Notifications() {
     dispatch(markNotificationAsRead(id));
   };
 
-  const handleSetFilterAll = () => {
-    setCurrentFilter('all');
-  };
-
   const handleSetFilterUrgent = () => {
-    setCurrentFilter('urgent');
+    setCurrentFilter((previousFilter) =>
+      previousFilter === 'urgent'
+        ? 'all'
+        : 'urgent',
+    );
   };
 
   const handleSetFilterDefault = () => {
-    setCurrentFilter('default');
+    setCurrentFilter((previousFilter) =>
+      previousFilter === 'default'
+        ? 'all'
+        : 'default',
+    );
   };
 
   const handleTitleKeyDown = (event) => {
@@ -75,11 +84,23 @@ function Notifications() {
   };
 
   return (
-    <div className="relative">
+    <div
+      className="
+        relative
+        min-[912px]:ml-auto
+        min-[912px]:w-1/3
+      "
+    >
       <p
-        className="notification-title cursor-pointer"
         role="button"
         tabIndex="0"
+        className="
+          notification-title
+          cursor-pointer
+          text-right
+          text-xs
+          min-[912px]:text-[8px]
+        "
         onClick={handleDisplayDrawer}
         onKeyDown={handleTitleKeyDown}
       >
@@ -90,37 +111,85 @@ function Notifications() {
         className={`
           Notifications
           notification-items
+          fixed
+          inset-0
+          z-50
+          h-screen
+          w-screen
+          border
+          border-dashed
+          border-main
+          bg-white
+          p-3
+          text-sm
+
+          min-[520px]:text-base
+
+          min-[912px]:absolute
+          min-[912px]:inset-auto
+          min-[912px]:right-0
+          min-[912px]:top-6
+          min-[912px]:h-auto
+          min-[912px]:max-h-[15vh]
+          min-[912px]:w-full
+          min-[912px]:overflow-x-hidden
+          min-[912px]:overflow-y-auto
+          min-[912px]:p-[6px]
+          min-[912px]:text-[8px]
+
           ${
             displayDrawer
               ? 'visible'
-              : 'invisible'
+              : 'hidden'
           }
         `}
       >
         <button
           type="button"
           aria-label="Close"
+          className="
+            absolute
+            right-3
+            top-3
+            cursor-pointer
+            border-none
+            bg-transparent
+            text-lg
+
+            min-[912px]:right-1
+            min-[912px]:top-0
+            min-[912px]:text-xs
+          "
           onClick={handleHideDrawer}
         >
-          Close
+          ×
         </button>
 
-        <p>
-          Here is the list of notifications
-        </p>
+        <div
+          className="
+            mb-4
+            flex
+            items-center
+            gap-3
+            pr-8
 
-        <div className="flex gap-2 mb-4">
-          <button
-            type="button"
-            aria-label="Show all notifications"
-            onClick={handleSetFilterAll}
-          >
-            All
-          </button>
-
+            min-[912px]:mb-1
+            min-[912px]:gap-1
+          "
+        >
           <button
             type="button"
             aria-label="Filter urgent notifications"
+            className={`
+              cursor-pointer
+              border-none
+              bg-transparent
+              ${
+                currentFilter === 'urgent'
+                  ? 'font-bold'
+                  : ''
+              }
+            `}
             onClick={handleSetFilterUrgent}
           >
             ‼️
@@ -129,30 +198,67 @@ function Notifications() {
           <button
             type="button"
             aria-label="Filter default notifications"
+            className={`
+              cursor-pointer
+              border-none
+              bg-transparent
+              ${
+                currentFilter === 'default'
+                  ? 'font-bold'
+                  : ''
+              }
+            `}
             onClick={handleSetFilterDefault}
           >
-            ??
+            ?
           </button>
         </div>
 
         {filteredNotifications.length === 0 ? (
-          <p>No new notification for now</p>
+          <p className="pr-8">
+            No new notification for now
+          </p>
         ) : (
-          <ul>
-            {filteredNotifications.map(
-              (notification) => (
-                <NotificationItem
-                  key={notification.id}
-                  id={notification.id}
-                  type={notification.type}
-                  value={notification.value}
-                  markAsRead={
-                    handleMarkAsRead
-                  }
-                />
-              ),
-            )}
-          </ul>
+          <>
+            <p
+              className="
+                mb-3
+                pr-8
+
+                min-[912px]:mb-1
+              "
+            >
+              Here is the list of notifications
+            </p>
+
+            <ul
+              className="
+                list-disc
+                space-y-2
+                pl-5
+                pr-2
+                break-words
+                overflow-hidden
+
+                min-[912px]:space-y-1
+                min-[912px]:pl-3
+              "
+            >
+              {filteredNotifications.map(
+                (notification) => (
+                  <NotificationItem
+                    key={notification.id}
+                    id={notification.id}
+                    type={notification.type}
+                    value={notification.value}
+                    markAsRead={
+                      handleMarkAsRead
+                    }
+                  />
+                ),
+              )}
+            </ul>
+          </>
         )}
       </div>
     </div>
