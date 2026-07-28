@@ -7,100 +7,107 @@ import {
 import NotificationItem from './NotificationItem';
 
 describe('NotificationItem component', () => {
-  test('renders a default notification in blue', () => {
-    render(
-      <NotificationItem
-        id={1}
-        type="default"
-        value="New course available"
-      />,
-    );
+  test(
+    'renders a default notification in blue',
+    () => {
+      render(
+        <NotificationItem
+          id={1}
+          type="default"
+          value="New course available"
+          markAsRead={() => {}}
+        />,
+      );
 
-    const item = screen.getByText(
-      /new course available/i,
-    );
+      const item = screen.getByText(
+        /new course available/i,
+      );
 
-    expect(item).toHaveAttribute(
-      'data-notification-type',
-      'default',
-    );
+      expect(item).toHaveAttribute(
+        'data-notification-type',
+        'default',
+      );
 
-    expect(item).toHaveClass(
-      'text-default-notification-item',
-    );
-  });
+      expect(item).toHaveStyle({
+        color: 'blue',
+      });
+    },
+  );
 
-  test('renders an urgent notification in red', () => {
-    render(
-      <NotificationItem
-        id={2}
-        type="urgent"
-        value="New resume available"
-      />,
-    );
+  test(
+    'renders an urgent notification in red',
+    () => {
+      render(
+        <NotificationItem
+          id={2}
+          type="urgent"
+          value="New resume available"
+          markAsRead={() => {}}
+        />,
+      );
 
-    const item = screen.getByText(
-      /new resume available/i,
-    );
+      const item = screen.getByText(
+        /new resume available/i,
+      );
 
-    expect(item).toHaveAttribute(
-      'data-notification-type',
-      'urgent',
-    );
+      expect(item).toHaveAttribute(
+        'data-notification-type',
+        'urgent',
+      );
 
-    expect(item).toHaveClass(
-      'text-urgent-notification-item',
-    );
-  });
+      expect(item).toHaveStyle({
+        color: 'red',
+      });
+    },
+  );
 
-  test('renders notification HTML', () => {
-    render(
-      <NotificationItem
-        id={3}
-        type="urgent"
-        html={{
-          __html:
-            '<strong>Urgent requirement</strong>',
-        }}
-      />,
-    );
+  test(
+    'renders the notification value',
+    () => {
+      render(
+        <NotificationItem
+          id={3}
+          type="urgent"
+          value="Urgent requirement"
+          markAsRead={() => {}}
+        />,
+      );
 
-    const item = screen
-      .getByText(
-        /urgent requirement/i,
-      )
-      .closest('li');
+      expect(
+        screen.getByText(
+          /urgent requirement/i,
+        ),
+      ).toBeInTheDocument();
+    },
+  );
 
-    expect(item).toHaveAttribute(
-      'data-notification-type',
-      'urgent',
-    );
-  });
+  test(
+    'calls markAsRead with the notification id when clicked',
+    () => {
+      const markAsRead = jest.fn();
 
-  test('calls markAsRead with the notification id when clicked', () => {
-    const markAsRead = jest.fn();
+      render(
+        <NotificationItem
+          id={4}
+          type="urgent"
+          value="Urgent notification"
+          markAsRead={markAsRead}
+        />,
+      );
 
-    render(
-      <NotificationItem
-        id={4}
-        type="urgent"
-        value="Urgent notification"
-        markAsRead={markAsRead}
-      />,
-    );
+      fireEvent.click(
+        screen.getByText(
+          /urgent notification/i,
+        ),
+      );
 
-    fireEvent.click(
-      screen.getByText(
-        /urgent notification/i,
-      ),
-    );
+      expect(
+        markAsRead,
+      ).toHaveBeenCalledTimes(1);
 
-    expect(
-      markAsRead,
-    ).toHaveBeenCalledTimes(1);
-
-    expect(
-      markAsRead,
-    ).toHaveBeenCalledWith(4);
-  });
+      expect(
+        markAsRead,
+      ).toHaveBeenCalledWith(4);
+    },
+  );
 });

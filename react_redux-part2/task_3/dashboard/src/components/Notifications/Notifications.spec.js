@@ -22,26 +22,26 @@ const notifications = [
   {
     id: 1,
     type: 'default',
+    isRead: false,
     value: 'New course available',
   },
   {
     id: 2,
     type: 'urgent',
+    isRead: false,
     value: 'New resume available',
   },
   {
     id: 3,
     type: 'urgent',
-    html: {
-      __html:
-        '<strong>Urgent requirement</strong> - complete by EOD',
-    },
+    isRead: false,
+    value:
+      'Urgent requirement - complete by EOD',
   },
 ];
 
 const createTestStore = ({
   notificationList = [],
-  loading = false,
 } = {}) =>
   configureStore({
     reducer: {
@@ -53,7 +53,7 @@ const createTestStore = ({
       notifications: {
         notifications:
           notificationList,
-        loading,
+        loading: false,
       },
     },
   });
@@ -84,41 +84,12 @@ describe('Notifications component', () => {
   });
 
   test(
-    'displays Loading while notifications are being fetched',
-    () => {
-      renderWithStore(
-        createTestStore({
-          notificationList: [],
-          loading: true,
-        }),
-      );
-
-      expect(
-        screen.getByText('Loading...'),
-      ).toBeInTheDocument();
-
-      expect(
-        screen.queryByText(
-          /no new notification/i,
-        ),
-      ).not.toBeInTheDocument();
-
-      expect(
-        document.querySelector(
-          '.notification-items',
-        ),
-      ).not.toBeInTheDocument();
-    },
-  );
-
-  test(
     'toggles the drawer visibility',
     () => {
       renderWithStore(
         createTestStore({
           notificationList:
             notifications,
-          loading: false,
         }),
       );
 
@@ -129,8 +100,11 @@ describe('Notifications component', () => {
 
       expect(drawer).toBeInTheDocument();
 
-      expect(drawer.className)
-        .not.toMatch(/visible/);
+      expect(
+        drawer.classList.contains(
+          'visible',
+        ),
+      ).toBe(false);
 
       fireEvent.click(
         screen.getByText(
@@ -138,8 +112,11 @@ describe('Notifications component', () => {
         ),
       );
 
-      expect(drawer.className)
-        .toMatch(/visible/);
+      expect(
+        drawer.classList.contains(
+          'visible',
+        ),
+      ).toBe(true);
 
       fireEvent.click(
         screen.getByRole('button', {
@@ -147,19 +124,21 @@ describe('Notifications component', () => {
         }),
       );
 
-      expect(drawer.className)
-        .not.toMatch(/visible/);
+      expect(
+        drawer.classList.contains(
+          'visible',
+        ),
+      ).toBe(false);
     },
   );
 
   test(
-    'renders notification items from Redux',
+    'renders all notification items by default',
     () => {
       renderWithStore(
         createTestStore({
           notificationList:
             notifications,
-          loading: false,
         }),
       );
 
@@ -184,16 +163,85 @@ describe('Notifications component', () => {
   );
 
   test(
+    'shows only urgent notifications when urgent filter is selected',
+    () => {
+      renderWithStore(
+        createTestStore({
+          notificationList:
+            notifications,
+        }),
+      );
+
+      fireEvent.click(
+        screen.getByRole('button', {
+          name:
+            /filter urgent notifications/i,
+        }),
+      );
+
+      expect(
+        screen.queryByText(
+          /new course available/i,
+        ),
+      ).not.toBeInTheDocument();
+
+      expect(
+        screen.getByText(
+          /new resume available/i,
+        ),
+      ).toBeInTheDocument();
+
+      expect(
+        screen.getByText(
+          /urgent requirement/i,
+        ),
+      ).toBeInTheDocument();
+    },
+  );
+
+  test(
+    'shows only default notifications when default filter is selected',
+    () => {
+      renderWithStore(
+        createTestStore({
+          notificationList:
+            notifications,
+        }),
+      );
+
+      fireEvent.click(
+        screen.getByRole('button', {
+          name:
+            /filter default notifications/i,
+        }),
+      );
+
+      expect(
+        screen.getByText(
+          /new course available/i,
+        ),
+      ).toBeInTheDocument();
+
+      expect(
+        screen.queryByText(
+          /new resume available/i,
+        ),
+      ).not.toBeInTheDocument();
+
+      expect(
+        screen.queryByText(
+          /urgent requirement/i,
+        ),
+      ).not.toBeInTheDocument();
+    },
+  );
+
+  test(
     'removes a notification when it is marked as read',
     async () => {
-      const logSpy = jest
-        .spyOn(console, 'log')
-        .mockImplementation(() => {});
-
       const store = createTestStore({
         notificationList:
           notifications,
-        loading: false,
       });
 
       renderWithStore(store);
@@ -218,83 +266,31 @@ describe('Notifications component', () => {
           .notifications
           .notifications,
       ).toHaveLength(2);
-
-      expect(logSpy)
-        .toHaveBeenCalledWith(
-          'Notification 1 has been marked as read',
-        );
     },
   );
 
-  test('shows an empty-list message', () => {
-    renderWithStore(
-      createTestStore({
-        notificationList: [],
-        loading: false,
-      }),
-    );
-
-    expect(
-      screen.getByText(
-        /no new notification for now/i,
-      ),
-    ).toBeInTheDocument();
-  });
-
   test(
-    'displays loading while fetchNotifications is pending',
-    async () => {
-      const store = createTestStore({
-        notificationList: [],
-        loading: false,
-      });
-
-      renderWithStore(store);
-
-      const request = store.dispatch(
-        fetchNotifications(),
+    'shows an empty-list message',
+    () => {
+      renderWithStore(
+        createTestStore({
+          notificationList: [],
+        }),
       );
 
       expect(
-        await screen.findByText(
-          'Loading...',
-        ),
-      ).toBeInTheDocument();
-
-      await act(async () => {
-        mockAxios.mockResponseFor(
-          {
-            url:
-              '/notifications.json',
-          },
-          {
-            data: notifications,
-          },
-        );
-
-        await request;
-      });
-
-      expect(
-        screen.queryByText(
-          'Loading...',
-        ),
-      ).not.toBeInTheDocument();
-
-      expect(
-        await screen.findByText(
-          /new course available/i,
+        screen.getByText(
+          /no new notification for now/i,
         ),
       ).toBeInTheDocument();
     },
   );
 
   test(
-    'displays notifications returned by fetchNotifications',
+    'displays unread notifications returned by fetchNotifications',
     async () => {
       const store = createTestStore({
         notificationList: [],
-        loading: false,
       });
 
       renderWithStore(store);
@@ -316,7 +312,35 @@ describe('Notifications component', () => {
               '/notifications.json',
           },
           {
-            data: notifications,
+            data: [
+              {
+                id: 1,
+                context: {
+                  type: 'default',
+                  isRead: false,
+                  value:
+                    'New course available',
+                },
+              },
+              {
+                id: 2,
+                context: {
+                  type: 'urgent',
+                  isRead: false,
+                  value:
+                    'New resume available',
+                },
+              },
+              {
+                id: 3,
+                context: {
+                  type: 'urgent',
+                  isRead: true,
+                  value:
+                    'Already read notification',
+                },
+              },
+            ],
           },
         );
 
@@ -334,6 +358,12 @@ describe('Notifications component', () => {
           /new resume available/i,
         ),
       ).toBeInTheDocument();
+
+      expect(
+        screen.queryByText(
+          /already read notification/i,
+        ),
+      ).not.toBeInTheDocument();
     },
   );
 });
