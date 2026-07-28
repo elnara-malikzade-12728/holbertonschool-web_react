@@ -1,5 +1,6 @@
 import {
   memo,
+  useCallback,
   useRef,
 } from 'react';
 import {
@@ -11,8 +12,10 @@ import {
   css,
 } from 'aphrodite';
 
-import closeButton from '../../assets/close-icon.png';
-import NotificationItem from '../NotificationItem/NotificationItem.jsx';
+import closeButton from
+  '../../assets/close-icon.png';
+import NotificationItem from
+  '../NotificationItem/NotificationItem.jsx';
 
 import {
   markNotificationAsRead,
@@ -32,6 +35,7 @@ const styles = StyleSheet.create({
 
 function Notifications() {
   const dispatch = useDispatch();
+
   const DrawerRef = useRef(null);
 
   const notifications = useSelector(
@@ -39,23 +43,26 @@ function Notifications() {
       state.notifications.notifications,
   );
 
-  const handleToggleDrawer = () => {
-    if (!DrawerRef.current) {
-      return;
-    }
+  const handleToggleDrawer = useCallback(
+    () => {
+      if (DrawerRef.current) {
+        DrawerRef.current.classList.toggle(
+          css(styles.visible),
+        );
+      }
+    },
+    [],
+  );
 
-    DrawerRef.current.classList.toggle(
-      css(styles.visible),
+  const handleMarkNotificationAsRead =
+    useCallback(
+      (id) => {
+        dispatch(
+          markNotificationAsRead(id),
+        );
+      },
+      [dispatch],
     );
-  };
-
-  const handleMarkNotificationAsRead = (
-    id,
-  ) => {
-    dispatch(
-      markNotificationAsRead(id),
-    );
-  };
 
   return (
     <div
