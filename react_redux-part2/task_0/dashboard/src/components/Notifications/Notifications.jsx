@@ -39,22 +39,12 @@ function Notifications() {
       state.notifications.notifications,
   );
 
-  const handleDisplayDrawer = () => {
+  const handleToggleDrawer = () => {
     if (!DrawerRef.current) {
       return;
     }
 
-    DrawerRef.current.classList.add(
-      css(styles.visible),
-    );
-  };
-
-  const handleHideDrawer = () => {
-    if (!DrawerRef.current) {
-      return;
-    }
-
-    DrawerRef.current.classList.remove(
+    DrawerRef.current.classList.toggle(
       css(styles.visible),
     );
   };
@@ -98,14 +88,14 @@ function Notifications() {
           min-[912px]:top-0
           min-[912px]:text-[8px]
         "
-        onClick={handleDisplayDrawer}
+        onClick={handleToggleDrawer}
         onKeyDown={(event) => {
           if (
             event.key === 'Enter'
             || event.key === ' '
           ) {
             event.preventDefault();
-            handleDisplayDrawer();
+            handleToggleDrawer();
           }
         }}
         role="button"
@@ -149,7 +139,7 @@ function Notifications() {
         <button
           type="button"
           aria-label="Close"
-          onClick={handleHideDrawer}
+          onClick={handleToggleDrawer}
           className="
             absolute
             right-3
