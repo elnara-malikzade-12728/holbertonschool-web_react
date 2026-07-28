@@ -4,11 +4,13 @@ import {
 
 export const selectNotifications = (
   state,
-) => state.notifications.notifications;
+) =>
+  state.notifications
+    ?.notifications ?? [];
 
 const selectFilter = (
   _state,
-  filter,
+  filter = 'all',
 ) => filter;
 
 export const getFilteredNotifications =

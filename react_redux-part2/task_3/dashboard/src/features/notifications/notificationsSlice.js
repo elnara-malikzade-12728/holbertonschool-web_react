@@ -5,8 +5,7 @@ import {
 import axios from 'axios';
 
 export const ENDPOINTS = {
-  notifications:
-    '/notifications.json',
+  notifications: '/notifications.json',
 };
 
 export const initialState = {
@@ -14,75 +13,74 @@ export const initialState = {
   loading: false,
 };
 
-export const fetchNotifications =
-  createAsyncThunk(
-    'notifications/fetchNotifications',
-    async () => {
-      const response = await axios.get(
-        ENDPOINTS.notifications,
-      );
+export const fetchNotifications = createAsyncThunk(
+  'notifications/fetchNotifications',
+  async () => {
+    const response = await axios.get(
+      ENDPOINTS.notifications
+    );
 
-      return response.data
-        .filter(
+    const notifications =
+      response.data?.notifications ??
+      response.data ??
+      [];
+
+    return notifications
+      .filter(
+        (notification) =>
+          notification.context?.isRead === false
+      )
+      .map((notification) => ({
+        id: notification.id,
+        type: notification.context.type,
+        isRead: notification.context.isRead,
+        value: notification.context.value,
+      }));
+  }
+);
+
+export const notificationsSlice = createSlice({
+  name: 'notifications',
+
+  initialState,
+
+  reducers: {
+    markNotificationAsRead: (
+      state,
+      action
+    ) => {
+      state.notifications =
+        state.notifications.filter(
           (notification) =>
-            notification.context.isRead
-            === false,
-        )
-        .map((notification) => ({
-          id: notification.id,
-          type:
-            notification.context.type,
-          isRead:
-            notification.context.isRead,
-          value:
-            notification.context.value,
-        }));
-    },
-  );
-
-const notificationsSlice =
-  createSlice({
-    name: 'notifications',
-    initialState,
-
-    reducers: {
-      markNotificationAsRead: (
-        state,
-        action,
-      ) => {
-        state.notifications =
-          state.notifications.filter(
-            (notification) =>
-              notification.id
-              !== action.payload,
-          );
-      },
-    },
-
-    extraReducers: (builder) => {
-      builder
-        .addCase(
-          fetchNotifications.pending,
-          (state) => {
-            state.loading = true;
-          },
-        )
-        .addCase(
-          fetchNotifications.fulfilled,
-          (state, action) => {
-            state.loading = false;
-            state.notifications =
-              action.payload;
-          },
-        )
-        .addCase(
-          fetchNotifications.rejected,
-          (state) => {
-            state.loading = false;
-          },
+            notification.id !== action.payload
         );
     },
-  });
+  },
+
+  extraReducers: (builder) => {
+    builder
+      .addCase(
+        fetchNotifications.pending,
+        (state) => {
+          state.loading = true;
+        }
+      )
+      .addCase(
+        fetchNotifications.fulfilled,
+        (state, action) => {
+          state.loading = false;
+          state.notifications =
+            action.payload;
+        }
+      )
+      .addCase(
+        fetchNotifications.rejected,
+        (state) => {
+          state.loading = false;
+        }
+      );
+  },
+});
 
 export const {
   markNotificationAsRead,
