@@ -1,60 +1,90 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import {
+  createAsyncThunk,
+  createSlice,
+} from '@reduxjs/toolkit';
 import axios from 'axios';
-import { getLatestNotification } from '../../utils/utils';
 
-const initialState = {
+import {
+  getLatestNotification,
+} from '../../utils/utils.js';
+
+export const ENDPOINTS = {
+  notifications: '/notifications.json',
+};
+
+export const initialState = {
   notifications: [],
 };
 
-const API_BASE_URL = 'http://localhost:5173';
-const ENDPOINTS = {
-  notifications: `${API_BASE_URL}/notifications.json`,
-};
+export const fetchNotifications =
+  createAsyncThunk(
+    'notifications/fetchNotifications',
+    async () => {
+      const response = await axios.get(
+        ENDPOINTS.notifications,
+      );
 
-export const fetchNotifications = createAsyncThunk(
-  'notifications/fetchNotifications',
-  async () => {
-    const response = await axios.get(ENDPOINTS.notifications);
-    const latestNotif = {
-      id: 3,
-      type: 'urgent',
-      html: { __html: getLatestNotification() },
-    };
+      const notifications =
+        response.data?.notifications ??
+        response.data;
 
-    const currentNotifications = response.data.notifications;
-    const indexToReplace = currentNotifications.findIndex(
-      (notification) => notification.id === 3
-    );
+      return notifications.map(
+        (notification) => {
+          if (notification.id === 3) {
+            return {
+              ...notification,
+              html: {
+                __html:
+                  getLatestNotification(),
+              },
+            };
+          }
 
-    const updatedNotifications = [...currentNotifications];
-    if (indexToReplace !== -1) {
-      updatedNotifications[indexToReplace] = latestNotif;
-    } else {
-      updatedNotifications.push(latestNotif);
-    }
-
-    return updatedNotifications;
-  }
-);
+          return notification;
+        },
+      );
+    },
+  );
 
 const notificationsSlice = createSlice({
   name: 'notifications',
   initialState,
+
   reducers: {
-    markNotificationAsRead: (state, action) => {
-      const notificationId = action.payload;
-      state.notifications = state.notifications.filter(
-        (notification) => notification.id !== notificationId
+    markNotificationAsRead: (
+      state,
+      action,
+    ) => {
+      const notificationId =
+        action.payload;
+
+      state.notifications =
+        state.notifications.filter(
+          (notification) =>
+            notification.id !==
+            notificationId,
+        );
+
+      console.log(
+        `Notification ${notificationId} has been marked as read`,
       );
-      console.log(`Notification ${notificationId} has been marked as read`);
     },
+
   },
+
   extraReducers: (builder) => {
-    builder.addCase(fetchNotifications.fulfilled, (state, action) => {
-      state.notifications = action.payload;
-    });
+    builder.addCase(
+      fetchNotifications.fulfilled,
+      (state, action) => {
+        state.notifications =
+          action.payload;
+      },
+    );
   },
 });
 
-export const { markNotificationAsRead } = notificationsSlice.actions;
+export const {
+  markNotificationAsRead,
+} = notificationsSlice.actions;
+
 export default notificationsSlice.reducer;
