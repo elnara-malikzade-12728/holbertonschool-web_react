@@ -144,7 +144,7 @@ function Notifications() {
           min-[912px]:top-6
           min-[912px]:h-auto
           min-[912px]:w-full
-          min-[912px]:overflow-visible
+          min-[912px]:overflow-auto
           min-[912px]:p-[6px]
           min-[912px]:text-[8px]
         `}
