@@ -24,7 +24,7 @@ import {
 
 import {
   getFilteredNotifications,
-} from '../../features/selectors/notificationsSelector.js';
+} from '../../features/selectors/notificationSelector.js';
 
 const styles = StyleSheet.create({
   notificationDrawer: {
