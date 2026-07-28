@@ -4,7 +4,7 @@ function CourseListRow({
   isSelected = false,
   textFirstCell = '',
   textSecondCell = null,
-  changeRow = () => {},
+  onChangeRow = () => {},
 }) {
   const cellClass = `
     border
@@ -15,8 +15,8 @@ function CourseListRow({
   `;
 
   if (
-    isHeader &&
-    textSecondCell === null
+    isHeader
+    && textSecondCell === null
   ) {
     return (
       <tr className="bg-table-header opacity-66">
@@ -56,14 +56,14 @@ function CourseListRow({
   const handleCheckboxChange = (
     event,
   ) => {
-    changeRow(
+    onChangeRow(
       id,
       event.target.checked,
     );
   };
 
   return (
-    <tr className="bg-table-rows opacity45">
+    <tr className="bg-table-rows opacity-45">
       <td
         className={`${cellClass} text-center`}
       >

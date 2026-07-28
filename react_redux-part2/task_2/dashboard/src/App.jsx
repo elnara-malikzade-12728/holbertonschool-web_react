@@ -1,12 +1,17 @@
-import { useEffect } from 'react';
+import {
+  useEffect,
+} from 'react';
 import {
   useDispatch,
   useSelector,
 } from 'react-redux';
 
-import Header from './components/Header/Header.jsx';
-import Login from './pages/Login/Login.jsx';
-import Footer from './components/Footer/Footer.jsx';
+import Header from
+  './components/Header/Header.jsx';
+import Login from
+  './pages/Login/Login.jsx';
+import Footer from
+  './components/Footer/Footer.jsx';
 import Notifications from
   './components/Notifications/Notifications.jsx';
 import CourseList from
@@ -41,7 +46,10 @@ function App() {
     if (isLoggedIn) {
       dispatch(fetchCourses());
     }
-  }, [dispatch, isLoggedIn]);
+  }, [
+    dispatch,
+    isLoggedIn,
+  ]);
 
   useEffect(() => {
     const handleKeyDown = (event) => {

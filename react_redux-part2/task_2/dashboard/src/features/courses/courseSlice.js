@@ -16,21 +16,20 @@ export const initialState = {
   courses: [],
 };
 
-export const fetchCourses =
-  createAsyncThunk(
-    'courses/fetchCourses',
-    async () => {
-      const response = await axios.get(
-        ENDPOINTS.courses,
-      );
+export const fetchCourses = createAsyncThunk(
+  'courses/fetchCourses',
+  async () => {
+    const response = await axios.get(
+      ENDPOINTS.courses,
+    );
 
-      return (
-        response.data?.courses
-        ?? response.data
-        ?? []
-      );
-    },
-  );
+    return (
+      response.data?.courses
+      ?? response.data
+      ?? []
+    );
+  },
+);
 
 const courseSlice = createSlice({
   name: 'courses',
@@ -40,8 +39,7 @@ const courseSlice = createSlice({
     selectCourse: (state, action) => {
       const course = state.courses.find(
         (item) =>
-          String(item.id)
-          === String(action.payload),
+          item.id === action.payload,
       );
 
       if (course) {
@@ -52,8 +50,7 @@ const courseSlice = createSlice({
     unSelectCourse: (state, action) => {
       const course = state.courses.find(
         (item) =>
-          String(item.id)
-          === String(action.payload),
+          item.id === action.payload,
       );
 
       if (course) {
@@ -81,7 +78,6 @@ const courseSlice = createSlice({
           );
         },
       )
-
       .addCase(
         logout,
         () => initialState,

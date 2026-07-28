@@ -6,8 +6,10 @@ import {
   useSelector,
 } from 'react-redux';
 
-import CourseListRow from './CourseListRow/CourseListRow';
-import WithLogging from '../../components/HOC/WithLogging';
+import CourseListRow from
+  './CourseListRow/CourseListRow.jsx';
+import WithLogging from
+  '../../components/HOC/WithLogging.jsx';
 
 import {
   selectCourse,
@@ -81,7 +83,7 @@ function CourseList() {
             {courses.map((course) => (
               <CourseListRow
                 key={course.id}
-                id={String(course.id)}
+                id={course.id}
                 isSelected={
                   course.isSelected
                 }
@@ -91,7 +93,9 @@ function CourseList() {
                 textSecondCell={
                   course.credit
                 }
-                changeRow={onChangeRow}
+                onChangeRow={
+                  onChangeRow
+                }
               />
             ))}
           </tbody>
@@ -101,4 +105,5 @@ function CourseList() {
   );
 }
 
+export { CourseList };
 export default WithLogging(CourseList);
