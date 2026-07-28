@@ -4,7 +4,8 @@ function CourseListRow({
   isSelected = false,
   textFirstCell = '',
   textSecondCell = null,
-  onChangeRow = () => {},
+  onChangeRow,
+  changeRow,
 }) {
   const cellClass = `
     border
@@ -53,13 +54,16 @@ function CourseListRow({
     );
   }
 
-  const handleCheckboxChange = (
-    event,
-  ) => {
-    onChangeRow(
-      id,
-      event.target.checked,
-    );
+  const handleCheckboxChange = (event) => {
+    const handler =
+      onChangeRow ?? changeRow;
+
+    if (handler) {
+      handler(
+        id,
+        event.target.checked,
+      );
+    }
   };
 
   return (

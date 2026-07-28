@@ -33,13 +33,15 @@ export const fetchCourses = createAsyncThunk(
 
 const courseSlice = createSlice({
   name: 'courses',
+
   initialState,
 
   reducers: {
     selectCourse: (state, action) => {
       const course = state.courses.find(
         (item) =>
-          item.id === action.payload,
+          String(item.id)
+          === String(action.payload),
       );
 
       if (course) {
@@ -50,7 +52,8 @@ const courseSlice = createSlice({
     unSelectCourse: (state, action) => {
       const course = state.courses.find(
         (item) =>
-          item.id === action.payload,
+          String(item.id)
+          === String(action.payload),
       );
 
       if (course) {
@@ -64,13 +67,7 @@ const courseSlice = createSlice({
       .addCase(
         fetchCourses.fulfilled,
         (state, action) => {
-          const courses = Array.isArray(
-            action.payload,
-          )
-            ? action.payload
-            : [];
-
-          state.courses = courses.map(
+          state.courses = action.payload.map(
             (course) => ({
               ...course,
               isSelected: false,
