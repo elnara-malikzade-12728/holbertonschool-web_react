@@ -23,19 +23,29 @@ import notificationsReducer from
 const notificationsData = [
   {
     id: 1,
-    type: 'default',
-    value: 'New course available',
+    context: {
+      type: 'default',
+      isRead: false,
+      value:
+        'New course available',
+    },
   },
   {
     id: 2,
-    type: 'urgent',
-    value: 'New resume available',
+    context: {
+      type: 'urgent',
+      isRead: false,
+      value:
+        'New resume available',
+    },
   },
   {
     id: 3,
-    type: 'urgent',
-    html: {
-      __html: 'Latest notification',
+    context: {
+      type: 'urgent',
+      isRead: true,
+      value:
+        'Latest notification',
     },
   },
 ];
@@ -65,7 +75,6 @@ const createTestStore = ({
     password: '',
   },
   notifications = [],
-  displayDrawer = true,
   courses = [],
 } = {}) =>
   configureStore({
@@ -84,11 +93,12 @@ const createTestStore = ({
 
       notifications: {
         notifications,
-        displayDrawer,
+        loading: false,
       },
 
       courses: {
         courses,
+        loading: false,
       },
     },
   });
@@ -114,155 +124,189 @@ describe('App component', () => {
     jest.restoreAllMocks();
   });
 
-  test('renders Login when the user is not logged in', () => {
-    const store = createTestStore({
-      isLoggedIn: false,
-    });
+  test(
+    'renders Login when the user is not logged in',
+    () => {
+      const store = createTestStore({
+        isLoggedIn: false,
+      });
 
-    renderWithStore(store);
+      renderWithStore(store);
 
-    expect(
-      screen.getByText(
-        /login to access the full dashboard/i,
-      ),
-    ).toBeInTheDocument();
-
-    expect(
-      screen.queryByText('ES6'),
-    ).not.toBeInTheDocument();
-  });
-
-  test('renders CourseList when the user is logged in', () => {
-    const store = createTestStore({
-      isLoggedIn: true,
-
-      user: {
-        email: 'student@example.com',
-        password: 'password123',
-      },
-
-      courses: coursesData,
-    });
-
-    renderWithStore(store);
-
-    expect(
-      screen.getByText('ES6'),
-    ).toBeInTheDocument();
-
-    expect(
-      screen.getByText('Webpack'),
-    ).toBeInTheDocument();
-
-    expect(
-      screen.getByText('React'),
-    ).toBeInTheDocument();
-
-    expect(
-      screen.queryByText(
-        /login to access the full dashboard/i,
-      ),
-    ).not.toBeInTheDocument();
-  });
-
-  test('fetches notifications when App mounts', async () => {
-    renderWithStore();
-
-    await waitFor(() => {
       expect(
-        mockAxios.get,
-      ).toHaveBeenCalledWith(
-        '/notifications.json',
-      );
-    });
+        screen.getByText(
+          /login to access the full dashboard/i,
+        ),
+      ).toBeInTheDocument();
 
-    await act(async () => {
-      mockAxios.mockResponseFor(
-        {
-          url: '/notifications.json',
+      expect(
+        screen.queryByText('ES6'),
+      ).not.toBeInTheDocument();
+    },
+  );
+
+  test(
+    'renders CourseList when the user is logged in',
+    () => {
+      const store = createTestStore({
+        isLoggedIn: true,
+
+        user: {
+          email:
+            'student@example.com',
+          password:
+            'password123',
         },
-        {
-          data: notificationsData,
-        },
-      );
-    });
 
-    expect(
-      await screen.findByText(
-        /new course available/i,
-      ),
-    ).toBeInTheDocument();
+        courses: coursesData,
+      });
 
-    expect(
-      screen.getByText(
-        /new resume available/i,
-      ),
-    ).toBeInTheDocument();
-  });
+      renderWithStore(store);
 
-  test('does not fetch courses when the user is logged out', async () => {
-    const store = createTestStore({
-      isLoggedIn: false,
-    });
+      expect(
+        screen.getByText('ES6'),
+      ).toBeInTheDocument();
 
-    renderWithStore(store);
+      expect(
+        screen.getByText('Webpack'),
+      ).toBeInTheDocument();
 
-    await waitFor(() => {
+      expect(
+        screen.getByText('React'),
+      ).toBeInTheDocument();
+
+      expect(
+        screen.queryByText(
+          /login to access the full dashboard/i,
+        ),
+      ).not.toBeInTheDocument();
+    },
+  );
+
+  test(
+    'fetches notifications when App mounts',
+    async () => {
+      renderWithStore();
+
+      await waitFor(() => {
+        expect(
+          mockAxios.get,
+        ).toHaveBeenCalledWith(
+          '/notifications.json',
+        );
+      });
+
+      await act(async () => {
+        mockAxios.mockResponseFor(
+          {
+            url:
+              '/notifications.json',
+          },
+          {
+            data:
+              notificationsData,
+          },
+        );
+      });
+
+      expect(
+        await screen.findByText(
+          /new course available/i,
+        ),
+      ).toBeInTheDocument();
+
+      expect(
+        screen.getByText(
+          /new resume available/i,
+        ),
+      ).toBeInTheDocument();
+
+      expect(
+        screen.queryByText(
+          /latest notification/i,
+        ),
+      ).not.toBeInTheDocument();
+    },
+  );
+
+  test(
+    'does not fetch courses when the user is logged out',
+    async () => {
+      const store = createTestStore({
+        isLoggedIn: false,
+      });
+
+      renderWithStore(store);
+
+      await waitFor(() => {
+        expect(
+          mockAxios.get,
+        ).toHaveBeenCalledWith(
+          '/notifications.json',
+        );
+      });
+
       expect(
         mockAxios.get,
-      ).toHaveBeenCalledWith(
-        '/notifications.json',
-      );
-    });
-
-    expect(
-      mockAxios.get,
-    ).not.toHaveBeenCalledWith(
-      '/courses.json',
-    );
-  });
-
-  test('fetches courses when the user is logged in', async () => {
-    const store = createTestStore({
-      isLoggedIn: true,
-
-      user: {
-        email: 'student@example.com',
-        password: 'password123',
-      },
-    });
-
-    renderWithStore(store);
-
-    await waitFor(() => {
-      expect(
-        mockAxios.get,
-      ).toHaveBeenCalledWith(
+      ).not.toHaveBeenCalledWith(
         '/courses.json',
       );
-    });
+    },
+  );
 
-    await act(async () => {
-      mockAxios.mockResponseFor(
-        {
-          url: '/courses.json',
+  test(
+    'fetches courses when the user is logged in',
+    async () => {
+      const store = createTestStore({
+        isLoggedIn: true,
+
+        user: {
+          email:
+            'student@example.com',
+          password:
+            'password123',
         },
-        {
-          data: coursesData,
-        },
-      );
-    });
+      });
 
-    expect(
-      await screen.findByText('ES6'),
-    ).toBeInTheDocument();
+      renderWithStore(store);
 
-    expect(
-      screen.getByText('Webpack'),
-    ).toBeInTheDocument();
+      await waitFor(() => {
+        expect(
+          mockAxios.get,
+        ).toHaveBeenCalledWith(
+          '/courses.json',
+        );
+      });
 
-    expect(
-      screen.getByText('React'),
-    ).toBeInTheDocument();
-  });
+      await act(async () => {
+        mockAxios.mockResponseFor(
+          {
+            url:
+              '/courses.json',
+          },
+          {
+            data: coursesData,
+          },
+        );
+      });
+
+      expect(
+        await screen.findByText(
+          'ES6',
+        ),
+      ).toBeInTheDocument();
+
+      expect(
+        screen.getByText(
+          'Webpack',
+        ),
+      ).toBeInTheDocument();
+
+      expect(
+        screen.getByText(
+          'React',
+        ),
+      ).toBeInTheDocument();
+    },
+  );
 });

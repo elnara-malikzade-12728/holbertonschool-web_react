@@ -4,13 +4,8 @@ import {
 } from '@reduxjs/toolkit';
 import axios from 'axios';
 
-import {
-  getLatestNotification,
-} from '../../utils/utils.js';
-
 export const ENDPOINTS = {
-  notifications:
-    '/notifications.json',
+  notifications: '/notifications.json',
 };
 
 export const initialState = {
@@ -31,11 +26,25 @@ export const fetchNotifications =
         ?? response.data
         ?? [];
 
-      return Array.isArray(
-        notifications,
-      )
-        ? notifications
-        : [];
+      if (!Array.isArray(notifications)) {
+        return [];
+      }
+
+      return notifications
+        .filter(
+          (notification) =>
+            notification.context?.isRead
+            === false,
+        )
+        .map((notification) => ({
+          id: notification.id,
+          type:
+            notification.context.type,
+          isRead:
+            notification.context.isRead,
+          value:
+            notification.context.value,
+        }));
     },
   );
 
@@ -49,17 +58,11 @@ const notificationsSlice =
         state,
         action,
       ) => {
-        console.log(
-          `Notification ${action.payload} has been marked as read`,
-        );
-
         state.notifications =
           state.notifications.filter(
             (notification) =>
               String(notification.id)
-              !== String(
-                action.payload,
-              ),
+              !== String(action.payload),
           );
       },
     },
@@ -72,39 +75,19 @@ const notificationsSlice =
             state.loading = true;
           },
         )
-
         .addCase(
           fetchNotifications.fulfilled,
           (state, action) => {
             state.loading = false;
-
             state.notifications =
-              action.payload.map(
-                (notification) => {
-                  if (
-                    Number(
-                      notification.id,
-                    ) === 3
-                  ) {
-                    return {
-                      ...notification,
-                      html: {
-                        __html:
-                          getLatestNotification(),
-                      },
-                    };
-                  }
-
-                  return notification;
-                },
-              );
+              action.payload;
           },
         )
-
         .addCase(
           fetchNotifications.rejected,
           (state) => {
             state.loading = false;
+            state.notifications = [];
           },
         );
     },

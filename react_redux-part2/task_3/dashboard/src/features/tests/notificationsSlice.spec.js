@@ -67,34 +67,64 @@ describe('notificationsSlice', () => {
         );
 
       expect(state.loading).toBe(false);
+      expect(state.notifications).toEqual(
+        [],
+      );
     },
   );
 
   test(
-    'fetches notifications correctly',
+    'fetches and stores only unread notifications',
     async () => {
       const store = configureStore({
         reducer:
           notificationsReducer,
       });
 
-      const mockNotifications = [
+      const mockApiNotifications = [
+        {
+          id: 1,
+          context: {
+            type: 'default',
+            isRead: false,
+            value:
+              'New course available',
+          },
+        },
+        {
+          id: 2,
+          context: {
+            type: 'urgent',
+            isRead: true,
+            value:
+              'New resume available',
+          },
+        },
+        {
+          id: 3,
+          context: {
+            type: 'urgent',
+            isRead: false,
+            value:
+              'New data available',
+          },
+        },
+      ];
+
+      const expectedNotifications = [
         {
           id: 1,
           type: 'default',
+          isRead: false,
           value:
             'New course available',
         },
         {
-          id: 2,
-          type: 'urgent',
-          value:
-            'New resume available',
-        },
-        {
           id: 3,
           type: 'urgent',
-          value: '',
+          isRead: false,
+          value:
+            'New data available',
         },
       ];
 
@@ -114,7 +144,7 @@ describe('notificationsSlice', () => {
       );
 
       mockAxios.mockResponse({
-        data: mockNotifications,
+        data: mockApiNotifications,
       });
 
       await request;
@@ -125,40 +155,39 @@ describe('notificationsSlice', () => {
 
       expect(
         state.notifications,
-      ).toHaveLength(3);
+      ).toHaveLength(2);
 
       expect(
-        state.notifications[0],
+        state.notifications,
       ).toEqual(
-        mockNotifications[0],
+        expectedNotifications,
       );
 
       expect(
-        state.notifications[2].id,
-      ).toBe(3);
-
-      expect(
-        state.notifications[2].html,
-      ).toHaveProperty('__html');
+        state.notifications.find(
+          (notification) =>
+            notification.id === 2,
+        ),
+      ).toBeUndefined();
     },
   );
 
   test(
     'removes a notification when marked as read',
     () => {
-      const consoleSpy = jest
-        .spyOn(console, 'log')
-        .mockImplementation(() => {});
-
       const previousState = {
         notifications: [
           {
             id: 1,
+            type: 'default',
+            isRead: false,
             value:
               'Notification one',
           },
           {
             id: 2,
+            type: 'urgent',
+            isRead: false,
             value:
               'Notification two',
           },
@@ -177,17 +206,14 @@ describe('notificationsSlice', () => {
       ).toEqual([
         {
           id: 2,
+          type: 'urgent',
+          isRead: false,
           value:
             'Notification two',
         },
       ]);
 
       expect(state.loading).toBe(false);
-
-      expect(consoleSpy)
-        .toHaveBeenCalledWith(
-          'Notification 1 has been marked as read',
-        );
     },
   );
 });

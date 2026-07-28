@@ -1,11 +1,10 @@
 import { memo } from 'react';
-import PropTypes from 'prop-types';
 
 function NotificationItem({
-  id,
-  type,
-  value,
-  markAsRead,
+  id = 0,
+  type = 'default',
+  value = '',
+  markAsRead = () => {},
 }) {
   const handleClick = () => {
     markAsRead(id);
@@ -38,8 +37,8 @@ function NotificationItem({
       onClick={handleClick}
       onKeyDown={(event) => {
         if (
-          event.key === 'Enter' ||
-          event.key === ' '
+          event.key === 'Enter'
+          || event.key === ' '
         ) {
           event.preventDefault();
           handleClick();
@@ -52,18 +51,5 @@ function NotificationItem({
     </li>
   );
 }
-
-NotificationItem.propTypes = {
-  id: PropTypes.oneOfType([
-    PropTypes.number,
-    PropTypes.string,
-  ]).isRequired,
-  type: PropTypes.oneOf([
-    'default',
-    'urgent',
-  ]).isRequired,
-  value: PropTypes.string.isRequired,
-  markAsRead: PropTypes.func.isRequired,
-};
 
 export default memo(NotificationItem);
