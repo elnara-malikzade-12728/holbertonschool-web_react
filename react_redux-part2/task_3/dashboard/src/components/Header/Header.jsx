@@ -39,7 +39,7 @@ function Header() {
         justify-center
         min-[912px]:flex-row
         min-[912px]:justify-start
-        min-[912px]:px-5
+        min-[912px]:px-0
       "
     >
       <img
@@ -65,12 +65,13 @@ function Header() {
           min-[912px]:ml-5
           min-[912px]:flex-row
           min-[912px]:items-center
-          min-[912px]:gap-3
+          min-[912px]:gap-1
         "
       >
         <h1
           className="
             -mt-20
+            -ml-10
             text-center
             text-3xl
             font-bold
@@ -89,7 +90,7 @@ function Header() {
             className="
               whitespace-nowrap
               text-xs
-              min-[912px]:text-sm
+              min-[912px]:text-[8px]
             "
           >
             Welcome{' '}
