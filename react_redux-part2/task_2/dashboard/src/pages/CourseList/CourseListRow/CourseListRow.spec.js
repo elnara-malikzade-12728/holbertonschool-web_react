@@ -77,7 +77,7 @@ describe('CourseListRow component', () => {
               textFirstCell="ES6"
               textSecondCell="60"
               isSelected={false}
-              changeRow={() => {}}
+              onChangeRow={() => {}}
             />
           </tbody>
         </table>,
@@ -114,7 +114,7 @@ describe('CourseListRow component', () => {
               textFirstCell="ES6"
               textSecondCell="60"
               isSelected
-              changeRow={() => {}}
+              onChangeRow={() => {}}
             />
           </tbody>
         </table>,
@@ -129,9 +129,9 @@ describe('CourseListRow component', () => {
   );
 
   test(
-    'calls changeRow when checkbox changes',
+    'calls onChangeRow when checkbox changes',
     () => {
-      const changeRow = jest.fn();
+      const onChangeRow = jest.fn();
 
       render(
         <table>
@@ -141,7 +141,7 @@ describe('CourseListRow component', () => {
               textFirstCell="ES6"
               textSecondCell="60"
               isSelected={false}
-              changeRow={changeRow}
+              onChangeRow={onChangeRow}
             />
           </tbody>
         </table>,
@@ -154,7 +154,7 @@ describe('CourseListRow component', () => {
       );
 
       expect(
-        changeRow,
+        onChangeRow,
       ).toHaveBeenCalledWith(
         '1',
         true,
