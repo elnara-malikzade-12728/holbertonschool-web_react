@@ -5,7 +5,8 @@ import {
 import axios from 'axios';
 
 export const ENDPOINTS = {
-  notifications: '/notifications.json',
+  notifications:
+    '/notifications.json',
 };
 
 export const initialState = {
@@ -21,19 +22,10 @@ export const fetchNotifications =
         ENDPOINTS.notifications,
       );
 
-      const notifications =
-        response.data?.notifications
-        ?? response.data
-        ?? [];
-
-      if (!Array.isArray(notifications)) {
-        return [];
-      }
-
-      return notifications
+      return response.data
         .filter(
           (notification) =>
-            notification.context?.isRead
+            notification.context.isRead
             === false,
         )
         .map((notification) => ({
@@ -61,8 +53,8 @@ const notificationsSlice =
         state.notifications =
           state.notifications.filter(
             (notification) =>
-              String(notification.id)
-              !== String(action.payload),
+              notification.id
+              !== action.payload,
           );
       },
     },
@@ -87,7 +79,6 @@ const notificationsSlice =
           fetchNotifications.rejected,
           (state) => {
             state.loading = false;
-            state.notifications = [];
           },
         );
     },

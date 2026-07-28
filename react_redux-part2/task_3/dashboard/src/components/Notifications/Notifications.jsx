@@ -1,5 +1,4 @@
 import {
-  memo,
   useCallback,
   useRef,
   useState,
@@ -13,8 +12,11 @@ import {
   css,
 } from 'aphrodite';
 
-import closeButton from '../../assets/close-icon.png';
-import NotificationItem from '../NotificationItem/NotificationItem.jsx';
+import closeButton from
+  '../../assets/close-icon.png';
+
+import NotificationItem from
+  '../NotificationItem/NotificationItem.jsx';
 
 import {
   markNotificationAsRead,
@@ -22,7 +24,7 @@ import {
 
 import {
   getFilteredNotifications,
-} from '../../features/selectors/notificationSelector.js';
+} from '../../features/selectors/notificationsSelector.js';
 
 const styles = StyleSheet.create({
   notificationDrawer: {
@@ -38,7 +40,7 @@ const styles = StyleSheet.create({
 
 function Notifications() {
   const dispatch = useDispatch();
-  const DrawerRef = useRef(null);
+  const drawerRef = useRef(null);
 
   const [
     currentFilter,
@@ -55,15 +57,15 @@ function Notifications() {
 
   const handleToggleDrawer =
     useCallback(() => {
-      if (!DrawerRef.current) {
+      if (!drawerRef.current) {
         return;
       }
 
-      DrawerRef.current.classList.toggle(
+      drawerRef.current.classList.toggle(
         'visible',
       );
 
-      DrawerRef.current.classList.toggle(
+      drawerRef.current.classList.toggle(
         css(styles.visible),
       );
     }, []);
@@ -78,15 +80,13 @@ function Notifications() {
       [dispatch],
     );
 
-  const handleSetFilterUrgent =
-    useCallback(() => {
-      setCurrentFilter('urgent');
-    }, []);
+  const handleSetFilterUrgent = () => {
+    setCurrentFilter('urgent');
+  };
 
-  const handleSetFilterDefault =
-    useCallback(() => {
-      setCurrentFilter('default');
-    }, []);
+  const handleSetFilterDefault = () => {
+    setCurrentFilter('default');
+  };
 
   return (
     <div
@@ -136,7 +136,7 @@ function Notifications() {
       </p>
 
       <div
-        ref={DrawerRef}
+        ref={drawerRef}
         className={`
           ${css(
             styles.notificationDrawer,
@@ -213,7 +213,9 @@ function Notifications() {
           <button
             type="button"
             aria-label="Filter urgent notifications"
-            onClick={handleSetFilterUrgent}
+            onClick={
+              handleSetFilterUrgent
+            }
             className="
               cursor-pointer
               border-none
@@ -227,7 +229,9 @@ function Notifications() {
           <button
             type="button"
             aria-label="Filter default notifications"
-            onClick={handleSetFilterDefault}
+            onClick={
+              handleSetFilterDefault
+            }
             className="
               cursor-pointer
               border-none
@@ -239,7 +243,8 @@ function Notifications() {
           </button>
         </div>
 
-        {filteredNotifications.length === 0 ? (
+        {filteredNotifications.length
+        === 0 ? (
           <p
             className="
               pr-8
@@ -261,7 +266,8 @@ function Notifications() {
                 min-[912px]:text-[8px]
               "
             >
-              Here is the list of notifications
+              Here is the list of
+              notifications
             </p>
 
             <ul
@@ -279,8 +285,12 @@ function Notifications() {
                   <NotificationItem
                     key={notification.id}
                     id={notification.id}
-                    type={notification.type}
-                    value={notification.value}
+                    type={
+                      notification.type
+                    }
+                    value={
+                      notification.value
+                    }
                     markAsRead={
                       handleMarkNotificationAsRead
                     }
@@ -295,4 +305,4 @@ function Notifications() {
   );
 }
 
-export default memo(Notifications);
+export default Notifications;

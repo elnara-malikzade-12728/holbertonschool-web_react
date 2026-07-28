@@ -1,15 +1,9 @@
-import { memo } from 'react';
-
 function NotificationItem({
-  id = 0,
+  id = '',
   type = 'default',
   value = '',
   markAsRead = () => {},
 }) {
-  const handleClick = () => {
-    markAsRead(id);
-  };
-
   return (
     <li
       data-notification-type={type}
@@ -34,14 +28,16 @@ function NotificationItem({
         min-[912px]:text-[8px]
         min-[912px]:leading-normal
       "
-      onClick={handleClick}
+      onClick={() => {
+        markAsRead(id);
+      }}
       onKeyDown={(event) => {
         if (
           event.key === 'Enter'
           || event.key === ' '
         ) {
           event.preventDefault();
-          handleClick();
+          markAsRead(id);
         }
       }}
       role="button"
@@ -52,4 +48,4 @@ function NotificationItem({
   );
 }
 
-export default memo(NotificationItem);
+export default NotificationItem;
