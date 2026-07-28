@@ -23,43 +23,27 @@ const styles = StyleSheet.create({
     opacity: 0,
     visibility: 'hidden',
   },
-
-  visible: {
-    opacity: 1,
-    visibility: 'visible',
-  },
 });
 
 function Notifications() {
   const dispatch = useDispatch();
-  const DrawerRef = useRef(null);
+  const drawerRef = useRef(null);
 
   const notifications = useSelector(
     (state) =>
       state.notifications.notifications,
   );
 
-  const handleToggleDrawer = () => {
-    if (!DrawerRef.current) {
-      return;
-    }
+  const handleDisplayDrawer = () => {
+    drawerRef.current?.classList.add(
+      'visible',
+    );
+  };
 
-    const visibleClass =
-      css(styles.visible);
-
-    if (
-      DrawerRef.current.classList.contains(
-        visibleClass,
-      )
-    ) {
-      DrawerRef.current.classList.remove(
-        visibleClass,
-      );
-    } else {
-      DrawerRef.current.classList.add(
-        visibleClass,
-      );
-    }
+  const handleHideDrawer = () => {
+    drawerRef.current?.classList.remove(
+      'visible',
+    );
   };
 
   const handleMarkNotificationAsRead = (
@@ -101,14 +85,14 @@ function Notifications() {
           min-[912px]:top-0
           min-[912px]:text-[8px]
         "
-        onClick={handleToggleDrawer}
+        onClick={handleDisplayDrawer}
         onKeyDown={(event) => {
           if (
             event.key === 'Enter'
             || event.key === ' '
           ) {
             event.preventDefault();
-            handleToggleDrawer();
+            handleDisplayDrawer();
           }
         }}
         role="button"
@@ -118,7 +102,7 @@ function Notifications() {
       </p>
 
       <div
-        ref={DrawerRef}
+        ref={drawerRef}
         className={`
           ${css(
             styles.notificationDrawer,
@@ -152,7 +136,7 @@ function Notifications() {
         <button
           type="button"
           aria-label="Close"
-          onClick={handleToggleDrawer}
+          onClick={handleHideDrawer}
           className="
             absolute
             right-3
@@ -205,7 +189,8 @@ function Notifications() {
                 min-[912px]:text-[8px]
               "
             >
-              Here is the list of notifications
+              Here is the list of
+              notifications
             </p>
 
             <ul
