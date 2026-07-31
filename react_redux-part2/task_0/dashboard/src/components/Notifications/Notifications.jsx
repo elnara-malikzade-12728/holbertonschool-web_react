@@ -45,12 +45,6 @@ function Notifications() {
       return;
     }
 
-    // Hidden checker compatibility
-    DrawerRef.current.classList.toggle(
-      'visible',
-    );
-
-    // Aphrodite visibility styling
     DrawerRef.current.classList.toggle(
       css(styles.visible),
     );

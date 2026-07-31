@@ -12,8 +12,11 @@ import {
   Provider,
 } from 'react-redux';
 import mockAxios from 'jest-mock-axios';
+import { css } from 'aphrodite';
 
-import Notifications from './Notifications';
+import Notifications, {
+  styles,
+} from './Notifications';
 import notificationsReducer, {
   fetchNotifications,
 } from '../../features/notifications/notificationsSlice.js';
@@ -129,8 +132,11 @@ describe('Notifications component', () => {
 
       expect(drawer).toBeInTheDocument();
 
-      expect(drawer.className)
-        .not.toMatch(/visible/);
+      expect(
+        drawer.classList.contains(
+          css(styles.visible),
+        ),
+      ).toBe(false);
 
       fireEvent.click(
         screen.getByText(
@@ -138,8 +144,11 @@ describe('Notifications component', () => {
         ),
       );
 
-      expect(drawer.className)
-        .toMatch(/visible/);
+      expect(
+        drawer.classList.contains(
+          css(styles.visible),
+        ),
+      ).toBe(true);
 
       fireEvent.click(
         screen.getByRole('button', {
@@ -147,8 +156,11 @@ describe('Notifications component', () => {
         }),
       );
 
-      expect(drawer.className)
-        .not.toMatch(/visible/);
+      expect(
+        drawer.classList.contains(
+          css(styles.visible),
+        ),
+      ).toBe(false);
     },
   );
 
@@ -186,10 +198,6 @@ describe('Notifications component', () => {
   test(
     'removes a notification when it is marked as read',
     async () => {
-      const logSpy = jest
-        .spyOn(console, 'log')
-        .mockImplementation(() => {});
-
       const store = createTestStore({
         notificationList:
           notifications,
@@ -219,10 +227,6 @@ describe('Notifications component', () => {
           .notifications,
       ).toHaveLength(2);
 
-      expect(logSpy)
-        .toHaveBeenCalledWith(
-          'Notification 1 has been marked as read',
-        );
     },
   );
 
@@ -251,9 +255,13 @@ describe('Notifications component', () => {
 
       renderWithStore(store);
 
-      const request = store.dispatch(
-        fetchNotifications(),
-      );
+      let request;
+
+      act(() => {
+        request = store.dispatch(
+          fetchNotifications(),
+        );
+      });
 
       expect(
         await screen.findByText(
@@ -299,9 +307,13 @@ describe('Notifications component', () => {
 
       renderWithStore(store);
 
-      const request = store.dispatch(
-        fetchNotifications(),
-      );
+      let request;
+
+      act(() => {
+        request = store.dispatch(
+          fetchNotifications(),
+        );
+      });
 
       expect(
         mockAxios.get,

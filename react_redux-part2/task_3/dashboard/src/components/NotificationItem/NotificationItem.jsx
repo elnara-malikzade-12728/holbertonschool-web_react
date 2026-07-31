@@ -4,11 +4,6 @@ function NotificationItem({
   value,
   markAsRead,
 }) {
-  const color =
-    type === 'urgent'
-      ? 'red'
-      : 'blue';
-
   const handleClick = () => {
     markAsRead(id);
   };
@@ -16,11 +11,14 @@ function NotificationItem({
   return (
     <li
       data-notification-type={type}
-      onClick={handleClick}
       style={{
-        color,
+        color:
+          type === 'urgent'
+            ? 'red'
+            : 'blue',
         cursor: 'pointer',
       }}
+      onClick={handleClick}
     >
       {value}
     </li>

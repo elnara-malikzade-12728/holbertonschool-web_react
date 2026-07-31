@@ -19,7 +19,9 @@ import {
   markNotificationAsRead,
 } from '../../features/notifications/notificationsSlice.js';
 
-const styles = StyleSheet.create({
+// Exported so tests can assert Aphrodite's generated class directly.
+// eslint-disable-next-line react-refresh/only-export-components
+export const styles = StyleSheet.create({
   notificationDrawer: {
     opacity: 0,
     visibility: 'hidden',

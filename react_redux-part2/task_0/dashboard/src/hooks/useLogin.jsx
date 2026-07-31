@@ -1,16 +1,6 @@
-import {
-  useEffect,
-  useState,
-} from 'react';
-import {
-  useSelector,
-} from 'react-redux';
+import { useState } from 'react';
 
 function useLogin(onLogin = () => {}) {
-  const isLoggedIn = useSelector(
-    (state) => state.auth.isLoggedIn,
-  );
-
   const [email, setEmail] = useState('');
   const [password, setPassword] =
     useState('');
@@ -21,13 +11,6 @@ function useLogin(onLogin = () => {}) {
   const enableSubmit =
     emailRegex.test(email)
     && password.length >= 8;
-
-  useEffect(() => {
-    if (!isLoggedIn) {
-      setEmail('');
-      setPassword('');
-    }
-  }, [isLoggedIn]);
 
   const handleChangeEmail = (event) => {
     setEmail(event.target.value);

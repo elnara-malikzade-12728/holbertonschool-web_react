@@ -251,9 +251,13 @@ describe('Notifications component', () => {
 
       renderWithStore(store);
 
-      const request = store.dispatch(
-        fetchNotifications(),
-      );
+      let request;
+
+      act(() => {
+        request = store.dispatch(
+          fetchNotifications(),
+        );
+      });
 
       expect(
         await screen.findByText(
@@ -299,9 +303,13 @@ describe('Notifications component', () => {
 
       renderWithStore(store);
 
-      const request = store.dispatch(
-        fetchNotifications(),
-      );
+      let request;
+
+      act(() => {
+        request = store.dispatch(
+          fetchNotifications(),
+        );
+      });
 
       expect(
         mockAxios.get,

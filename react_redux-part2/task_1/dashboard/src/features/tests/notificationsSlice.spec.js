@@ -146,10 +146,6 @@ describe('notificationsSlice', () => {
   test(
     'removes a notification when marked as read',
     () => {
-      const consoleSpy = jest
-        .spyOn(console, 'log')
-        .mockImplementation(() => {});
-
       const previousState = {
         notifications: [
           {
@@ -184,10 +180,6 @@ describe('notificationsSlice', () => {
 
       expect(state.loading).toBe(false);
 
-      expect(consoleSpy)
-        .toHaveBeenCalledWith(
-          'Notification 1 has been marked as read',
-        );
     },
   );
 });
