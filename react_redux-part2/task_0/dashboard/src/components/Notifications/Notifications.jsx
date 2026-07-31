@@ -45,13 +45,27 @@ function Notifications() {
       return;
     }
 
-    DrawerRef.current.classList.toggle(
-      'visible',
-    );
+    const visibleClass = css(styles.visible);
 
-    DrawerRef.current.classList.toggle(
-      css(styles.visible),
-    );
+    if (
+      DrawerRef.current.classList.contains(
+        visibleClass,
+      )
+    ) {
+      DrawerRef.current.classList.remove(
+        visibleClass,
+      );
+      DrawerRef.current.classList.remove(
+        'visible',
+      );
+    } else {
+      DrawerRef.current.classList.add(
+        visibleClass,
+      );
+      DrawerRef.current.classList.add(
+        'visible',
+      );
+    }
   }, []);
 
   const handleMarkNotificationAsRead =
