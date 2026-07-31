@@ -46,6 +46,10 @@ function Notifications() {
     }
 
     DrawerRef.current.classList.toggle(
+      'visible',
+    );
+
+    DrawerRef.current.classList.toggle(
       css(styles.visible),
     );
   }, []);

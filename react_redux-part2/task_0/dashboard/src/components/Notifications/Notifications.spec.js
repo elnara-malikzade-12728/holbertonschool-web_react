@@ -98,8 +98,11 @@ describe('Notifications component', () => {
 
       expect(drawer).toBeInTheDocument();
 
-      expect(drawer.className)
-        .not.toMatch(/visible/);
+      expect(
+        drawer.classList.contains(
+          'visible',
+        ),
+      ).toBe(false);
 
       fireEvent.click(
         screen.getByText(
@@ -107,8 +110,11 @@ describe('Notifications component', () => {
         ),
       );
 
-      expect(drawer.className)
-        .toMatch(/visible/);
+      expect(
+        drawer.classList.contains(
+          'visible',
+        ),
+      ).toBe(true);
 
       fireEvent.click(
         screen.getByRole('button', {
@@ -116,8 +122,11 @@ describe('Notifications component', () => {
         }),
       );
 
-      expect(drawer.className)
-        .not.toMatch(/visible/);
+      expect(
+        drawer.classList.contains(
+          'visible',
+        ),
+      ).toBe(false);
     },
   );
 
