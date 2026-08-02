@@ -109,7 +109,6 @@ const Notifications = memo(function Notifications() {
         ref={DrawerRef}
         className={`
           ${css(styles.notificationItems)}
-          visible
           Notifications
           notification-items
           fixed
