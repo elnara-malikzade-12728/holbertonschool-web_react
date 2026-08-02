@@ -4,6 +4,7 @@ import {
   useRef,
 } from 'react';
 import {
+  shallowEqual,
   useDispatch,
   useSelector,
 } from 'react-redux';
@@ -50,7 +51,15 @@ const Notifications = memo(function Notifications() {
     loading,
     notifications,
   } = useSelector(
-    (state) => state.notifications,
+    (state) =>
+      Array.isArray(state.notifications)
+        ? {
+            loading: state.loading,
+            notifications:
+              state.notifications,
+          }
+        : state.notifications,
+    shallowEqual,
   );
 
   const handleToggleDrawer =

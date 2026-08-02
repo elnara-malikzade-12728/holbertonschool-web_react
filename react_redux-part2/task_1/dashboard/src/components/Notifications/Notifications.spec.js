@@ -115,6 +115,25 @@ describe('Notifications component', () => {
   );
 
   test(
+    'displays Loading when the notifications reducer is the store root',
+    () => {
+      const store = configureStore({
+        reducer: notificationsReducer,
+        preloadedState: {
+          notifications: [],
+          loading: true,
+        },
+      });
+
+      renderWithStore(store);
+
+      expect(
+        screen.getByText('Loading...'),
+      ).toBeInTheDocument();
+    },
+  );
+
+  test(
     'toggles the drawer visibility',
     () => {
       renderWithStore(
