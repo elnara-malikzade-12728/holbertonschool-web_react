@@ -42,18 +42,15 @@ export const styles = StyleSheet.create({
   },
 });
 
-function Notifications() {
+const Notifications = memo(function Notifications() {
   const dispatch = useDispatch();
   const DrawerRef = useRef(null);
 
-  const notifications = useSelector(
-    (state) =>
-      state.notifications.notifications,
-  );
-
-  const loading = useSelector(
-    (state) =>
-      state.notifications.loading,
+  const {
+    loading,
+    notifications,
+  } = useSelector(
+    (state) => state.notifications,
   );
 
   const handleToggleDrawer =
@@ -255,6 +252,6 @@ function Notifications() {
       )}
     </div>
   );
-}
+});
 
-export default memo(Notifications);
+export default Notifications;
