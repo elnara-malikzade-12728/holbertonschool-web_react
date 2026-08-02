@@ -12,8 +12,11 @@ import {
   Provider,
 } from 'react-redux';
 import mockAxios from 'jest-mock-axios';
+import { css } from 'aphrodite';
 
-import Notifications from './Notifications';
+import Notifications, {
+  styles,
+} from './Notifications';
 import notificationsReducer, {
   fetchNotifications,
 } from '../../features/notifications/notificationsSlice.js';
@@ -100,7 +103,7 @@ describe('Notifications component', () => {
 
       expect(
         drawer.classList.contains(
-          'visible',
+          css(styles.visible),
         ),
       ).toBe(false);
 
@@ -112,7 +115,7 @@ describe('Notifications component', () => {
 
       expect(
         drawer.classList.contains(
-          'visible',
+          css(styles.visible),
         ),
       ).toBe(true);
 
@@ -124,7 +127,7 @@ describe('Notifications component', () => {
 
       expect(
         drawer.classList.contains(
-          'visible',
+          css(styles.visible),
         ),
       ).toBe(false);
     },

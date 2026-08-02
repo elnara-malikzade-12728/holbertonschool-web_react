@@ -1,8 +1,4 @@
-import {
-  memo,
-  useCallback,
-  useRef,
-} from 'react';
+import { useRef } from 'react';
 import {
   useDispatch,
   useSelector,
@@ -19,7 +15,8 @@ import {
   markNotificationAsRead,
 } from '../../features/notifications/notificationsSlice.js';
 
-const styles = StyleSheet.create({
+// eslint-disable-next-line react-refresh/only-export-components
+export const styles = StyleSheet.create({
   notificationDrawer: {
     opacity: 0,
     visibility: 'hidden',
@@ -40,41 +37,22 @@ function Notifications() {
       state.notifications.notifications,
   );
 
-  const handleToggleDrawer = useCallback(() => {
+  const handleToggleDrawer = () => {
     if (!DrawerRef.current) {
       return;
     }
 
-    if (
-      DrawerRef.current.classList.contains(
-        css(styles.visible),
-      )
-    ) {
-      DrawerRef.current.classList.remove(
-        css(styles.visible),
-      );
-      DrawerRef.current.classList.remove(
-        'visible',
-      );
-    } else {
-      DrawerRef.current.classList.add(
-        css(styles.visible),
-      );
-      DrawerRef.current.classList.add(
-        'visible',
-      );
-    }
-  }, []);
+    DrawerRef.current.classList.toggle(
+      css(styles.visible),
+    );
+  };
 
   const handleMarkNotificationAsRead =
-    useCallback(
-      (id) => {
-        dispatch(
-          markNotificationAsRead(id),
-        );
-      },
-      [dispatch],
-    );
+    (id) => {
+      dispatch(
+        markNotificationAsRead(id),
+      );
+    };
 
   return (
     <div
@@ -244,4 +222,4 @@ function Notifications() {
   );
 }
 
-export default memo(Notifications);
+export default Notifications;
