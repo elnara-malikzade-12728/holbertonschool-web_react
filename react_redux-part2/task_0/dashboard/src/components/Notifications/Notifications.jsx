@@ -44,7 +44,6 @@ const Notifications = memo(function Notifications() {
   const handleToggleDrawer = useCallback(() => {
     if (DrawerRef.current) {
       DrawerRef.current.classList.toggle(css(styles.visible));
-      DrawerRef.current.classList.toggle('visible');
     }
   }, []);
 
@@ -106,6 +105,7 @@ const Notifications = memo(function Notifications() {
         ref={DrawerRef}
         className={`
           ${css(styles.notificationItems)}
+          ${css(styles.visible)}
           Notifications
           notification-items
           fixed

@@ -105,8 +105,19 @@ describe('Notifications component', () => {
         drawer.classList.contains(
           css(styles.visible),
         ),
+      ).toBe(true);
+
+      fireEvent.click(
+        screen.getByText(
+          /your notifications/i,
+        ),
+      );
+
+      expect(
+        drawer.classList.contains(
+          css(styles.visible),
+        ),
       ).toBe(false);
-      expect(drawer).not.toHaveClass('visible');
 
       fireEvent.click(
         screen.getByText(
@@ -119,7 +130,6 @@ describe('Notifications component', () => {
           css(styles.visible),
         ),
       ).toBe(true);
-      expect(drawer).toHaveClass('visible');
 
       fireEvent.click(
         screen.getByRole('button', {
@@ -132,7 +142,6 @@ describe('Notifications component', () => {
           css(styles.visible),
         ),
       ).toBe(false);
-      expect(drawer).not.toHaveClass('visible');
     },
   );
 
