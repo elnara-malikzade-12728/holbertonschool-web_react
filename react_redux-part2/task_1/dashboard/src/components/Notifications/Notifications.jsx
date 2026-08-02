@@ -46,11 +46,14 @@ function Notifications() {
   const dispatch = useDispatch();
   const DrawerRef = useRef(null);
 
-  const {
-    notifications,
-    loading,
-  } = useSelector(
-    (state) => state.notifications,
+  const notifications = useSelector(
+    (state) =>
+      state.notifications.notifications,
+  );
+
+  const loading = useSelector(
+    (state) =>
+      state.notifications.loading,
   );
 
   const handleToggleDrawer =
