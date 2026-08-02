@@ -1,4 +1,8 @@
-import { useRef } from 'react';
+import {
+  memo,
+  useCallback,
+  useRef,
+} from 'react';
 import {
   useDispatch,
   useSelector,
@@ -17,7 +21,7 @@ import {
 
 // eslint-disable-next-line react-refresh/only-export-components
 export const styles = StyleSheet.create({
-  notificationDrawer: {
+  notificationItems: {
     opacity: 0,
     visibility: 'hidden',
   },
@@ -28,7 +32,7 @@ export const styles = StyleSheet.create({
   },
 });
 
-function Notifications() {
+const Notifications = memo(function Notifications() {
   const dispatch = useDispatch();
   const DrawerRef = useRef(null);
 
@@ -37,7 +41,7 @@ function Notifications() {
       state.notifications.notifications,
   );
 
-  const handleToggleDrawer = () => {
+  const handleToggleDrawer = useCallback(() => {
     if (!DrawerRef.current) {
       return;
     }
@@ -45,14 +49,14 @@ function Notifications() {
     DrawerRef.current.classList.toggle(
       css(styles.visible),
     );
-  };
+  }, []);
 
   const handleMarkNotificationAsRead =
-    (id) => {
+    useCallback((id) => {
       dispatch(
         markNotificationAsRead(id),
       );
-    };
+    }, [dispatch]);
 
   return (
     <div
@@ -104,7 +108,8 @@ function Notifications() {
       <div
         ref={DrawerRef}
         className={`
-          ${css(styles.notificationDrawer)}
+          ${css(styles.notificationItems)}
+          visible
           Notifications
           notification-items
           fixed
@@ -220,6 +225,6 @@ function Notifications() {
       </div>
     </div>
   );
-}
+});
 
 export default Notifications;
