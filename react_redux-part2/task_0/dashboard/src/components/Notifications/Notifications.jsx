@@ -45,22 +45,20 @@ function Notifications() {
       return;
     }
 
-    const visibleClass = css(styles.visible);
-
     if (
       DrawerRef.current.classList.contains(
-        visibleClass,
+        css(styles.visible),
       )
     ) {
       DrawerRef.current.classList.remove(
-        visibleClass,
+        css(styles.visible),
       );
       DrawerRef.current.classList.remove(
         'visible',
       );
     } else {
       DrawerRef.current.classList.add(
-        visibleClass,
+        css(styles.visible),
       );
       DrawerRef.current.classList.add(
         'visible',
