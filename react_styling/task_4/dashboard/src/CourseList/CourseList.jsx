@@ -4,25 +4,11 @@ import WithLogging from '../HOC/WithLogging';
 function CourseList({ courses = [] }) {
   return (
     <div
-      className="
-        my-20
-        flex
-        justify-center
-        min-[912px]:my-10
-      "
+      className="mx-auto my-24 w-4/5 overflow-x-auto min-[912px]:my-32"
     >
       <table
         id="CourseList"
-        className="
-          w-[75%]
-          border-collapse
-          text-[10px]
-          text-black
-          min-[520px]:w-[70%]
-          min-[520px]:text-xs
-          min-[912px]:w-[60%]
-          min-[912px]:text-[8px]
-        "
+        className="w-full border-collapse text-xs leading-[18px] text-black min-[912px]:text-base min-[912px]:leading-6"
       >
         <thead>
           {courses.length === 0 ? (
