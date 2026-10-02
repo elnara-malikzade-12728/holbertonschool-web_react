@@ -8,11 +8,11 @@ function Header() {
       <img
         src={holbertonLogo}
         alt="holberton logo"
-        className="h-48 w-48 object-cover min-[912px]:h-64 min-[912px]:w-60"
+        className="h-64 w-64 object-cover min-[912px]:h-64 min-[912px]:w-60"
       />
 
       <h1
-        className="text-center text-[28px] leading-9 font-bold text-main min-[520px]:text-4xl min-[912px]:text-5xl"
+        className="text-center text-4xl leading-[48px] font-bold text-main min-[520px]:text-4xl min-[912px]:text-5xl"
       >
         School Dashboard
       </h1>
