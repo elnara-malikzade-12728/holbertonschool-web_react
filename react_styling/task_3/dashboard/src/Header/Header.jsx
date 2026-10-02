@@ -3,27 +3,16 @@ import holbertonLogo from '../assets/holberton-logo.jpg';
 function Header() {
   return (
     <header
-      className="
-        App-header
-        flex
-        items-center
-        p-0
-        
-      "
+      className="App-header flex items-center"
     >
       <img
         src={holbertonLogo}
         alt="holberton logo"
-        className="h-[90px] w-auto -ml-3"
+        className="h-64 w-60 object-cover"
       />
       
       <h1
-        className="
-          -ml-10
-          text-main
-          text-[20px]
-          font-bold
-        "
+        className="text-main text-5xl font-bold"
       >
         School Dashboard
       </h1>      
