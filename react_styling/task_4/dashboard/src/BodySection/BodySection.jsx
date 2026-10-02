@@ -1,23 +1,10 @@
 function BodySection({ title = '', children = null }) {
   return (
     <section
-      className="
-        bodySection
-        px-8
-        py-2
-        min-[520px]:px-2
-        min-[912px]:px-9
-      "
+      className="bodySection pt-6 min-[912px]:pt-8"
     >
       <h2
-        className="
-          mb-0
-          mt-[20px]
-          text-[17px]
-          font-bold
-          min-[520px]:text-base
-          min-[912px]:text-[8px]
-        "
+        className="text-sm leading-5 font-bold min-[912px]:text-xl min-[912px]:leading-7"
       >
         {title}
       </h2>
