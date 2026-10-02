@@ -18,8 +18,8 @@ class Notifications extends Component {
 
   shouldComponentUpdate(nextProps) {
     return (
-      nextProps.notifications.length
-      !== this.props.notifications.length
+      nextProps.displayDrawer !== this.props.displayDrawer
+      || nextProps.notifications.length !== this.props.notifications.length
     );
   }
 
@@ -30,7 +30,7 @@ class Notifications extends Component {
       <div
         className="relative min-[912px]:absolute min-[912px]:right-3 min-[912px]:top-1 min-[912px]:z-20 min-[912px]:w-[400px]"
       >
-        {!displayDrawer && (
+        {(
           <p
             className="notification-title absolute right-2 top-1 whitespace-nowrap text-right text-base min-[912px]:right-0 min-[912px]:top-0 min-[912px]:text-base"
           >
