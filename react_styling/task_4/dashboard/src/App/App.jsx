@@ -68,7 +68,7 @@ class App extends Component {
     return (
       <Fragment>
         <div
-          className="App flex min-h-screen w-full flex-col px-2 min-[912px]:px-3"
+          className="App flex min-h-screen w-full flex-col px-3 min-[912px]:px-3"
         >
           <div className="root-notifications">
             <Notifications
@@ -92,7 +92,7 @@ class App extends Component {
 
             <BodySection title="News from the School">
               <p
-                className="break-words text-xs leading-[18px] min-[912px]:text-base min-[912px]:leading-6"
+                className="break-words text-base leading-6 min-[912px]:text-base min-[912px]:leading-6"
               >
                 ipsum Lorem ipsum dolor sit amet consectetur, adipisicing
                 elit. Similique, asperiores architecto blanditiis fuga
