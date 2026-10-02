@@ -3,22 +3,20 @@ import WithLogging from '../HOC/WithLogging';
 function Login() {
   return (
     <div
-      className="
-        App-body flex-1 px-[10px] py-[10px] text-[5px] border-t-2 border-main pt-[10px]
-      "
+      className="App-body min-h-[420px] border-t-4 border-main px-10 pt-5 text-xl"
     >
-      <p className="mb-4 text-[10px]">
+      <p className="mb-8">
         Login to access the full dashboard
       </p>
 
-      <div className="flex items-center gap-1 flex-wrap">
+      <div className="flex items-center gap-2 flex-wrap">
         <label htmlFor="email">Email:</label>
 
         <input
           type="email"
           id="email"
           name="email"
-          className="h-4 w-26 border border-gray-400 px-2 text-sm rounded"
+          className="h-8 w-52 rounded border border-gray-600 px-2"
         />
 
         <label htmlFor="password">Password:</label>
@@ -27,12 +25,12 @@ function Login() {
           type="password"
           id="password"
           name="password"
-          className="h-4 w-26 border border-gray-400 px-2 text-sm rounded"
+          className="h-8 w-52 rounded border border-gray-600 px-2"
         />
 
         <button
           type="button"
-          className="rounded border border-gray-400 px-3 py-1 text-[10px] h-4 w-4 flex items-center justify-center"
+          className="rounded border border-gray-600 px-1"
         >
           OK
         </button>
