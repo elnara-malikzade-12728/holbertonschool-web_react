@@ -1,11 +1,11 @@
 function BodySection({ title = '', children = null }) {
   return (
-    <div className="bodySection px-[20px] py-[10px]">
-      <h2 className="mb-[0px] text-[10px] font-bold">
+    <div className="bodySection pt-8">
+      <h2 className="text-xl leading-7 font-bold">
         {title}
       </h2>
 
-      <div className="text-[10px]">
+      <div className="text-base">
         {children}
       </div>
     </div>
