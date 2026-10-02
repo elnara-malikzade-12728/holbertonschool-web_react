@@ -3,43 +3,16 @@ import holbertonLogo from '../assets/holberton-logo.jpg';
 function Header() {
   return (
     <header
-      className="
-        flex
-        flex-col
-        items-center
-        justify-center
-        min-[912px]:flex-row
-        min-[912px]:justify-start
-        min-[912px]:px-5
-      "
+      className="App-header flex flex-col items-center min-[912px]:flex-row"
     >
       <img
         src={holbertonLogo}
         alt="holberton logo"
-        className="
-          -mt-10
-          h-100
-          w-100
-          object-contain
-          min-[520px]:h-80
-          min-[520px]:w-80
-          min-[912px]:h-40
-          min-[912px]:w-40
-        "
+        className="h-48 w-48 object-cover min-[912px]:h-64 min-[912px]:w-60"
       />
 
       <h1
-        className="
-          -mt-20
-          text-center
-          text-3xl
-          font-bold
-          text-main
-          min-[520px]:text-3xl
-          min-[912px]:ml-5
-          min-[912px]:mt-0
-          min-[912px]:text-3xl
-        "
+        className="text-center text-[28px] leading-9 font-bold text-main min-[520px]:text-4xl min-[912px]:text-5xl"
       >
         School Dashboard
       </h1>
