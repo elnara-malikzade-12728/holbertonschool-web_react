@@ -3,22 +3,7 @@ import { getCurrentYear, getFooterCopy } from '../utils/utils';
 function Footer() {
   return (
     <footer
-      className="
-        App-footer
-        mx-3
-        mt-auto
-        border-t-4
-        border-main
-        px-2
-        py-2
-        text-center
-        text-[15px]
-        italic
-        min-[520px]:mx-5
-        min-[520px]:text-[10px]
-        min-[912px]:mx-9
-        min-[912px]:text-[7px]
-      "
+      className="App-footer mt-auto border-t-[3px] border-main py-1.5 text-center text-xs italic min-[912px]:border-t-4 min-[912px]:py-4 min-[912px]:text-xl"
     >
       <p>
         Copyright {getCurrentYear()} - {getFooterCopy(false)}
