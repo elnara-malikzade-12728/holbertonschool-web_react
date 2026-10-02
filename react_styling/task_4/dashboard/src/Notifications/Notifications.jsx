@@ -32,7 +32,7 @@ class Notifications extends Component {
       >
         {!displayDrawer && (
           <p
-            className="notification-title absolute right-2 top-1 whitespace-nowrap text-right text-xs min-[912px]:right-0 min-[912px]:top-0 min-[912px]:text-base"
+            className="notification-title absolute right-2 top-1 whitespace-nowrap text-right text-base min-[912px]:right-0 min-[912px]:top-0 min-[912px]:text-base"
           >
             Your notifications
           </p>
@@ -40,7 +40,7 @@ class Notifications extends Component {
 
         {displayDrawer && (
           <div
-            className="notification-items fixed inset-0 z-50 overflow-auto border-[3px] border-dotted border-main bg-white p-3 text-sm min-[912px]:absolute min-[912px]:inset-auto min-[912px]:right-0 min-[912px]:top-7 min-[912px]:w-full min-[912px]:text-base"
+            className="notification-items fixed inset-0 z-50 overflow-auto border-4 border-dotted border-main bg-white p-3 text-xl min-[912px]:absolute min-[912px]:inset-auto min-[912px]:right-0 min-[912px]:top-7 min-[912px]:w-full min-[912px]:text-base"
           >
             {notifications.length > 0 && (
               <button

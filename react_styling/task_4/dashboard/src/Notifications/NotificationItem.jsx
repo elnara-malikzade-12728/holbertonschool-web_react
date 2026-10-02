@@ -21,7 +21,7 @@ class NotificationItem extends PureComponent {
       ? 'text-urgent-notification-item'
       : 'text-default-notification-item';
 
-    const itemClass = `${colorClass} block border-b border-gray-600 px-1.5 py-2 text-sm leading-[22px] min-[912px]:list-item min-[912px]:border-0 min-[912px]:p-0 min-[912px]:text-base min-[912px]:leading-6`;
+    const itemClass = `${colorClass} block border-b border-gray-600 p-3 text-xl leading-6 min-[912px]:list-item min-[912px]:border-0 min-[912px]:p-0 min-[912px]:text-base min-[912px]:leading-6`;
 
     if (html) {
       return (
