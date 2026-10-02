@@ -28,30 +28,11 @@ class Notifications extends Component {
 
     return (
       <div
-        className="
-          relative
-          min-[912px]:absolute
-          min-[912px]:right-4
-          min-[912px]:top-2
-          min-[912px]:z-20
-          min-[912px]:w-1/4
-        "
+        className="relative min-[912px]:absolute min-[912px]:right-3 min-[912px]:top-1 min-[912px]:z-20 min-[912px]:w-[400px]"
       >
         {!displayDrawer && (
           <p
-            className="
-              notification-title
-              absolute
-              right-8
-              top-8
-              whitespace-nowrap
-              text-right
-              text-[13px]
-              min-[520px]:text-[10px]
-              min-[912px]:right-0
-              min-[912px]:top-0
-              min-[912px]:text-[8px]
-            "
+            className="notification-title absolute right-2 top-1 whitespace-nowrap text-right text-xs min-[912px]:right-0 min-[912px]:top-0 min-[912px]:text-base"
           >
             Your notifications
           </p>
@@ -59,100 +40,39 @@ class Notifications extends Component {
 
         {displayDrawer && (
           <div
-            className="
-              notification-items
-              fixed
-              inset-0
-              z-50
-              overflow-hidden
-              border
-              border-dashed
-              border-main
-              bg-white
-              p-3
-              text-sm
-              min-[520px]:text-base
-              min-[912px]:absolute
-              min-[912px]:inset-auto
-              min-[912px]:right-0
-              min-[912px]:top-6
-              min-[912px]:h-auto
-              min-[912px]:w-full
-              min-[912px]:overflow-visible
-              min-[912px]:p-[6px]
-              min-[912px]:text-[8px]
-            "
+            className="notification-items fixed inset-0 z-50 overflow-auto border-[3px] border-dotted border-main bg-white p-3 text-sm min-[912px]:absolute min-[912px]:inset-auto min-[912px]:right-0 min-[912px]:top-7 min-[912px]:w-full min-[912px]:text-base"
           >
             {notifications.length > 0 && (
               <button
                 type="button"
                 aria-label="Close"
                 onClick={this.handleClick}
-                className="
-                  absolute
-                  right-3
-                  top-3
-                  flex
-                  h-7
-                  w-7
-                  cursor-pointer
-                  items-center
-                  justify-center
-                  border-none
-                  bg-transparent
-                  min-[912px]:right-1
-                  min-[912px]:top-1
-                  min-[912px]:h-4
-                  min-[912px]:w-4
-                "
+                className="absolute right-2 top-2 flex h-4 w-4 cursor-pointer items-center justify-center border-none bg-transparent"
               >
                 <img
                   src={closeButton}
                   alt="Close"
-                  className="
-                    h-4
-                    w-4
-                    min-[912px]:h-2
-                    min-[912px]:w-2
-                  "
+                  className="h-3 w-3"
                 />
               </button>
             )}
 
             {notifications.length === 0 ? (
               <p
-                className="
-                  pr-8
-                  text-sm
-                  min-[912px]:text-[8px]
-                "
+                className="pr-5"
               >
                 No new notification for now
               </p>
             ) : (
               <>
                 <p
-                  className="
-                    mb-4
-                    pr-8
-                    text-[15px]
-                    min-[520px]:text-base
-                    min-[912px]:mb-1
-                    min-[912px]:text-[8px]
-                  "
+                  className="pr-5"
                 >
                   Here is the list of notifications
                 </p>
 
                 <ul
-                  className="
-                    list-none
-                    space-y-1
-                    p-0
-                    min-[912px]:list-disc
-                    min-[912px]:space-y-0
-                    min-[912px]:pl-4
-                  "
+                  className="list-none p-0 min-[912px]:list-[square] min-[912px]:pl-5"
                 >
                   {notifications.map((notification) => (
                     <NotificationItem
