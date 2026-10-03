@@ -1,3 +1,4 @@
+/* global process: readonly */
 import {
   useCallback,
   useEffect,
@@ -30,7 +31,7 @@ function App() {
   const [user, setUser] =
     useState(defaultUser);
 
-  const [listNotifications, setListNotifications] =
+  const [notifications, setNotifications] =
     useState([]);
 
   const [courses, setCourses] =
@@ -71,11 +72,15 @@ function App() {
             },
           );
 
-        setListNotifications(
+        setNotifications(
           updatedNotifications,
         );
       })
-      .catch(() => {});
+      .catch((error) => {
+        if (process.env.NODE_ENV === 'development') {
+          console.error('Unable to fetch dashboard data:', error);
+        }
+      });
 
     return () => {
       isMounted = false;
@@ -84,7 +89,6 @@ function App() {
 
   useEffect(() => {
     if (!user.isLoggedIn) {
-      setCourses([]);
       return undefined;
     }
 
@@ -105,7 +109,11 @@ function App() {
 
         setCourses(courseList);
       })
-      .catch(() => {});
+      .catch((error) => {
+        if (process.env.NODE_ENV === 'development') {
+          console.error('Unable to fetch dashboard data:', error);
+        }
+      });
 
     return () => {
       isMounted = false;
@@ -129,6 +137,7 @@ function App() {
   }, []);
 
   const logOut = useCallback(() => {
+    setCourses([]);
     setUser({
       email: '',
       password: '',
@@ -137,11 +146,11 @@ function App() {
   }, []);
 
   const markNotificationAsRead = useCallback((id) => {
-    setListNotifications((prev) =>
+    setNotifications((prev) =>
       prev.filter((notification) => notification.id !== id)
     );
 
-    console['log'](
+    console.log(
       `Notification ${id} has been marked as read`
     );
   }, []);
@@ -155,8 +164,7 @@ function App() {
     <AppContext.Provider value={contextValue}>
       <div className="App">
         <Notifications
-          listNotifications={listNotifications}
-          notifications={listNotifications}
+          notifications={notifications}
           handleHideDrawer={handleHideDrawer}
           handleDisplayDrawer={handleDisplayDrawer}
           displayDrawer={displayDrawer}
