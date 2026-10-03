@@ -155,4 +155,25 @@ describe('App component', () => {
       'Notification 1 has been marked as read',
     );
   });
+
+  test('removes every notification and keeps the drawer usable when empty', async () => {
+    const user = userEvent.setup();
+    const logSpy = jest.spyOn(console, 'log').mockImplementation(() => {});
+    render(<App />);
+
+    await user.click(screen.getByText(/your notifications/i));
+    const items = [/new course available/i, /new resume available/i, /urgent requirement/i];
+    for (const [index, text] of items.entries()) {
+      await user.click(screen.getByText(text));
+      expect(screen.queryByText(text)).not.toBeInTheDocument();
+      expect(logSpy).toHaveBeenCalledWith(`Notification ${index + 1} has been marked as read`);
+      expect(screen.queryAllByRole('listitem')).toHaveLength(2 - index);
+    }
+
+    expect(screen.getByText(/no new notification for now/i)).toBeInTheDocument();
+    await user.click(screen.getByRole('button', { name: /close/i }));
+    expect(screen.queryByText(/no new notification for now/i)).not.toBeInTheDocument();
+    await user.click(screen.getByText(/your notifications/i));
+    expect(screen.getByText(/no new notification for now/i)).toBeInTheDocument();
+  });
 });
