@@ -2,14 +2,15 @@ import { memo } from 'react';
 import closeButton from '../assets/close-button.png';
 import NotificationItem from './NotificationItem';
 
-function Notifications({
+function Notifications(props) {
+  const {
   notifications = [],
   listNotifications = [],
   displayDrawer = false,
   handleDisplayDrawer = () => {},
   handleHideDrawer = () => {},
   markNotificationAsRead = () => {},
-}) {
+} = props;
   const notificationList =
     notifications.length > 0
       ? notifications
@@ -32,7 +33,7 @@ function Notifications({
     >
       <p
         className={`
-          notification-title
+          notification-title menuItem
           absolute
           right-4
           top-2
@@ -65,7 +66,7 @@ function Notifications({
       {displayDrawer && (
         <div
           className="
-            notification-items
+            notification-items Notifications
             fixed
             inset-0
             z-50
