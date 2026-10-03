@@ -40,22 +40,27 @@ function App() {
   useEffect(() => {
     let isMounted = true;
 
-    axios
-      .get('/notifications.json')
-      .then((response) => {
+    const fetchNotifications = async () => {
+      try {
+        const response = await axios.get(
+          '/notifications.json',
+        );
+
         if (!isMounted) {
           return;
         }
 
-        // Handles both plain arrays and response.data.notifications shapes safely
-        const dataPayload = response.data?.notifications || response.data;
-        const notificationList =
+        const dataPayload =
+          response.data?.notifications ??
+          response.data;
+
+        const notificationsData =
           Array.isArray(dataPayload)
             ? dataPayload
             : [];
 
         const updatedNotifications =
-          notificationList.map(
+          notificationsData.map(
             (notification) => {
               if (notification.id !== 3) {
                 return notification;
@@ -75,45 +80,70 @@ function App() {
         setNotifications(
           updatedNotifications,
         );
-      })
-      .catch((error) => {
-        if (process.env.NODE_ENV === 'development') {
-          console.error('Unable to fetch dashboard data:', error);
+      } catch (error) {
+        if (
+          process.env.NODE_ENV ===
+          'development'
+        ) {
+          console.error(
+            'Unable to fetch notifications:',
+            error,
+          );
         }
-      });
+      }
+    };
+
+    fetchNotifications();
 
     return () => {
       isMounted = false;
     };
   }, []);
 
+  /*
+   * Fetch courses whenever the user state changes.
+   */
   useEffect(() => {
-    if (!user.isLoggedIn) {
-      return undefined;
-    }
-
     let isMounted = true;
 
-    axios
-      .get('/courses.json')
-      .then((response) => {
+    const fetchCourses = async () => {
+      if (!user.isLoggedIn) {
+        return;
+      }
+
+      try {
+        const response = await axios.get(
+          '/courses.json',
+        );
+
         if (!isMounted) {
           return;
         }
 
-        const dataPayload = response.data?.courses || response.data;
-        const courseList =
+        const dataPayload =
+          response.data?.courses ??
+          response.data;
+
+        const coursesData =
           Array.isArray(dataPayload)
             ? dataPayload
             : [];
 
-        setCourses(courseList);
-      })
-      .catch((error) => {
-        if (process.env.NODE_ENV === 'development') {
-          console.error('Unable to fetch dashboard data:', error);
+        setCourses(coursesData);
+      } catch (error) {
+        if (
+          process.env.NODE_ENV ===
+          'development'
+        ) {
+          console.error(
+            'Unable to fetch courses:',
+            error,
+          );
         }
-      });
+      }
+    };
+
+    fetchCourses();
 
     return () => {
       isMounted = false;
