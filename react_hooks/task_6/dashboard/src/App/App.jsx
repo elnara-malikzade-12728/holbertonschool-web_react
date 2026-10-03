@@ -1,3 +1,4 @@
+/* global process: readonly */
 import {
   useCallback,
   useEffect,
@@ -110,11 +111,6 @@ function App() {
 
     const fetchCourses = async () => {
       if (!user.isLoggedIn) {
-        dispatch({
-          type: APP_ACTIONS.SET_COURSES,
-          courses: [],
-        });
-
         return;
       }
 
@@ -165,7 +161,6 @@ function App() {
       dispatch({
         type:
           APP_ACTIONS.TOGGLE_DRAWER,
-        displayDrawer: true,
       });
     }, []);
 
@@ -204,7 +199,7 @@ function App() {
         id,
       });
 
-      console['log'](
+      console.log(
         `Notification ${id} has been marked as read`,
       );
     }, []);

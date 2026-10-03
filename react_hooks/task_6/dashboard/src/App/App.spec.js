@@ -74,6 +74,17 @@ const respondWithCourses = async () => {
 };
 
 describe('App component', () => {
+  test('toggles the populated drawer repeatedly without losing notifications', async () => {
+    render(<App />);
+    await respondWithNotifications();
+    for (let cycle = 0; cycle < 2; cycle += 1) {
+      fireEvent.click(screen.getByText(/your notifications/i));
+      expect(screen.queryByText(/new course available/i)).not.toBeInTheDocument();
+      fireEvent.click(screen.getByText(/your notifications/i));
+      expect(screen.getByText(/new course available/i)).toBeInTheDocument();
+    }
+  });
+
   afterEach(() => {
     mockAxios.reset();
     jest.restoreAllMocks();

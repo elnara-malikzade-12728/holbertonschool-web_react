@@ -64,7 +64,7 @@ export function appReducer(
         displayDrawer:
           action.displayDrawer ??
           action.payload ??
-          false,
+          !state.displayDrawer,
       };
 
     case APP_ACTIONS.SET_NOTIFICATIONS:
