@@ -1,12 +1,13 @@
 import { memo } from 'react';
 
-function NotificationItem({
+const NotificationItem = (props) => {
+  const {
   id = 0,
   type = 'default',
   html = null,
   value = '',
   markAsRead = () => {},
-}) {
+} = props;
   const handleClick = () => {
     markAsRead(id);
   };
@@ -53,6 +54,6 @@ function NotificationItem({
       {value}
     </li>
   );
-}
+};
 
 export default memo(NotificationItem);
