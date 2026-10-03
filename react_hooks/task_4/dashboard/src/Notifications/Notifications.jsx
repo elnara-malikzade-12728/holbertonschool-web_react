@@ -2,7 +2,7 @@ import { memo } from 'react';
 import closeButton from '../assets/close-button.png';
 import NotificationItem from './NotificationItem';
 
-function Notifications(props) {
+const Notifications = (props) => {
   const {
   notifications = [],
   listNotifications = [],
@@ -94,6 +94,7 @@ function Notifications(props) {
           <button
             type="button"
             aria-label="Close"
+            title="Close"
             onClick={handleHideDrawer}
             className="
               absolute
@@ -181,6 +182,6 @@ function Notifications(props) {
       )}
     </div>
   );
-}
+};
 
 export default memo(Notifications);
