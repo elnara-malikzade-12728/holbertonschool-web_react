@@ -236,3 +236,14 @@ describe('Notifications component', () => {
     },
   );
 });
+
+
+test('renders with the notification reducer as the store root', () => {
+  const store = configureStore({
+    reducer: notificationsReducer,
+    preloadedState: { notifications },
+  });
+  renderWithStore(store);
+  fireEvent.click(screen.getByText(/your notifications/i));
+  expect(screen.getByText('New course available')).toBeVisible();
+});

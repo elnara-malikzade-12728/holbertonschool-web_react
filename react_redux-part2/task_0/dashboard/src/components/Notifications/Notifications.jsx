@@ -38,7 +38,9 @@ const Notifications = memo(function Notifications() {
 
   const notifications = useSelector(
     (state) =>
-      state.notifications.notifications,
+      Array.isArray(state.notifications)
+        ? state.notifications
+        : state.notifications.notifications,
   );
 
   const handleToggleDrawer = useCallback(() => {
