@@ -13,6 +13,18 @@ export const initialState = {
   loading: false,
 };
 
+const unreadNotifications = (notifications) => notifications
+  .filter((notification) => (notification.context ?? notification).isRead === false)
+  .map((notification) => {
+    const context = notification.context ?? notification;
+    return {
+      id: notification.id,
+      type: context.type,
+      isRead: context.isRead,
+      value: context.value,
+    };
+  });
+
 export const fetchNotifications = createAsyncThunk(
   'notifications/fetchNotifications',
   async () => {
@@ -25,17 +37,7 @@ export const fetchNotifications = createAsyncThunk(
       response.data ??
       [];
 
-    return notifications
-      .filter(
-        (notification) =>
-          notification.context?.isRead === false
-      )
-      .map((notification) => ({
-        id: notification.id,
-        type: notification.context.type,
-        isRead: notification.context.isRead,
-        value: notification.context.value,
-      }));
+    return unreadNotifications(notifications);
   }
 );
 
@@ -70,7 +72,7 @@ export const notificationsSlice = createSlice({
         (state, action) => {
           state.loading = false;
           state.notifications =
-            action.payload;
+            unreadNotifications(action.payload);
         }
       )
       .addCase(
