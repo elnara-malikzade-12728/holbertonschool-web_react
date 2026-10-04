@@ -32,7 +32,7 @@ export const styles = StyleSheet.create({
   },
 });
 
-const Notifications = memo(function Notifications() {
+function Notifications() {
   const dispatch = useDispatch();
   const DrawerRef = useRef(null);
 
@@ -222,6 +222,6 @@ const Notifications = memo(function Notifications() {
       </div>
     </div>
   );
-});
+}
 
-export default Notifications;
+export default memo(Notifications);
