@@ -217,3 +217,15 @@ describe('notificationsSlice', () => {
     },
   );
 });
+
+
+test('fulfilled notifications reject read entries at the state boundary', () => {
+  const payload = [
+    { id: 1, type: 'urgent', value: 'Unread', isRead: false },
+    { id: 2, type: 'default', value: 'Read', isRead: true },
+  ];
+  const state = notificationsReducer(undefined, fetchNotifications.fulfilled(payload));
+  expect(state.notifications).toEqual([payload[0]]);
+  expect(state.loading).toBe(false);
+  expect(payload).toHaveLength(2);
+});
