@@ -84,66 +84,24 @@ describe('Notifications component', () => {
     renderWithStore();
   });
 
-  test(
-    'toggles the drawer visibility',
-    () => {
-      renderWithStore(
-        createTestStore({
-          notificationList:
-            notifications,
-        }),
-      );
-
-      const drawer =
-        document.querySelector(
-          '.notification-items',
-        );
-
-      expect(drawer).toBeInTheDocument();
-
-      expect(
-        drawer.classList.contains(
-          css(styles.visible),
-        ),
-      ).toBe(true);
-
-      fireEvent.click(
-        screen.getByText(
-          /your notifications/i,
-        ),
-      );
-
-      expect(
-        drawer.classList.contains(
-          css(styles.visible),
-        ),
-      ).toBe(false);
-
-      fireEvent.click(
-        screen.getByText(
-          /your notifications/i,
-        ),
-      );
-
-      expect(
-        drawer.classList.contains(
-          css(styles.visible),
-        ),
-      ).toBe(true);
-
-      fireEvent.click(
-        screen.getByRole('button', {
-          name: /close/i,
-        }),
-      );
-
-      expect(
-        drawer.classList.contains(
-          css(styles.visible),
-        ),
-      ).toBe(false);
-    },
-  );
+  test('starts hidden and toggles visibility without a Redux update', () => {
+    const store = createTestStore({ notificationList: notifications });
+    const state = store.getState();
+    const subscriber = jest.fn();
+    store.subscribe(subscriber);
+    renderWithStore(store);
+    const drawer = document.querySelector('.notification-items');
+    const visible = css(styles.visible);
+    expect(drawer).not.toHaveClass(visible);
+    fireEvent.click(screen.getByText(/your notifications/i));
+    expect(drawer).toHaveClass(visible);
+    fireEvent.click(screen.getByRole('button', { name: /close/i }));
+    expect(drawer).not.toHaveClass(visible);
+    fireEvent.click(screen.getByText(/your notifications/i));
+    expect(drawer).toHaveClass(visible);
+    expect(store.getState()).toBe(state);
+    expect(subscriber).not.toHaveBeenCalled();
+  });
 
   test(
     'renders notification items from Redux',
